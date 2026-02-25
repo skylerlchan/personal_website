@@ -147,6 +147,15 @@ html.lenis body {
 @media (max-width: 1023px) {
   html {
     scroll-snap-type: y mandatory;
+    scroll-snap-stop: always;
+    /* Performance optimizations for smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: auto;
+  }
+
+  body {
+    /* Reduce paint/composite work on scroll */
+    will-change: scroll-position;
   }
 
   [data-snap] {
@@ -155,6 +164,9 @@ html.lenis body {
     min-height: 100dvh !important;
     max-height: 100dvh !important;
     overflow-y: hidden;
+    /* GPU acceleration for smoother snapping */
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   /* Hide scrollbar within snap sections */

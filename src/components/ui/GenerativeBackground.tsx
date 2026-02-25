@@ -39,6 +39,8 @@ export default function GenerativeBackground() {
 
     let raf = 0;
     let lastFrame = 0;
+    let isScrolling = false;
+    let scrollTimeout: NodeJS.Timeout;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const isMobile = window.innerWidth < 768;
@@ -183,10 +185,21 @@ export default function GenerativeBackground() {
       raf = requestAnimationFrame(animate);
       const elapsed = timestamp - lastFrame;
       if (elapsed < frameInterval) return;
+      // Skip rendering during active scroll on mobile for better scroll performance
+      if (isMobile && isScrolling) return;
       // dt = 1.0 at target framerate, capped to avoid jumps after tab-switch
       const dt = Math.min(elapsed / frameInterval, 3);
       lastFrame = timestamp;
       render(timestamp, dt);
+    }
+
+    function handleScroll() {
+      if (!isMobile) return;
+      isScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+      }, 150);
     }
 
     // ── Init ─────────────────────────────────────────────────
@@ -195,6 +208,9 @@ export default function GenerativeBackground() {
     resize();
     scatter();
     window.addEventListener("resize", resize);
+    if (isMobile) {
+      window.addEventListener("scroll", handleScroll, { passive: true });
+    }
     raf = requestAnimationFrame(animate);
 
     const observer = new MutationObserver(readColors);
@@ -206,6 +222,10 @@ export default function GenerativeBackground() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
+      if (isMobile) {
+        window.removeEventListener("scroll", handleScroll);
+      }
+      clearTimeout(scrollTimeout);
       observer.disconnect();
     };
   }, [reducedMotion]);

@@ -49,17 +49,12 @@ export default function Navbar() {
                 const el = document.getElementById(id);
                 if (!el) return;
                 e.preventDefault();
-                // Disable scroll-snap so smooth scroll isn't intercepted on mobile
-                const html = document.documentElement;
-                html.style.scrollSnapType = "none";
-                el.scrollIntoView({ behavior: "smooth" });
-                const restore = () => {
-                  html.style.scrollSnapType = "";
-                  window.removeEventListener("scrollend", restore);
-                  clearTimeout(fb);
-                };
-                window.addEventListener("scrollend", restore, { once: true });
-                const fb = setTimeout(restore, 800);
+                // Use instant scroll on mobile to work with scroll-snap, smooth on desktop
+                const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+                el.scrollIntoView({
+                  behavior: isMobile ? "instant" : "smooth",
+                  block: "start"
+                });
               }}
               className="text-xs sm:text-sm text-muted hover:text-foreground transition-colors duration-200"
               data-cursor="link"

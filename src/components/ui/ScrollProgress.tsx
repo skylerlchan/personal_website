@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { useLenis } from "lenis/react";
 import { SECTIONS } from "@/lib/constants";
@@ -20,6 +20,7 @@ export default function ScrollProgress() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeProjectSlug, setActiveProjectSlug] = useState<string | null>(null);
   const [sectionProgress, setSectionProgress] = useState<Record<string, number>>({});
+  const [isMobile, setIsMobile] = useState(false);
 
   // Refs for batching updates
   const rafId = useRef<number | null>(null);
@@ -30,6 +31,15 @@ export default function ScrollProgress() {
 
   // Lenis instance for smooth navigation (single scroll controller)
   const lenis = useLenis();
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 1023px)");
+    setIsMobile(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
 
   const scheduleUpdate = useCallback(() => {
     if (rafId.current) return;
@@ -43,7 +53,31 @@ export default function ScrollProgress() {
   }, []);
 
   useGSAP(() => {
-    // Active section + sub-item tracking
+    // Skip heavy scroll tracking on mobile - use IntersectionObserver instead
+    if (isMobile) {
+      // Lightweight mobile tracking using IntersectionObserver
+      const sections = SECTIONS.map(s => document.getElementById(s.id)).filter(Boolean) as HTMLElement[];
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+              const index = sections.indexOf(entry.target as HTMLElement);
+              if (index !== -1 && index !== latestState.current.activeIndex) {
+                latestState.current.activeIndex = index;
+                scheduleUpdate();
+              }
+            }
+          });
+        },
+        { threshold: [0.5], rootMargin: '-10% 0px -10% 0px' }
+      );
+
+      sections.forEach(el => observer.observe(el));
+      return () => observer.disconnect();
+    }
+
+    // Desktop: Active section + sub-item tracking with ScrollTrigger
     ScrollTrigger.create({
       trigger: document.documentElement,
       start: "top top",
@@ -120,7 +154,7 @@ export default function ScrollProgress() {
 
     // NOTE: No GSAP snap here — snap is handled by Lenis in LenisProvider
     // to avoid the Lenis/GSAP scroll-control conflict.
-  });
+  }, [isMobile, scheduleUpdate]);
 
   // Derive mobile active index: contact section maps to single "Connect"
   const mobileActiveIndex = activeIndex < SECTIONS.length - 1
@@ -142,20 +176,9 @@ export default function ScrollProgress() {
           onComplete: () => { navLock.current = false; },
         });
       } else {
-        // Mobile: temporarily disable scroll-snap so programmatic scroll isn't intercepted
-        const html = document.documentElement;
-        html.style.scrollSnapType = "none";
-        el.scrollIntoView({ behavior: "smooth" });
-        // Re-enable snap after scroll settles
-        const onEnd = () => {
-          html.style.scrollSnapType = "";
-          navLock.current = false;
-          window.removeEventListener("scrollend", onEnd);
-          clearTimeout(fallback);
-        };
-        window.addEventListener("scrollend", onEnd, { once: true });
-        // Fallback for browsers without scrollend support
-        const fallback = setTimeout(onEnd, 800);
+        // Mobile: use direct scrollIntoView without fighting scroll-snap
+        el.scrollIntoView({ behavior: "instant", block: "start" });
+        navLock.current = false;
       }
     };
 
