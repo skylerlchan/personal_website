@@ -5,21 +5,26 @@ import { useEffect, useState, useRef } from "react";
 export default function MobileSnapScroll() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [totalSections, setTotalSections] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const isScrollingRef = useRef(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
-  const lastScrollTime = useRef(0);
+  const touchStartY = useRef(0);
+  const touchStartTime = useRef(0);
 
   useEffect(() => {
     // Only run on mobile
     const mql = window.matchMedia("(max-width: 1023px)");
+    setIsMobile(mql.matches);
+
     if (!mql.matches) return;
 
     const sections = document.querySelectorAll("[data-snap]");
     setTotalSections(sections.length);
 
-    // Determine current section on mount
+    // Update current section based on scroll position
     const updateCurrentSection = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      if (isScrollingRef.current) return;
+
+      const scrollTop = window.scrollY;
       const windowHeight = window.innerHeight;
       const index = Math.round(scrollTop / windowHeight);
       setCurrentIndex(Math.max(0, Math.min(index, sections.length - 1)));
@@ -27,111 +32,112 @@ export default function MobileSnapScroll() {
 
     updateCurrentSection();
 
-    // Strict single-section scroll enforcement
-    const handleScroll = () => {
-      const now = Date.now();
-
-      // Debounce rapid scroll events
-      if (now - lastScrollTime.current < 50) {
+    // Smooth snap scrolling with wheel events
+    const handleWheel = (e: WheelEvent) => {
+      if (isScrollingRef.current) {
+        e.preventDefault();
         return;
       }
-      lastScrollTime.current = now;
 
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
+      const direction = e.deltaY > 0 ? 1 : -1;
+      const newIndex = Math.max(0, Math.min(currentIndex + direction, sections.length - 1));
+
+      if (newIndex !== currentIndex) {
+        e.preventDefault();
+        scrollToSection(newIndex);
       }
-
-      // After scroll stops, snap to nearest section
-      scrollTimeoutRef.current = setTimeout(() => {
-        if (!isScrollingRef.current) {
-          const scrollTop = window.scrollY || document.documentElement.scrollTop;
-          const windowHeight = window.innerHeight;
-          const targetIndex = Math.round(scrollTop / windowHeight);
-          const targetSection = sections[targetIndex];
-
-          if (targetSection) {
-            isScrollingRef.current = true;
-            targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
-            setCurrentIndex(targetIndex);
-
-            setTimeout(() => {
-              isScrollingRef.current = false;
-            }, 500);
-          }
-        }
-      }, 100);
     };
 
-    // Touch handling for swipe gestures
-    let touchStartY = 0;
-    let touchStartTime = 0;
-
+    // Touch handling for smooth swipes
     const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-      touchStartTime = Date.now();
+      touchStartY.current = e.touches[0].clientY;
+      touchStartTime.current = Date.now();
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (isScrollingRef.current) {
+        e.preventDefault();
+      }
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
       if (isScrollingRef.current) return;
 
       const touchEndY = e.changedTouches[0].clientY;
-      const touchDuration = Date.now() - touchStartTime;
-      const deltaY = touchStartY - touchEndY;
+      const deltaY = touchStartY.current - touchEndY;
       const absDelta = Math.abs(deltaY);
+      const touchDuration = Date.now() - touchStartTime.current;
 
-      // Detect deliberate swipe (minimum distance and velocity)
-      if (absDelta > 50 && touchDuration < 300) {
-        e.preventDefault();
-        isScrollingRef.current = true;
-
+      // Swipe detected - minimum 30px movement
+      if (absDelta > 30) {
         const direction = deltaY > 0 ? 1 : -1;
-        const newIndex = Math.max(
-          0,
-          Math.min(currentIndex + direction, sections.length - 1)
-        );
+        const newIndex = Math.max(0, Math.min(currentIndex + direction, sections.length - 1));
 
-        const targetSection = sections[newIndex];
-        if (targetSection) {
-          targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
-          setCurrentIndex(newIndex);
-
-          setTimeout(() => {
-            isScrollingRef.current = false;
-          }, 500);
+        if (newIndex !== currentIndex) {
+          e.preventDefault();
+          scrollToSection(newIndex);
         }
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchend", handleTouchEnd, { passive: false });
+    const scrollToSection = (index: number) => {
+      isScrollingRef.current = true;
+      const targetSection = sections[index] as HTMLElement;
 
-    // Update on resize
-    const handleResize = () => {
-      updateCurrentSection();
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        setCurrentIndex(index);
+
+        setTimeout(() => {
+          isScrollingRef.current = false;
+        }, 800);
+      }
     };
+
+    // Passive scroll listener for indicator updates
+    const handleScroll = () => {
+      if (!isScrollingRef.current) {
+        updateCurrentSection();
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("touchend", handleTouchEnd, { passive: false });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    const handleResize = () => updateCurrentSection();
     window.addEventListener("resize", handleResize);
 
+    const mqHandler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener("change", mqHandler);
+
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
+      mql.removeEventListener("change", mqHandler);
     };
   }, [currentIndex]);
 
-  // Only show on mobile
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const mql = window.matchMedia("(max-width: 1023px)");
-    setIsMobile(mql.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
-  }, []);
+  const scrollToIndex = (index: number) => {
+    const sections = document.querySelectorAll("[data-snap]");
+    const targetSection = sections[index] as HTMLElement;
+
+    if (targetSection) {
+      isScrollingRef.current = true;
+      targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      setCurrentIndex(index);
+
+      setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 800);
+    }
+  };
 
   if (!isMobile || totalSections === 0) return null;
 
@@ -141,18 +147,7 @@ export default function MobileSnapScroll() {
         <button
           key={index}
           className={`snap-dot ${index === currentIndex ? "active" : ""}`}
-          onClick={() => {
-            const sections = document.querySelectorAll("[data-snap]");
-            const targetSection = sections[index];
-            if (targetSection) {
-              isScrollingRef.current = true;
-              targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
-              setCurrentIndex(index);
-              setTimeout(() => {
-                isScrollingRef.current = false;
-              }, 500);
-            }
-          }}
+          onClick={() => scrollToIndex(index)}
           aria-label={`Go to section ${index + 1}`}
         />
       ))}

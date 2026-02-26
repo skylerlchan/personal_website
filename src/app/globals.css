@@ -146,32 +146,27 @@ html.lenis body {
 /* ── Mobile vertical snap (Reels-style) ── */
 @media (max-width: 1023px) {
   html {
-    scroll-snap-type: y mandatory;
-    /* Performance optimizations for smooth scrolling */
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     overflow-y: scroll;
     overscroll-behavior-y: none;
-    touch-action: pan-y;
   }
 
   body {
-    /* Prevent body from creating separate scroll context */
     overflow: visible;
     height: auto;
-    touch-action: pan-y;
     overscroll-behavior: none;
   }
 
   [data-snap] {
     scroll-snap-align: start;
-    scroll-snap-stop: always;
     height: 100dvh !important;
     min-height: 100dvh !important;
     max-height: 100dvh !important;
     overflow: hidden;
-    /* GPU acceleration for smoother snapping */
+    /* GPU acceleration */
     transform: translateZ(0);
-    backface-visibility: hidden;
     -webkit-transform: translateZ(0);
   }
 
