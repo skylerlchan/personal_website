@@ -7,12 +7,14 @@ import Contact from "@/components/sections/Contact";
 import Socials from "@/components/sections/Socials";
 import GenerativeBackground from "@/components/ui/GenerativeBackground";
 import ScrollProgress from "@/components/ui/ScrollProgress";
+import MobileSnapScroll from "@/components/ui/MobileSnapScroll";
 
 export default function Home() {
   return (
     <>
       <GenerativeBackground />
       <ScrollProgress />
+      <MobileSnapScroll />
       <Hero />
       <Projects />
       <Hobbies />

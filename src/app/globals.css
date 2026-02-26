@@ -147,26 +147,32 @@ html.lenis body {
 @media (max-width: 1023px) {
   html {
     scroll-snap-type: y mandatory;
-    scroll-snap-stop: always;
     /* Performance optimizations for smooth scrolling */
     -webkit-overflow-scrolling: touch;
-    scroll-behavior: auto;
+    overflow-y: scroll;
+    overscroll-behavior-y: none;
+    touch-action: pan-y;
   }
 
   body {
-    /* Reduce paint/composite work on scroll */
-    will-change: scroll-position;
+    /* Prevent body from creating separate scroll context */
+    overflow: visible;
+    height: auto;
+    touch-action: pan-y;
+    overscroll-behavior: none;
   }
 
   [data-snap] {
     scroll-snap-align: start;
+    scroll-snap-stop: always;
     height: 100dvh !important;
     min-height: 100dvh !important;
     max-height: 100dvh !important;
-    overflow-y: hidden;
+    overflow: hidden;
     /* GPU acceleration for smoother snapping */
     transform: translateZ(0);
     backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
   }
 
   /* Hide scrollbar within snap sections */
@@ -175,6 +181,49 @@ html.lenis body {
   }
   [data-snap] {
     scrollbar-width: none;
+  }
+
+  /* Hide main scrollbar on mobile */
+  html::-webkit-scrollbar {
+    display: none;
+  }
+  html {
+    scrollbar-width: none;
+  }
+}
+
+/* Mobile snap indicator dots */
+.snap-indicator {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.snap-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+.snap-dot.active {
+  height: 24px;
+  border-radius: 3px;
+  background: var(--accent);
+  opacity: 1;
+}
+
+@media (min-width: 1024px) {
+  .snap-indicator {
+    display: none;
   }
 }
 
