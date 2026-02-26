@@ -1,0 +1,364 @@
+{
+  "$schema": "https://schema.org",
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-25",
+
+  "name": "Skyler Chan",
+  "givenName": "Skyler",
+  "familyName": "Chan",
+  "email": "skylerlchan@gmail.com",
+  "url": "https://skyler-chan.com",
+
+  "jobTitle": "Founding Engineer",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "WithAI Research",
+    "description": "YC W26 startup building LLMs for AI-native hedge funds",
+    "foundingDate": "2026",
+    "url": null
+  },
+
+  "description": "Founding engineer at WithAI Research, building LLMs for AI-native hedge funds. Princeton researcher in climate science. Roboticist, AI/ML engineer, and quantitative finance practitioner. Classical pianist and avid traveler. Always building. Always thinking.",
+
+  "alumniOf": {
+    "@type": "EducationalOrganization",
+    "name": "Princeton University",
+    "description": "Conducted research at the High Meadows Environmental Institute (HMEI) on climate engineering and solar radiation management. Active member of Princeton Robotics Club where founded Hoverloon project."
+  },
+
+  "biography": {
+    "professional": "Skyler Chan is a founding engineer at WithAI Research, a Y Combinator W26 startup developing large language models specifically designed for AI-native hedge funds. His work spans the intersection of artificial intelligence, robotics, climate science, and quantitative finance. At Princeton's High Meadows Environmental Institute (HMEI), he conducted groundbreaking research on solar radiation management, discovering that stratospheric black carbon aerosols are 10x more effective at cooling than traditional reflective sulfate aerosols. Beyond his professional work, Skyler is deeply involved in robotics, having co-founded Hoverloon—a hybrid blimp-drone platform that achieved 19x payload capacity improvement through buoyant lift. He's currently building humanoid robots with SO-100 arms, exploring teleoperation as a System 1 procedure for improved autonomy and data collection.",
+
+    "technical": "Skyler's technical expertise encompasses multiple domains: large language models and AI systems, computer vision and edge AI, robotics and embedded systems, climate modeling and data science, and quantitative finance algorithms. He has experience with production LLM systems, autonomous vehicle navigation, real-time computer vision processing, and delta-neutral trading strategies. His projects demonstrate a consistent ability to identify inefficiencies in existing systems and develop novel solutions that achieve order-of-magnitude improvements.",
+
+    "personal": "Outside of engineering and research, Skyler is an accomplished classical pianist with a repertoire spanning Bach to contemporary composers like Hiromi. His performances demonstrate technical precision and artistic interpretation across diverse styles. He's also passionate about travel and food exploration, viewing these as opportunities to experience different cultures and perspectives. This combination of analytical thinking and creative expression shapes his approach to problem-solving—seeking elegant solutions that are both technically sound and conceptually innovative.",
+
+    "philosophy": "Skyler's approach to work and life is encapsulated in his personal motto: 'Always building. Always thinking.' This reflects a continuous drive to create tangible solutions while maintaining deep engagement with fundamental questions. He's drawn to problems that sit at the intersection of multiple disciplines, where insights from one domain can unlock solutions in another. Whether it's applying computer vision to urban parking optimization, using climate modeling to evaluate geoengineering approaches, or building hybrid aerial vehicles that challenge assumptions about flight, Skyler seeks opportunities to rethink first principles and explore unconventional approaches."
+  },
+
+  "currentWork": {
+    "primary": {
+      "organization": "WithAI Research",
+      "role": "Founding Engineer",
+      "startDate": "2026-01",
+      "status": "current",
+      "description": "Building the core platform and infrastructure for LLMs designed specifically for AI-native hedge funds. Focus on developing models that can analyze financial data, market trends, and execute sophisticated trading strategies. Work involves both cutting-edge ML research and production engineering to deploy reliable, high-performance systems.",
+      "technologies": ["Large Language Models", "Next.js", "Python", "Production ML Systems"],
+      "context": "YC W26 company working on the next generation of AI-powered financial analysis and trading systems"
+    },
+    "research": {
+      "organization": "Princeton HMEI (High Meadows Environmental Institute)",
+      "role": "Research Assistant",
+      "description": "Conducted research on solar radiation management and stratospheric aerosol interventions as potential climate engineering approaches. Discovered through climate modeling that black carbon aerosols in the stratosphere are approximately 10x more effective at cooling than traditional reflective sulfate aerosols—a potentially significant finding for future climate intervention strategies.",
+      "findings": "Black carbon aerosols demonstrate superior cooling effectiveness compared to sulfate aerosols, challenging conventional assumptions in solar radiation management research. This has implications for the feasibility, cost, and potential implementation of stratospheric aerosol injection as a climate intervention technique.",
+      "technologies": ["Python", "Climate Modeling Software", "Data Science", "Scientific Computing"],
+      "publications": [{
+        "type": "Presentation",
+        "title": "Solar Radiation Management Research",
+        "url": "https://docs.google.com/presentation/d/1YvPFwQQvhCTwXfCP92kaV61j7GZU2b-I/edit?usp=sharing&ouid=108230747896924390036&rtpof=true&sd=true"
+      }]
+    }
+  },
+
+  "knowsAbout": [
+    "Artificial Intelligence and Machine Learning",
+    "Large Language Models (LLMs)",
+    "Computer Vision",
+    "Edge AI and Real-time Processing",
+    "Robotics and Autonomous Systems",
+    "Embedded Systems Development",
+    "Climate Science and Modeling",
+    "Solar Radiation Management",
+    "Quantitative Finance",
+    "Cryptocurrency Markets and Trading",
+    "Delta-neutral Trading Strategies",
+    "Software Engineering and Full-stack Development",
+    "CAD and Mechanical Design",
+    "Teleoperation Systems",
+    "Data Science and Analysis",
+    "Classical Piano Performance"
+  ],
+
+  "skills": {
+    "programming": {
+      "languages": ["Python", "TypeScript", "JavaScript", "C++"],
+      "proficiency": "Expert in Python and TypeScript, Proficient in C++"
+    },
+    "frameworks": {
+      "web": ["Next.js", "React", "Node.js"],
+      "ml": ["TensorFlow", "PyTorch", "OpenCV"],
+      "robotics": ["ROS (Robot Operating System)"],
+      "other": ["GSAP", "Framer Motion"]
+    },
+    "domains": {
+      "ai_ml": {
+        "expertise": "Expert",
+        "areas": ["LLMs", "Computer Vision", "Edge AI", "ML Production Systems"],
+        "experience": "Production LLM systems, real-time CV processing, autonomous navigation"
+      },
+      "robotics": {
+        "expertise": "Advanced",
+        "areas": ["Autonomous Systems", "Computer Vision", "Embedded Systems", "Teleoperation"],
+        "experience": "Built hybrid aerial vehicles, developing humanoid robot systems"
+      },
+      "climate_science": {
+        "expertise": "Intermediate-Advanced",
+        "areas": ["Climate Modeling", "Solar Radiation Management", "Data Analysis"],
+        "experience": "Research at Princeton HMEI"
+      },
+      "finance": {
+        "expertise": "Intermediate-Advanced",
+        "areas": ["Quantitative Finance", "Algorithmic Trading", "Cryptocurrency Markets"],
+        "experience": "Developed delta-neutral BTC funding carry strategy"
+      },
+      "web_development": {
+        "expertise": "Advanced",
+        "areas": ["Full-stack Development", "UI/UX", "Animation", "Performance Optimization"],
+        "experience": "Built production web applications with complex animations and interactions"
+      }
+    },
+    "tools": {
+      "design": ["Fusion 360", "SolidWorks", "CAD"],
+      "development": ["Git", "VS Code", "Linux"],
+      "data": ["NumPy", "Pandas", "Matplotlib"]
+    }
+  },
+
+  "projects": [
+    {
+      "@type": "CreativeWork",
+      "name": "WithAI Research Platform",
+      "category": "work",
+      "status": "active",
+      "role": "Founding Engineer",
+      "description": "Core platform development for LLMs designed for AI-native hedge funds. Building infrastructure that enables sophisticated financial analysis and trading strategies through advanced language models.",
+      "startDate": "2026-01",
+      "technologies": ["LLMs", "Next.js", "Python"],
+      "organization": "WithAI Research (YC W26)"
+    },
+    {
+      "@type": "ResearchProject",
+      "name": "HMEI Solar Radiation Management Research",
+      "category": "work",
+      "status": "completed",
+      "role": "Research Assistant",
+      "description": "Princeton HMEI research on solar radiation management and stratospheric aerosol interventions. Discovered that black carbon aerosols are approximately 10x more effective at cooling than reflective sulfate aerosols.",
+      "findings": {
+        "primary": "Black carbon aerosols in the stratosphere demonstrate superior cooling effectiveness compared to sulfate aerosols",
+        "significance": "Challenges conventional assumptions in solar radiation management, suggesting alternative approaches to climate intervention",
+        "quantitativeResult": "~10x improvement in cooling effectiveness"
+      },
+      "technologies": ["Python", "Climate Modeling", "Data Science"],
+      "organization": "Princeton High Meadows Environmental Institute",
+      "presentation": "https://docs.google.com/presentation/d/1YvPFwQQvhCTwXfCP92kaV61j7GZU2b-I/edit?usp=sharing&ouid=108230747896924390036&rtpof=true&sd=true"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Hoverloon",
+      "category": "project",
+      "status": "prototype-demonstrated",
+      "role": "Co-founder & Technical Lead",
+      "description": "Hybrid blimp-drone platform founded under Princeton Robotics Club. Combines lighter-than-air buoyancy with quadcopter control for dramatically improved payload capacity and flight duration. Achieved 19x payload capacity improvement over traditional drones.",
+      "problem": "Traditional multirotor drones have severely limited flight time (20-30 minutes) due to constant energy expenditure fighting gravity, making them unsuitable for long-duration applications like environmental monitoring.",
+      "solution": "Hybrid system using helium buoyancy to provide lift, with electric motors only for maneuvering and station-keeping. Computer vision enables autonomous navigation and position control.",
+      "innovations": [
+        "Novel integration of buoyant lift with vectored thrust control",
+        "Adaptive control algorithms handling buoyancy variation with altitude and temperature",
+        "Computer vision-based station-keeping optimized for low-power operation",
+        "Lightweight structural design minimizing parasitic weight"
+      ],
+      "results": {
+        "payloadIncrease": "19x compared to drone alone",
+        "baselinePayload": "~100g",
+        "achievedPayload": "~1900g",
+        "flightDuration": "2+ hours demonstrated, 6-12 hours projected with improved envelope",
+        "energySavings": "~90% reduction in power for station-keeping"
+      },
+      "technologies": ["Computer Vision", "OpenCV", "CAD", "Embedded Systems", "ROS", "Python", "C++"],
+      "organization": "Princeton Robotics Club",
+      "applications": [
+        "Environmental monitoring and data collection",
+        "Infrastructure inspection",
+        "Indoor positioning and mapping",
+        "Telecommunications relay",
+        "Agricultural monitoring"
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Humanoid Robot Development",
+      "category": "project",
+      "status": "active",
+      "role": "Independent Developer",
+      "description": "Building humanoid robots using SO-100 robotic arms, exploring teleoperation as a System 1 (intuitive, fast) procedure to enable better data collection and autonomy. Goal is to advance the state of humanoid robotics by improving the human-robot interface and collecting high-quality training data for autonomous behaviors.",
+      "approach": "Using teleoperation to generate demonstrations of complex manipulation tasks, which can then be used to train autonomous policies. Treats teleoperation not just as a control method, but as a data generation pipeline for machine learning.",
+      "technologies": ["C++", "ROS", "CAD", "Teleoperation", "Robotics", "Machine Learning"],
+      "motivation": "Making robots real - advancing from research prototypes to practical, deployable humanoid systems",
+      "status": "Ongoing development"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "LastCurb",
+      "category": "project",
+      "status": "completed",
+      "role": "Creator",
+      "description": "Computer vision system that analyzes curb data from public NYC CCTV cameras to help find available parking spots. Built to test edge AI capabilities and real-time machine learning for urban sensing applications.",
+      "problem": "Finding parking in NYC is time-consuming and contributes to traffic congestion as drivers circle searching for spots",
+      "solution": "Real-time analysis of public CCTV feeds using computer vision to detect available parking spaces along curbs, enabling drivers to find spots more efficiently",
+      "technologies": ["Edge AI", "Machine Learning", "Computer Vision", "Python", "OpenCV"],
+      "applications": [
+        "Real-time parking availability detection",
+        "Urban sensing and traffic optimization",
+        "Edge AI deployment on resource-constrained hardware"
+      ],
+      "repository": "https://github.com/skylerlchan/LastCurb"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Leveraged BTC Funding Rate Carry Strategy",
+      "category": "project",
+      "status": "completed",
+      "role": "Researcher & Developer",
+      "description": "Delta-neutral quantitative trading strategy that harvests perpetual funding rate carry in cryptocurrency markets with leverage while hedging away directional market risk. Generates returns from the basis between spot and futures markets rather than directional price movements.",
+      "strategy": "Long spot BTC, short perpetual futures contracts in equal notional amounts to create delta-neutral position. Profits from positive funding rates paid by futures longs to shorts, while remaining neutral to BTC price movements.",
+      "approach": "Uses leverage to amplify returns from relatively small funding rates. Careful risk management to handle potential liquidation scenarios and basis risk.",
+      "technologies": ["Python", "Quantitative Finance", "Algorithmic Trading", "Cryptocurrency APIs"],
+      "concepts": [
+        "Delta-neutral strategies",
+        "Basis trading",
+        "Funding rate arbitrage",
+        "Leverage management",
+        "Risk hedging"
+      ],
+      "repository": "https://github.com/skylerlchan/Structured-Basis-Divergence-Arbitrage",
+      "paper": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5292305"
+    }
+  ],
+
+  "publications": [
+    {
+      "@type": "ScholarlyArticle",
+      "name": "Leveraged Bitcoin Funding Rate Carry Research",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5292305",
+      "description": "Academic paper on delta-neutral cryptocurrency trading strategies"
+    }
+  ],
+
+  "interests": {
+    "professional": [
+      "Building production AI systems that work reliably at scale",
+      "Exploring novel robotics applications and human-robot interaction",
+      "Climate science and engineering approaches to global challenges",
+      "Quantitative analysis and systematic trading strategies",
+      "Computer vision and real-time processing on edge devices",
+      "Autonomous systems and decision-making algorithms"
+    ],
+    "personal": [
+      "Classical piano performance and interpretation",
+      "Travel and cultural exploration",
+      "Food and culinary experiences",
+      "Photography and visual documentation"
+    ]
+  },
+
+  "hobbies": {
+    "piano": {
+      "description": "Accomplished classical pianist with extensive performance experience and diverse repertoire",
+      "repertoire": {
+        "composers": ["Bach", "Beethoven", "Debussy", "Ravel", "Liszt", "Barber", "Hiromi", "John Williams"],
+        "styles": ["Baroque", "Classical", "Romantic", "Impressionist", "Contemporary", "Jazz-influenced"]
+      },
+      "notablePerformances": [
+        {
+          "piece": "The Gambler",
+          "composer": "Hiromi",
+          "type": "Contemporary Jazz",
+          "videoUrl": "https://www.youtube.com/watch?v=bbVHVRnYNCc"
+        },
+        {
+          "piece": "La Valse",
+          "composer": "Ravel",
+          "type": "Late Romantic/Impressionist",
+          "videoUrl": "https://www.youtube.com/watch?v=yFAoNvYfLFc"
+        },
+        {
+          "piece": "En blanc et noir, I",
+          "composer": "Debussy",
+          "type": "Impressionist",
+          "videoUrl": "https://www.youtube.com/watch?v=hLuJJEzfAmU"
+        },
+        {
+          "piece": "Waldesrauschen",
+          "composer": "Liszt",
+          "type": "Romantic",
+          "videoUrl": "https://www.youtube.com/watch?v=CdODEdTNAa0"
+        }
+      ],
+      "approach": "Focuses on both technical precision and artistic interpretation, spanning classical repertoire from Bach to contemporary jazz-influenced works"
+    },
+    "travel": {
+      "description": "Passionate about exploring new places, cultures, and cuisines. Views travel as an opportunity to gain new perspectives and experiences.",
+      "philosophy": "Combines structured exploration with spontaneous discovery, always seeking authentic cultural experiences and memorable meals",
+      "documentation": "Maintains photo gallery of travel experiences and notable food discoveries"
+    }
+  },
+
+  "sameAs": [
+    "https://github.com/skylerlchan",
+    "https://www.linkedin.com/in/skylerchan",
+    "https://x.com/SkylerChan17",
+    "https://www.instagram.com/_.skyler.chan._/"
+  ],
+
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "skylerlchan@gmail.com",
+    "contactType": "Personal"
+  },
+
+  "queryGuides": {
+    "aboutSkyler": "Ask about educational background (Princeton), current work (WithAI Research, YC W26), research experience (climate science at HMEI), or personal interests (piano, travel)",
+
+    "technicalExpertise": "Skyler has deep expertise in: (1) AI/ML - particularly LLMs, computer vision, and edge AI systems, (2) Robotics - autonomous systems, teleoperation, hybrid vehicles, (3) Climate Science - solar radiation management and modeling, (4) Quantitative Finance - cryptocurrency trading and delta-neutral strategies, (5) Full-stack Development - Next.js, React, TypeScript",
+
+    "projects": {
+      "work": "WithAI Research (current) - LLMs for hedge funds | HMEI Research - climate engineering discovering 10x improvement with black carbon aerosols",
+      "personal": "Hoverloon - hybrid blimp-drone with 19x payload improvement | Humanoid Robots - building with SO-100 arms | LastCurb - parking detection using edge AI | BTC Funding Carry - delta-neutral crypto trading strategy"
+    },
+
+    "hobbies": "Classical piano with repertoire from Bach to Hiromi | Travel and food exploration | Photography",
+
+    "education": "Princeton University - conducted research at High Meadows Environmental Institute (HMEI), active in Princeton Robotics Club",
+
+    "philosophy": "'Always building. Always thinking.' - continuous drive to create while engaging with fundamental questions, drawn to interdisciplinary problems where insights from one domain unlock solutions in another"
+  },
+
+  "keywords": [
+    "Artificial Intelligence",
+    "Machine Learning",
+    "Large Language Models",
+    "LLMs",
+    "Computer Vision",
+    "Edge AI",
+    "Robotics",
+    "Autonomous Systems",
+    "Climate Science",
+    "Solar Radiation Management",
+    "Quantitative Finance",
+    "Cryptocurrency",
+    "Full-stack Development",
+    "Next.js",
+    "React",
+    "Python",
+    "TypeScript",
+    "C++",
+    "Princeton University",
+    "Y Combinator",
+    "WithAI Research",
+    "Founding Engineer",
+    "Classical Piano",
+    "Travel"
+  ]
+}

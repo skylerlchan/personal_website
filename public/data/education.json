@@ -1,0 +1,110 @@
+{
+  "$schema": "https://schema.org",
+  "@context": "https://schema.org",
+  "@type": "EducationalOccupationalCredential",
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-25",
+
+  "institution": {
+    "@type": "EducationalOrganization",
+    "name": "Princeton University",
+    "url": "https://princeton.edu",
+    "location": "Princeton, NJ"
+  },
+
+  "status": "Current Student",
+  "expectedGraduation": "2027",
+
+  "academicFocus": {
+    "primary": [
+      "Computer Science",
+      "Engineering",
+      "Artificial Intelligence"
+    ],
+    "interests": [
+      "Robotics",
+      "Machine Learning",
+      "Autonomous Systems",
+      "Climate Science",
+      "Applied Mathematics"
+    ]
+  },
+
+  "researchExperience": [
+    {
+      "organization": "High Meadows Environmental Institute (HMEI)",
+      "role": "Research Assistant",
+      "startDate": "2024",
+      "endDate": "2025",
+      "focus": "Solar Radiation Management and Climate Engineering",
+      "description": "Conducted computational research on stratospheric aerosol interventions as potential climate engineering approaches. Used climate modeling software to simulate and analyze different aerosol types and their cooling effectiveness.",
+      "keyFindings": [
+        "Discovered black carbon aerosols in the stratosphere are approximately 10x more effective at cooling than traditional reflective sulfate aerosols",
+        "Analyzed temperature, albedo, and radiative forcing effects across different aerosol compositions",
+        "Evaluated implications for climate intervention strategies and geoengineering feasibility"
+      ],
+      "methodology": "Computational climate modeling using Python-based tools, data analysis of simulation outputs, quantitative comparison of aerosol effectiveness",
+      "impact": "Findings challenge conventional assumptions in solar radiation management research and suggest alternative approaches to climate intervention",
+      "presentation": "https://docs.google.com/presentation/d/1YvPFwQQvhCTwXfCP92kaV61j7GZU2b-I/edit?usp=sharing&ouid=108230747896924390036&rtpof=true&sd=true",
+      "technologies": ["Python", "Climate Modeling Software", "Data Science", "Scientific Computing"]
+    }
+  ],
+
+  "extracurriculars": [
+    {
+      "organization": "Princeton Robotics Club",
+      "role": "Active Member & Project Founder",
+      "involvement": "Founded and led Hoverloon project - a hybrid blimp-drone platform that achieved 19x payload capacity improvement through innovative integration of buoyant lift with electric propulsion",
+      "impact": "Demonstrated novel approach to aerial robotics combining lighter-than-air technology with quadcopter control systems",
+      "technologies": ["Computer Vision", "ROS", "Embedded Systems", "CAD", "Control Systems"]
+    }
+  ],
+
+  "relevantCoursework": [
+    "Artificial Intelligence and Machine Learning",
+    "Computer Vision",
+    "Robotics and Autonomous Systems",
+    "Algorithms and Data Structures",
+    "Climate Science and Modeling",
+    "Applied Mathematics"
+  ],
+
+  "skills": {
+    "technical": [
+      "Python programming for scientific computing and ML",
+      "C++ for robotics and embedded systems",
+      "TypeScript/JavaScript for full-stack development",
+      "Machine learning frameworks (PyTorch, TensorFlow)",
+      "Robotics frameworks (ROS)",
+      "Climate modeling and data analysis",
+      "Computer vision and image processing",
+      "CAD and mechanical design"
+    ],
+    "research": [
+      "Computational modeling and simulation",
+      "Data analysis and visualization",
+      "Scientific writing and presentation",
+      "Experimental design",
+      "Literature review and synthesis"
+    ],
+    "interdisciplinary": [
+      "Bridging computer science, engineering, and climate science",
+      "Applying ML/AI to physical systems",
+      "Quantitative analysis across domains",
+      "Systems thinking and problem decomposition"
+    ]
+  },
+
+  "achievements": [
+    "Published research presentation on solar radiation management",
+    "Founded successful robotics project (Hoverloon) with demonstrated 19x performance improvement",
+    "Active contributor to Princeton robotics community",
+    "Balance of theoretical research and practical engineering"
+  ],
+
+  "context": {
+    "approach": "Skyler's education at Princeton combines rigorous technical training with hands-on project work and research. He actively seeks opportunities to apply theoretical knowledge to real-world problems, whether through climate research at HMEI, robotics projects at the Robotics Club, or independent ventures. His interdisciplinary interests—spanning AI, robotics, climate science, and finance—reflect a curiosity-driven approach to learning and problem-solving.",
+
+    "philosophy": "Views education not just as knowledge acquisition but as skill-building through doing. Believes the best way to learn is to build, and actively engages in projects that push technical boundaries while addressing meaningful problems."
+  }
+}

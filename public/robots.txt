@@ -1,0 +1,37 @@
+# robots.txt for skyler-chan.com
+# Allow all web crawlers and AI bots to access the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://skyler-chan.com/sitemap.xml
+
+# AI-specific crawlers - explicitly allow
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# AI context file specifically for LLM consumption
+User-agent: *
+Allow: /ai-context.json

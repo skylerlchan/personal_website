@@ -1,0 +1,639 @@
+{
+  "$schema": "https://schema.org",
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-25",
+
+  "projects": [
+    {
+      "@type": "CreativeWork",
+      "id": "hoverloon",
+      "name": "Hoverloon",
+      "category": "Robotics",
+      "type": "Hardware/Robotics Project",
+      "status": "Prototype Demonstrated",
+      "featured": true,
+
+      "tagline": "Hybrid blimp-drone platform achieving 19x payload capacity through buoyant lift",
+
+      "summary": "Hoverloon is a novel hybrid aerial vehicle that combines lighter-than-air buoyancy with quadcopter control to dramatically improve payload capacity and flight endurance. By using helium for lift and electric motors only for maneuvering, the system achieved 19x payload capacity compared to a traditional drone alone, enabling applications requiring extended flight time.",
+
+      "dates": {
+        "startDate": "2024",
+        "endDate": "2025",
+        "duration": "~12 months"
+      },
+
+      "role": "Co-founder & Technical Lead",
+      "organization": "Princeton Robotics Club",
+
+      "problemStatement": {
+        "problem": "Traditional multirotor drones have severely limited flight time (typically 20-30 minutes) and payload capacity because they must constantly expend energy fighting gravity. This makes them unsuitable for applications requiring extended operation, such as environmental monitoring, infrastructure inspection, or telecommunications relay.",
+
+        "constraints": [
+          "Battery energy density limits flight time to under 30 minutes for most drones",
+          "Payload capacity inversely related to flight time",
+          "Scaling up drone size increases weight faster than lift capacity",
+          "Energy efficiency fundamentally limited by constantly fighting gravity"
+        ],
+
+        "existingSolutions": [
+          "Fixed-wing aircraft: Better endurance but require forward motion, can't hover",
+          "Large multirotor drones: Poor energy efficiency, expensive",
+          "Traditional blimps: Difficult to control, bulky, slow response",
+          "Tethered drones: Unlimited flight time but severely limited mobility"
+        ],
+
+        "opportunity": "Hybrid approach combining buoyancy for lift with electric propulsion for control could achieve superior performance to any single approach"
+      },
+
+      "solution": {
+        "approach": "Integrate helium-filled envelope for buoyancy with quadcopter-style propulsion for 3D control. The buoyancy provides passive lift, while electric motors enable precise positioning, station-keeping, and maneuvering.",
+
+        "keyInnovations": [
+          "Lightweight structural design minimizing parasitic weight while maintaining rigidity",
+          "Adaptive control algorithms handling variable buoyancy with altitude and temperature changes",
+          "Computer vision-based positioning system optimized for low-power operation",
+          "Novel envelope design balancing lift capacity with aerodynamic efficiency",
+          "Integration of buoyant lift with vectored thrust for full 6-DOF control"
+        ],
+
+        "technicalApproach": {
+          "buoyancy": "Helium-filled envelope sized to provide ~90% of total lift for vehicle + payload",
+          "propulsion": "Quadcopter motor configuration for roll, pitch, yaw, and vertical control",
+          "control": "ROS-based control system with computer vision for positioning and autonomous navigation",
+          "power": "Lithium polymer batteries sized for 2+ hour operation with station-keeping",
+          "sensors": "Camera for vision-based positioning, IMU for attitude estimation, ultrasonic for altitude"
+        },
+
+        "designPhilosophy": "Minimize weight everywhere to maximize payload capacity. Use buoyancy to handle the majority of lift, reserving motor power for control and maneuvering. Optimize for station-keeping rather than speed."
+      },
+
+      "implementation": {
+        "phases": [
+          {
+            "phase": "Initial Design & Prototyping",
+            "activities": [
+              "CAD modeling of envelope and structural components",
+              "Buoyancy calculations and envelope sizing",
+              "Motor and propeller selection based on control requirements",
+              "Control system architecture design"
+            ]
+          },
+          {
+            "phase": "Hardware Development",
+            "activities": [
+              "Envelope fabrication and sealing",
+              "Motor mount and structural frame construction",
+              "Electronics integration (flight controller, sensors, power system)",
+              "Weight optimization iterations"
+            ]
+          },
+          {
+            "phase": "Software & Control",
+            "activities": [
+              "ROS-based control system implementation",
+              "Computer vision positioning algorithms",
+              "Adaptive control for buoyancy variations",
+              "Autonomous navigation and waypoint following"
+            ]
+          },
+          {
+            "phase": "Testing & Refinement",
+            "activities": [
+              "Indoor flight testing and control tuning",
+              "Payload capacity measurements",
+              "Flight time and energy efficiency testing",
+              "Demonstration flights"
+            ]
+          }
+        ]
+      },
+
+      "results": {
+        "quantitative": {
+          "payloadIncrease": "19x compared to drone alone",
+          "baselinePayload": "~100g (traditional quadcopter of similar motor size)",
+          "achievedPayload": "~1900g (including sensors and additional equipment)",
+          "flightDuration": "2+ hours demonstrated in testing",
+          "projectedDuration": "6-12 hours with improved envelope and optimization",
+          "energySavings": "~90% reduction in power consumption for station-keeping vs. traditional drone",
+          "controlLatency": "<100ms response time for positioning commands"
+        },
+
+        "qualitative": [
+          "Demonstrated viability of hybrid blimp-drone approach",
+          "Achieved stable station-keeping in indoor environment",
+          "Successful computer vision-based autonomous positioning",
+          "Proof-of-concept for extended-duration aerial monitoring applications"
+        ]
+      },
+
+      "challenges": [
+        {
+          "challenge": "Envelope design and helium sealing",
+          "description": "Helium is extremely small and leaks through most materials. Finding lightweight materials with low permeability was critical.",
+          "solution": "Used specialized barrier films and careful sealing techniques. Designed for semi-permanent flight with minimal helium top-ups."
+        },
+        {
+          "challenge": "Control system complexity",
+          "description": "Buoyancy varies with altitude and temperature, requiring adaptive control. Traditional quadcopter control algorithms needed modification.",
+          "solution": "Developed adaptive control system that estimates and compensates for buoyancy changes in real-time."
+        },
+        {
+          "challenge": "Indoor positioning without GPS",
+          "description": "GPS unavailable indoors, requiring alternative positioning method.",
+          "solution": "Computer vision-based positioning using ceiling-mounted cameras and markers, optimized for low computational overhead."
+        },
+        {
+          "challenge": "Structural weight vs. rigidity trade-off",
+          "description": "Needed rigid structure for motor mounts while minimizing weight.",
+          "solution": "Iterative CAD design with lightweight materials (carbon fiber, foam) strategically placed for maximum rigidity-to-weight ratio."
+        }
+      ],
+
+      "learnings": [
+        "Hybrid systems can achieve order-of-magnitude improvements by combining complementary approaches",
+        "Weight optimization is critical for aerial vehicles - every gram matters",
+        "Computer vision can enable robust positioning without GPS in many applications",
+        "Buoyancy provides essentially 'free' lift but introduces new control challenges",
+        "Real-world testing reveals issues invisible in simulation - importance of iterative prototyping",
+        "Multi-disciplinary projects require understanding aerodynamics, control theory, computer vision, and mechanical design"
+      ],
+
+      "technologies": {
+        "software": ["Python", "C++", "ROS (Robot Operating System)", "OpenCV"],
+        "hardware": ["Quadcopter motors and ESCs", "Flight controller", "Raspberry Pi", "Camera sensors", "IMU", "Ultrasonic sensors"],
+        "tools": ["CAD (Fusion 360/SolidWorks)", "3D printing", "Electronics prototyping"],
+        "concepts": ["Computer vision", "Control systems", "Autonomous navigation", "Aerodynamics", "Buoyancy physics"]
+      },
+
+      "applications": [
+        {
+          "application": "Environmental monitoring",
+          "description": "Extended flight time enables continuous air quality monitoring, temperature sensing, or wildlife observation"
+        },
+        {
+          "application": "Infrastructure inspection",
+          "description": "Stable hovering and long endurance ideal for inspecting bridges, buildings, power lines"
+        },
+        {
+          "application": "Indoor positioning and mapping",
+          "description": "Large payload capacity can carry LiDAR or other mapping sensors for warehouse or building mapping"
+        },
+        {
+          "application": "Telecommunications relay",
+          "description": "Could serve as temporary communications node for emergency response or events"
+        },
+        {
+          "application": "Agricultural monitoring",
+          "description": "Extended flight enables monitoring large agricultural areas for crop health or irrigation"
+        }
+      ],
+
+      "impact": "Demonstrated that hybrid aerial vehicles can achieve performance impossible with single-approach designs. The 19x payload improvement opens possibilities for applications previously infeasible with traditional drones. Project contributed to Princeton Robotics Club's reputation and inspired further research into hybrid aerial systems.",
+
+      "futureDirections": [
+        "Outdoor flight testing and GPS-based navigation",
+        "Improved envelope materials for longer helium retention",
+        "Autonomous mission planning and execution",
+        "Integration of additional sensors (LiDAR, gas sensors)",
+        "Swarm coordination for multi-vehicle applications"
+      ],
+
+      "repository": null,
+      "documentation": "Internal Princeton Robotics Club documentation and demonstration videos"
+    },
+
+    {
+      "@type": "CreativeWork",
+      "id": "humanoid-robots",
+      "name": "Building Humanoid Robots",
+      "category": "Robotics",
+      "type": "Robotics/AI Project",
+      "status": "Active Development",
+      "featured": true,
+
+      "tagline": "Making robots real through teleoperation and embodied AI",
+
+      "summary": "Building humanoid robots equipped with SO-100 robotic arms, exploring teleoperation as a fast, intuitive (System 1) procedure to enable better data collection for training autonomous behaviors. The goal is to advance humanoid robotics by creating practical human-robot interfaces and collecting high-quality training data for embodied AI.",
+
+      "dates": {
+        "startDate": "2025",
+        "endDate": null,
+        "status": "Ongoing"
+      },
+
+      "role": "Independent Developer",
+
+      "problemStatement": {
+        "problem": "Humanoid robots remain largely confined to research labs because: (1) autonomous control of complex manipulation tasks is extremely difficult, (2) collecting training data for learning-based approaches is time-consuming and expensive, and (3) teleoperation interfaces are often clunky and unintuitive.",
+
+        "challenges": [
+          "Autonomous manipulation requires huge amounts of training data",
+          "Traditional data collection (kinesthetic teaching, scripting) is slow",
+          "Existing teleoperation interfaces have steep learning curves",
+          "Sim-to-real transfer for manipulation remains difficult",
+          "Most robotics research focuses on narrow task domains"
+        ],
+
+        "opportunity": "Intuitive teleoperation could serve as both a practical control method AND a data generation pipeline for learning autonomous behaviors"
+      },
+
+      "solution": {
+        "approach": "Treat teleoperation not just as a control method, but as a 'System 1' (fast, intuitive) procedure that enables humans to naturally demonstrate complex tasks. Record these demonstrations to build datasets for training autonomous policies.",
+
+        "keyIdeas": [
+          "Design teleoperation interface for maximum intuitiveness - goal is immediate usability without extensive training",
+          "Record all teleoperation sessions as demonstration data for imitation learning",
+          "Focus on practical tasks that have real-world value",
+          "Iterate on both hardware and interface based on user experience",
+          "Build toward hybrid autonomy where robot can learn from corrections"
+        ],
+
+        "technicalApproach": {
+          "hardware": "SO-100 robotic arms chosen for good dexterity and reasonable cost",
+          "control": "C++ control stack with ROS for modular architecture",
+          "teleoperation": "Exploring multiple interface modalities (VR, motion capture, direct manipulation)",
+          "data": "Comprehensive logging of joint states, end-effector poses, forces, camera feeds",
+          "learning": "Collected data usable for behavior cloning, imitation learning, or RL"
+        }
+      },
+
+      "currentProgress": [
+        "Assembled humanoid robot system with SO-100 arms",
+        "Implemented basic teleoperation control interface",
+        "Developing data collection pipeline and logging infrastructure",
+        "Testing different interaction paradigms for operator ease-of-use",
+        "Building toward first practical demonstrations (object manipulation, tool use)"
+      ],
+
+      "challenges": [
+        {
+          "challenge": "Interface design for intuitive control",
+          "approach": "Iterating on multiple interface modalities to find most natural mapping between human input and robot motion"
+        },
+        {
+          "challenge": "System latency",
+          "approach": "Optimizing control loop and communication to minimize delay between operator input and robot response"
+        },
+        {
+          "challenge": "Hardware integration",
+          "approach": "Dealing with practical issues of robot assembly, calibration, maintenance"
+        },
+        {
+          "challenge": "Data quality",
+          "approach": "Ensuring collected demonstrations are clean, consistent, and useful for learning"
+        }
+      ],
+
+      "technologies": {
+        "programming": ["C++", "Python", "ROS"],
+        "hardware": ["SO-100 robotic arms", "Custom mounting and integration", "Sensors and cameras"],
+        "ml": ["Imitation learning concepts", "Behavior cloning", "Dataset management"],
+        "tools": ["CAD for custom parts", "3D printing", "Electronics integration"]
+      },
+
+      "motivation": "Driven by desire to 'make robots real' - move from research prototypes to practical, deployable systems. Believe that better data collection through intuitive teleoperation is key to unlocking embodied AI. Interested in the intersection of human-robot interaction and machine learning.",
+
+      "learnings": [
+        "Teleoperation interface design is critically important and often underestimated",
+        "Hardware reliability matters immensely for practical robotics",
+        "Good data is more valuable than sophisticated learning algorithms",
+        "Real-world robotics involves constant iteration and problem-solving",
+        "Human demonstration quality varies - interface must make it easy to do well"
+      ],
+
+      "futureDirections": [
+        "Train first autonomous policies from collected demonstration data",
+        "Expand to more complex manipulation tasks",
+        "Implement hybrid control (autonomy with human corrections)",
+        "Build larger dataset spanning diverse tasks",
+        "Share learnings and potentially open-source tooling"
+      ],
+
+      "impact": "Contributing to advancement of practical humanoid robotics. Exploring whether better teleoperation can accelerate progress in embodied AI by enabling more efficient data collection.",
+
+      "philosophy": "Robots should be accessible and practical, not just research curiosities. The path to general-purpose robots likely involves human demonstration and guidance, not just pure autonomy from day one.",
+
+      "repository": null,
+      "status": "Active development"
+    },
+
+    {
+      "@type": "SoftwareApplication",
+      "id": "lastcurb",
+      "name": "LastCurb",
+      "category": "Machine Learning",
+      "type": "Computer Vision/ML Application",
+      "status": "Completed",
+      "featured": true,
+
+      "tagline": "Edge AI for smart parking in NYC",
+
+      "summary": "Computer vision system that analyzes curb data from public NYC CCTV cameras to detect available parking spots in real-time. Built to explore edge AI deployment and real-time machine learning for urban sensing applications.",
+
+      "dates": {
+        "startDate": "2024",
+        "endDate": "2024",
+        "duration": "~3 months"
+      },
+
+      "role": "Creator",
+
+      "problemStatement": {
+        "problem": "Finding parking in NYC is notoriously difficult and time-consuming. Drivers circle searching for spots, contributing to traffic congestion and wasted time. Existing parking apps rely on manual reporting or payment data, which is often stale or incomplete.",
+
+        "quantification": [
+          "Average driver spends 17 hours per year searching for parking (US average)",
+          "30% of city traffic congestion caused by drivers searching for parking",
+          "NYC has thousands of public CCTV cameras with unused data"
+        ],
+
+        "opportunity": "Public CCTV cameras already monitor many curbs. Computer vision could automatically detect parking availability in real-time."
+      },
+
+      "solution": {
+        "approach": "Deploy edge AI computer vision models to analyze public CCTV feeds, detecting cars and determining which curb spaces are occupied vs. available. Process video feeds in real-time on edge devices to minimize latency and bandwidth.",
+
+        "technicalApproach": {
+          "vision": "Object detection models (YOLO-based) to identify vehicles",
+          "tracking": "Multi-object tracking to associate detections across frames",
+          "mapping": "Spatial mapping to associate vehicle detections with specific parking zones",
+          "edge": "Model optimization for edge deployment (quantization, pruning)",
+          "pipeline": "Video ingestion → detection → tracking → availability determination → update"
+        },
+
+        "designDecisions": [
+          "Edge deployment to minimize latency and cloud costs",
+          "Focus on accuracy over speed (30-second latency acceptable for parking)",
+          "Privacy-preserving (no license plate recognition, no data retention)",
+          "Modular architecture allowing different models/detectors to be swapped"
+        ]
+      },
+
+      "implementation": {
+        "stack": {
+          "language": "Python",
+          "ml": "PyTorch/TensorFlow for model training, ONNX for deployment",
+          "vision": "OpenCV for video processing and manipulation",
+          "deployment": "Edge devices (Raspberry Pi or similar) at camera locations",
+          "backend": "Lightweight server for aggregating availability data"
+        },
+
+        "modelDevelopment": [
+          "Started with pre-trained object detection model (YOLOv5/v8)",
+          "Fine-tuned on NYC street scenes and parking scenarios",
+          "Optimized model size and inference speed for edge deployment",
+          "Implemented confidence thresholding and filtering for robustness"
+        ]
+      },
+
+      "challenges": [
+        {
+          "challenge": "Edge device computational constraints",
+          "description": "Running computer vision models on resource-limited edge hardware",
+          "solution": "Model optimization (quantization, pruning), frame subsampling, batching"
+        },
+        {
+          "challenge": "Varying camera angles and lighting",
+          "description": "CCTV cameras have diverse mounting positions, angles, and lighting conditions",
+          "solution": "Data augmentation during training, perspective calibration, adaptive thresholds"
+        },
+        {
+          "challenge": "Occlusion and partial views",
+          "description": "Cars may be partially occluded by other vehicles or objects",
+          "solution": "Temporal tracking to handle brief occlusions, spatial reasoning about parking zones"
+        },
+        {
+          "challenge": "Real-time processing requirements",
+          "description": "Need to process video feeds with minimal latency",
+          "solution": "Optimized inference pipeline, async processing, strategic frame sampling"
+        }
+      ],
+
+      "results": {
+        "technical": [
+          "Achieved real-time parking detection (updates every 30-60 seconds)",
+          "~85-90% accuracy in detecting occupied vs. available spaces",
+          "Successfully deployed on edge hardware with <2W power consumption",
+          "Demonstrated viability of edge AI for urban sensing"
+        ],
+
+        "learnings": [
+          "Edge AI is feasible for many real-time vision tasks",
+          "Model optimization critical for deployment on resource-constrained devices",
+          "Real-world vision systems must handle huge variety of conditions",
+          "Good data preprocessing and calibration improve robustness significantly"
+        ]
+      },
+
+      "technologies": {
+        "ml": ["PyTorch/TensorFlow", "YOLOv5/v8", "ONNX", "Model optimization"],
+        "vision": ["OpenCV", "Object detection", "Multi-object tracking", "Image processing"],
+        "deployment": ["Edge AI", "Raspberry Pi", "Python", "Real-time processing"],
+        "tools": ["Git", "Docker", "Data annotation tools"]
+      },
+
+      "applications": [
+        "Real-time parking availability for drivers",
+        "Urban planning data on parking utilization",
+        "Traffic optimization through reduced search time",
+        "Broader urban sensing infrastructure"
+      ],
+
+      "impact": "Demonstrated practical application of edge AI for urban problems. Showed that existing camera infrastructure can be repurposed for smart city applications. Open-sourced for community use and further development.",
+
+      "learnings": [
+        "Edge AI enables privacy-preserving local processing",
+        "Computer vision systems must be robust to real-world variability",
+        "Urban sensing applications require careful calibration and testing",
+        "Good enough is often sufficient - perfect accuracy unnecessary for many use cases"
+      ],
+
+      "repository": "https://github.com/skylerlchan/LastCurb",
+      "openSource": true,
+      "license": "MIT"
+    },
+
+    {
+      "@type": "CreativeWork",
+      "id": "btc-funding-carry",
+      "name": "Leveraged BTC Funding Rate Carry Strategy",
+      "category": "Quantitative Finance",
+      "type": "Trading Strategy/Research",
+      "status": "Completed",
+      "featured": true,
+
+      "tagline": "Delta-neutral crypto arbitrage harvesting perpetual funding rate premium",
+
+      "summary": "Delta-neutral quantitative trading strategy that harvests perpetual funding rate carry in cryptocurrency markets with leverage while hedging away directional market risk. The strategy exploits the basis between spot and futures markets, generating returns uncorrelated with Bitcoin's price movements.",
+
+      "dates": {
+        "startDate": "2023",
+        "endDate": "2024",
+        "duration": "~6 months development + live testing"
+      },
+
+      "role": "Researcher & Developer",
+
+      "problemStatement": {
+        "background": "In cryptocurrency futures markets, perpetual futures contracts use a 'funding rate' mechanism to keep futures prices anchored to spot prices. When futures trade above spot (contango), longs pay shorts a periodic fee. When futures trade below spot (backwardation), shorts pay longs.",
+
+        "observation": "Funding rates in crypto markets are often persistently positive (averaging 10-50% APR historically), creating an opportunity to collect these payments by shorting futures while hedging the directional risk.",
+
+        "challenge": "How to harvest funding rate premium while remaining market-neutral and managing risks of leverage, liquidation, and basis divergence?"
+      },
+
+      "solution": {
+        "strategy": "Establish delta-neutral position by holding equal notional value of long spot BTC and short perpetual futures contracts. Profit from funding rate payments while remaining neutral to BTC price movements.",
+
+        "mechanism": {
+          "longSpot": "Purchase BTC on spot market (e.g., Coinbase, Binance spot)",
+          "shortFutures": "Short equal notional value of BTC perpetual futures (e.g., Binance futures)",
+          "funding": "Collect funding rate payments every 8 hours when futures are in contango",
+          "hedge": "Position remains delta-neutral - profit/loss from spot and futures offset",
+          "leverage": "Use leverage on futures side to amplify returns from relatively small funding rates"
+        },
+
+        "riskManagement": [
+          "Position sizing to avoid liquidation even in extreme price moves",
+          "Monitoring and rebalancing to maintain delta neutrality",
+          "Stop-loss and position unwinding procedures",
+          "Funding rate monitoring to avoid periods of negative funding",
+          "Exchange counterparty risk diversification"
+        ]
+      },
+
+      "implementation": {
+        "technologies": {
+          "programming": "Python for strategy execution and backtesting",
+          "apis": "Exchange APIs (Binance, FTX, others) for order execution",
+          "data": "Historical price and funding rate data for backtesting",
+          "monitoring": "Real-time position and P&L monitoring dashboards"
+        },
+
+        "components": [
+          "Backtesting engine using historical data",
+          "Live execution system with API integration",
+          "Position monitoring and rebalancing logic",
+          "Risk management and alerting",
+          "Performance tracking and attribution"
+        ],
+
+        "development": [
+          "Research phase: analysis of funding rate dynamics and profitability",
+          "Backtesting: validation using historical data",
+          "Paper trading: simulation with live market data",
+          "Live deployment: execution with real capital (small initial size)",
+          "Optimization: parameter tuning and risk management refinement"
+        ]
+      },
+
+      "results": {
+        "theoretical": [
+          "Historical average funding rate ~20-40% APR in bull markets",
+          "With 2x leverage, effective return ~40-80% APR on capital",
+          "Returns uncorrelated with BTC price direction"
+        ],
+
+        "practical": [
+          "Successfully implemented and tested strategy with live capital",
+          "Achieved positive returns during test period",
+          "Validated delta-neutral hedge effectiveness",
+          "Learned about practical execution challenges (slippage, fees, rebalancing)"
+        ],
+
+        "research": [
+          "Published academic paper on SSRN documenting strategy and findings",
+          "Open-sourced implementation for community use",
+          "Contributed to understanding of crypto market microstructure"
+        ]
+      },
+
+      "challenges": [
+        {
+          "challenge": "Liquidation risk with leverage",
+          "description": "Using leverage on futures side creates liquidation risk if BTC moves strongly",
+          "solution": "Conservative position sizing, maintain margin buffer, automatic rebalancing"
+        },
+        {
+          "challenge": "Exchange counterparty risk",
+          "description": "Risk of exchange insolvency or technical issues",
+          "solution": "Diversify across multiple exchanges, withdraw excess funds regularly"
+        },
+        {
+          "challenge": "Basis risk",
+          "description": "Spot and futures prices may diverge temporarily",
+          "solution": "Accept short-term basis risk as it's mean-reverting, size positions appropriately"
+        },
+        {
+          "challenge": "Execution and slippage",
+          "description": "Market orders incur slippage, limit orders may not fill",
+          "solution": "Optimize order placement, use limit orders when possible, account for realistic slippage in backtests"
+        }
+      ],
+
+      "learnings": [
+        "Crypto market microstructure differs significantly from traditional markets",
+        "Funding rates reflect market sentiment and leverage demand",
+        "Delta-neutral strategies still have risks (basis, liquidation, counterparty)",
+        "Live trading always reveals issues not apparent in backtesting",
+        "Risk management is paramount - size positions conservatively",
+        "Market conditions change - strategies must be monitored and adapted"
+      ],
+
+      "concepts": [
+        "Delta-neutral strategies and hedging",
+        "Basis trading and convergence trades",
+        "Perpetual futures mechanics and funding rates",
+        "Leverage and margin management",
+        "Market microstructure in crypto markets",
+        "Risk-adjusted returns and Sharpe ratios"
+      ],
+
+      "technologies": {
+        "programming": ["Python", "Pandas", "NumPy"],
+        "finance": ["Quantitative finance", "Trading systems", "Risk management"],
+        "crypto": ["Cryptocurrency APIs", "Exchange integration", "Futures markets"],
+        "tools": ["Backtesting frameworks", "Data visualization", "Monitoring dashboards"]
+      },
+
+      "impact": "Demonstrated that systematic, market-neutral strategies can generate returns in crypto markets. Research contributed to academic literature on crypto derivatives. Open-source implementation provides educational resource for others interested in quantitative crypto trading.",
+
+      "futureWork": [
+        "Extend to other cryptocurrency pairs",
+        "Explore alternative delta-hedging instruments (options)",
+        "Develop more sophisticated risk models",
+        "Investigate cross-exchange arbitrage opportunities"
+      ],
+
+      "repository": "https://github.com/skylerlchan/Structured-Basis-Divergence-Arbitrage",
+      "paper": {
+        "title": "Leveraged Bitcoin Funding Rate Carry Research",
+        "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5292305",
+        "venue": "SSRN"
+      },
+      "openSource": true
+    }
+  ],
+
+  "projectThemes": {
+    "common": [
+      "Building practical solutions to real-world problems",
+      "Achieving order-of-magnitude improvements through novel approaches",
+      "Interdisciplinary thinking combining multiple domains",
+      "Focus on shipping and demonstrating working systems",
+      "Learning through building and iteration"
+    ],
+
+    "technicalPatterns": [
+      "Strong systems thinking and architecture",
+      "Comfort with hardware and software integration",
+      "Emphasis on robustness and reliability",
+      "Data-driven decision making",
+      "Pragmatic trade-offs between ideal and practical"
+    ]
+  }
+}
