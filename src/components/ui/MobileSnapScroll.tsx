@@ -6,7 +6,7 @@ export default function MobileSnapScroll() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [totalSections, setTotalSections] = useState(0);
   const isScrollingRef = useRef(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const lastScrollTime = useRef(0);
 
   useEffect(() => {
