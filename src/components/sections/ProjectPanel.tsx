@@ -7,6 +7,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/lib/constants";
 import Rotating3DImage from "@/components/ui/Rotating3DImage";
+import WithAILogo from "@/components/ui/WithAILogo";
 
 interface ProjectPanelProps {
   project: Project;
@@ -53,6 +54,12 @@ export default function ProjectPanel({ project, index, categoryLabel, id }: Proj
         panel.querySelectorAll(".tech-pill"),
         { scale: 0, opacity: 0, stagger: 0.04, duration: 0.3, ease: "back.out(1.7)" },
         "-=0.2"
+      );
+
+      tl.from(
+        panel.querySelectorAll(".project-link"),
+        { y: 20, opacity: 0, stagger: 0.08, duration: 0.4, ease: "power3.out" },
+        "-=0.1"
       );
 
       tl.from(
@@ -138,7 +145,7 @@ export default function ProjectPanel({ project, index, categoryLabel, id }: Proj
                 target="_blank"
                 rel="noopener noreferrer"
                 data-cursor="link"
-                className="text-sm text-accent hover:text-accent-light transition-colors duration-200"
+                className="project-link text-sm text-accent hover:text-accent-light transition-colors duration-200"
               >
                 View Code
               </a>
@@ -149,7 +156,7 @@ export default function ProjectPanel({ project, index, categoryLabel, id }: Proj
                 target="_blank"
                 rel="noopener noreferrer"
                 data-cursor="link"
-                className="text-sm text-accent hover:text-accent-light transition-colors duration-200"
+                className="project-link text-sm text-accent hover:text-accent-light transition-colors duration-200"
               >
                 View Paper
               </a>
@@ -160,7 +167,7 @@ export default function ProjectPanel({ project, index, categoryLabel, id }: Proj
                 target="_blank"
                 rel="noopener noreferrer"
                 data-cursor="link"
-                className="text-sm text-accent hover:text-accent-light transition-colors duration-200"
+                className="project-link text-sm text-accent hover:text-accent-light transition-colors duration-200"
               >
                 View Presentation
               </a>
@@ -187,6 +194,8 @@ export default function ProjectPanel({ project, index, categoryLabel, id }: Proj
                 alt={`${project.title} 3D View`}
                 rotationRange={360}
               />
+            ) : project.slug === "withai-research" ? (
+              <WithAILogo className="absolute inset-0 w-full h-full object-contain p-8" />
             ) : (
               <Image
                 src={project.image}

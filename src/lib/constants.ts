@@ -11,6 +11,10 @@ export interface Project {
   repo?: string;
   paper?: string;
   presentation?: string;
+  startDate?: string;
+  endDate?: string;
+  status?: "active" | "completed" | "ongoing" | "prototype";
+  role?: string;
 }
 
 export interface FoodPlacesPhoto {
@@ -33,10 +37,13 @@ export const PROJECTS: Project[] = [
     title: "WithAI Research",
     description:
       "YC W26 startup building LLMs for AI-native hedge funds. Founding engineer developing the core platform and infrastructure.",
-    techStack: ["LLMs", "Next.js"],
+    techStack: ["LLMs", "Next.js", "Python"],
     color: "#7c3aed",
     image: "/withai-logo.svg",
     category: "work",
+    startDate: "2026-01",
+    status: "active",
+    role: "Founding Engineer",
   },
   {
     slug: "hmei-princeton",
@@ -48,6 +55,10 @@ export const PROJECTS: Project[] = [
     image: "/images/projects/hmei/hmei.png",
     category: "work",
     presentation: "https://docs.google.com/presentation/d/1YvPFwQQvhCTwXfCP92kaV61j7GZU2b-I/edit?usp=sharing&ouid=108230747896924390036&rtpof=true&sd=true",
+    startDate: "2024",
+    endDate: "2025",
+    status: "completed",
+    role: "Research Assistant",
   },
   // ── Projects ──
   {
@@ -55,32 +66,43 @@ export const PROJECTS: Project[] = [
     title: "Hoverloon",
     description:
       "Blimp-drone hybrid founded under Princeton Robotics Club. Buoyant lift achieved 19x payload capacity of the drone alone, enabling massive energy savings for extended flight.",
-    techStack: ["Computer Vision", "CAD", "Embedded Systems"],
+    techStack: ["Computer Vision", "ROS", "CAD", "Embedded Systems"],
     color: "#2563eb",
     image: "/images/projects/hoverloon/hoverloon.png",
     category: "project",
+    startDate: "2024",
+    endDate: "2025",
+    status: "prototype",
+    role: "Co-founder & Technical Lead",
   },
   {
     slug: "humanoid-robots",
     title: "Building Humanoid Robots",
     description:
-      "Building humanoid robots with SO-100 arms, testing teleoperation as a System 1 procedure to enable better data collection and autonomy. Making robots real.",
+      "Experimenting with the SO-101 arm to develop smooth 'System 1 thinking' teleoperation for training and autonomy. Bridging sim-to-real through intuitive control interfaces that enable natural robot learning.",
     techStack: ["C++", "ROS", "CAD", "Teleoperation", "Robotics"],
     color: "#dc2626",
     image: "/images/projects/so1/so1-main.png",
     visual3D: false,
     category: "project",
+    startDate: "2025",
+    status: "active",
+    role: "Independent Developer",
   },
   {
     slug: "lastcurb",
     title: "LastCurb",
     description:
       "Analyzes curb data from public NYC CCTV cameras to help find available parking spots. Built to test edge AI and machine learning for real-time urban sensing.",
-    techStack: ["Edge AI", "Machine Learning", "Computer Vision"],
+    techStack: ["Edge AI", "Machine Learning", "Computer Vision", "Python"],
     color: "#059669",
     image: "/images/projects/lastcurb.png",
     category: "project",
     repo: "https://github.com/skylerlchan/LastCurb",
+    startDate: "2024",
+    endDate: "2024",
+    status: "completed",
+    role: "Creator",
   },
   {
     slug: "btc-funding-carry",
@@ -93,6 +115,10 @@ export const PROJECTS: Project[] = [
     category: "project",
     repo: "https://github.com/skylerlchan/Structured-Basis-Divergence-Arbitrage",
     paper: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5292305",
+    startDate: "2023",
+    endDate: "2024",
+    status: "completed",
+    role: "Researcher & Developer",
   },
 ];
 
@@ -160,5 +186,36 @@ export const SITE_CONFIG = {
   name: "Skyler Chan",
   title: "",
   description: "Always building. Always thinking.",
+  longDescription: "Founding engineer at WithAI Research (YC W26), building LLM infrastructure for AI-native hedge funds. Princeton student focused on robotics, AI, and climate tech. Building systems that matter.",
   url: "https://skyler-chan.com",
+  author: {
+    name: "Skyler Chan",
+    email: "skylerlchan@gmail.com",
+    title: "Founding Engineer",
+    organization: "WithAI Research",
+    location: "Princeton, NJ",
+    education: "Princeton University",
+  },
+  keywords: [
+    "Skyler Chan",
+    "AI Engineer",
+    "Machine Learning",
+    "Large Language Models",
+    "LLMs",
+    "Robotics",
+    "Computer Vision",
+    "Climate Science",
+    "Quantitative Finance",
+    "WithAI Research",
+    "Y Combinator",
+    "Princeton",
+    "Software Engineer",
+    "Full Stack Developer",
+    "Next.js",
+    "React",
+    "TypeScript",
+    "Python",
+    "Edge AI",
+    "Autonomous Systems",
+  ],
 };

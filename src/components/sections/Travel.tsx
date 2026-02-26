@@ -173,8 +173,8 @@ export default function TravelAlbum() {
           </div>
         </div>
 
-        {/* Caption */}
-        <p className="text-center text-sm text-foreground/60 mt-3 transition-opacity duration-300">
+        {/* Caption - hidden on mobile */}
+        <p className="hidden text-center text-sm text-foreground/60 mt-3 transition-opacity duration-300">
           {photo.alt}
         </p>
 

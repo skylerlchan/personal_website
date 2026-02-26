@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 type Message = { role: "bot" | "user"; text: string; time: string; delivered?: boolean };
 
 const BOT_FINAL =
-  "Thanks for reaching out! Skyler loves connecting with people — he'll get back to you soon.";
+  "Thanks for reaching out! He'll get back to you soon.";
 
 function timeNow() {
   return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
