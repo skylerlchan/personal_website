@@ -1,0 +1,468 @@
+{
+  "$schema": "https://schema.org",
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-25",
+
+  "technicalSkills": {
+    "programming": {
+      "languages": [
+        {
+          "name": "Python",
+          "proficiency": "Expert",
+          "yearsOfExperience": "5+",
+          "applications": [
+            "Machine learning and data science",
+            "Robotics control systems (ROS)",
+            "Climate modeling and scientific computing",
+            "Quantitative finance and trading algorithms",
+            "Backend services and APIs",
+            "Scripting and automation"
+          ],
+          "frameworks": ["PyTorch", "TensorFlow", "NumPy", "Pandas", "Matplotlib", "FastAPI", "Flask"],
+          "context": "Primary language for ML/AI, scientific computing, and backend development. Deep expertise in the Python scientific stack."
+        },
+        {
+          "name": "TypeScript",
+          "proficiency": "Advanced",
+          "yearsOfExperience": "3+",
+          "applications": [
+            "Full-stack web applications",
+            "Frontend development with React/Next.js",
+            "API development",
+            "Type-safe application architecture"
+          ],
+          "frameworks": ["Next.js", "React", "Node.js"],
+          "context": "Primary language for web development. Expertise in modern TypeScript patterns and React ecosystem."
+        },
+        {
+          "name": "JavaScript",
+          "proficiency": "Advanced",
+          "yearsOfExperience": "4+",
+          "applications": [
+            "Interactive web applications",
+            "Animation and visualization",
+            "Browser-based tools",
+            "Node.js backend services"
+          ],
+          "frameworks": ["React", "GSAP", "Framer Motion", "Express"],
+          "context": "Strong foundation in vanilla JS and modern ES6+ features. Experience with animation libraries and frontend frameworks."
+        },
+        {
+          "name": "C++",
+          "proficiency": "Intermediate-Advanced",
+          "yearsOfExperience": "2+",
+          "applications": [
+            "Robotics control systems",
+            "ROS nodes and services",
+            "Embedded systems programming",
+            "Performance-critical code"
+          ],
+          "context": "Used primarily for robotics applications requiring real-time performance and hardware integration."
+        }
+      ],
+
+      "frameworks": {
+        "web": [
+          {
+            "name": "Next.js",
+            "proficiency": "Expert",
+            "applications": ["Full-stack web applications", "Server-side rendering", "API routes", "Production deployments"],
+            "context": "Primary framework for web development. Deep knowledge of Next.js 13+ App Router, server components, and optimization."
+          },
+          {
+            "name": "React",
+            "proficiency": "Expert",
+            "applications": ["Interactive UIs", "Component architecture", "State management", "Performance optimization"],
+            "context": "Extensive experience building complex React applications with modern hooks and patterns."
+          }
+        ],
+
+        "ml_ai": [
+          {
+            "name": "PyTorch",
+            "proficiency": "Advanced",
+            "applications": ["Neural network training", "Computer vision models", "Model development and experimentation"],
+            "context": "Primary framework for ML development. Experience with training, fine-tuning, and deployment."
+          },
+          {
+            "name": "TensorFlow",
+            "proficiency": "Intermediate",
+            "applications": ["Model training", "TensorFlow Lite for edge deployment"],
+            "context": "Familiarity with TensorFlow ecosystem, particularly for deployment scenarios."
+          },
+          {
+            "name": "OpenCV",
+            "proficiency": "Advanced",
+            "applications": ["Computer vision pipelines", "Real-time video processing", "Object detection and tracking"],
+            "context": "Extensive experience with computer vision applications from Hoverloon to LastCurb."
+          }
+        ],
+
+        "robotics": [
+          {
+            "name": "ROS (Robot Operating System)",
+            "proficiency": "Advanced",
+            "applications": ["Robot control systems", "Sensor integration", "Message passing", "Autonomous navigation"],
+            "context": "Used in Hoverloon and humanoid robot projects. Comfortable with ROS architecture and best practices."
+          }
+        ]
+      }
+    },
+
+    "domains": {
+      "ai_ml": {
+        "proficiency": "Expert",
+        "areas": {
+          "llms": {
+            "proficiency": "Advanced",
+            "experience": [
+              "Production LLM systems at WithAI Research",
+              "LLM integration and API usage",
+              "Prompt engineering and optimization",
+              "Model evaluation and testing"
+            ],
+            "context": "Building LLM-powered applications for financial analysis. Understanding of model capabilities, limitations, and best practices."
+          },
+          "computerVision": {
+            "proficiency": "Expert",
+            "experience": [
+              "Object detection and tracking (LastCurb)",
+              "Vision-based positioning (Hoverloon)",
+              "Real-time video processing",
+              "Edge AI deployment",
+              "Camera calibration and image processing"
+            ],
+            "context": "Extensive experience across multiple projects. Comfortable with full pipeline from data collection to deployment."
+          },
+          "edgeAI": {
+            "proficiency": "Advanced",
+            "experience": [
+              "Model optimization for edge devices",
+              "Real-time inference on resource-constrained hardware",
+              "Deployment on Raspberry Pi and embedded systems",
+              "Latency and power optimization"
+            ],
+            "context": "LastCurb project demonstrated practical edge AI deployment with tight resource constraints."
+          },
+          "machineLearning": {
+            "proficiency": "Advanced",
+            "experience": [
+              "Model training and fine-tuning",
+              "Data preprocessing and augmentation",
+              "Evaluation and validation",
+              "Production ML system design"
+            ],
+            "context": "Strong foundation in ML fundamentals with practical deployment experience."
+          }
+        }
+      },
+
+      "robotics": {
+        "proficiency": "Advanced",
+        "areas": {
+          "autonomousSystems": {
+            "proficiency": "Advanced",
+            "experience": [
+              "Autonomous navigation (Hoverloon)",
+              "Control systems design",
+              "Sensor fusion",
+              "Path planning"
+            ]
+          },
+          "embeddedSystems": {
+            "proficiency": "Advanced",
+            "experience": [
+              "Microcontroller programming",
+              "Sensor integration",
+              "Real-time control loops",
+              "Hardware-software integration"
+            ]
+          },
+          "teleoperation": {
+            "proficiency": "Advanced",
+            "experience": [
+              "Teleoperation interface design (humanoid robots)",
+              "Low-latency control systems",
+              "Human-robot interface optimization"
+            ]
+          },
+          "mechanicalDesign": {
+            "proficiency": "Intermediate-Advanced",
+            "experience": [
+              "CAD modeling (Fusion 360, SolidWorks)",
+              "Structural design for aerial vehicles",
+              "3D printing and prototyping",
+              "Weight optimization"
+            ]
+          }
+        }
+      },
+
+      "climateScience": {
+        "proficiency": "Intermediate-Advanced",
+        "areas": {
+          "climateModeling": {
+            "proficiency": "Intermediate-Advanced",
+            "experience": [
+              "Computational climate simulations",
+              "Radiative forcing analysis",
+              "Temperature and atmospheric modeling",
+              "Solar radiation management research"
+            ],
+            "context": "Research at Princeton HMEI on stratospheric aerosol interventions"
+          },
+          "dataScience": {
+            "proficiency": "Advanced",
+            "experience": [
+              "Climate data analysis",
+              "Statistical methods for scientific data",
+              "Data visualization",
+              "Scientific computing"
+            ]
+          }
+        }
+      },
+
+      "quantitativeFinance": {
+        "proficiency": "Intermediate-Advanced",
+        "areas": {
+          "algorithmicTrading": {
+            "proficiency": "Advanced",
+            "experience": [
+              "Delta-neutral trading strategies",
+              "Futures and derivatives markets",
+              "Cryptocurrency market microstructure",
+              "Backtesting and strategy validation",
+              "Risk management"
+            ],
+            "context": "BTC funding carry strategy development and live deployment"
+          },
+          "marketAnalysis": {
+            "proficiency": "Advanced",
+            "experience": [
+              "Quantitative market analysis",
+              "Basis trading",
+              "Statistical arbitrage concepts",
+              "Performance attribution"
+            ]
+          },
+          "riskManagement": {
+            "proficiency": "Advanced",
+            "experience": [
+              "Position sizing",
+              "Leverage management",
+              "Liquidation risk modeling",
+              "Portfolio risk analysis"
+            ]
+          }
+        }
+      },
+
+      "webDevelopment": {
+        "proficiency": "Expert",
+        "areas": {
+          "fullStack": {
+            "proficiency": "Expert",
+            "experience": [
+              "End-to-end application development",
+              "Frontend and backend integration",
+              "Database design",
+              "API development",
+              "Authentication and authorization"
+            ]
+          },
+          "uiux": {
+            "proficiency": "Advanced",
+            "experience": [
+              "Modern responsive design",
+              "Animation and interaction design",
+              "Performance optimization",
+              "Accessibility"
+            ]
+          },
+          "animation": {
+            "proficiency": "Advanced",
+            "experience": [
+              "GSAP animations",
+              "Framer Motion",
+              "CSS animations",
+              "Scroll-based interactions",
+              "Complex UI transitions"
+            ]
+          }
+        }
+      }
+    },
+
+    "tools": {
+      "design": [
+        {
+          "name": "Fusion 360",
+          "proficiency": "Advanced",
+          "applications": ["3D modeling", "Structural design", "Part design for 3D printing"]
+        },
+        {
+          "name": "SolidWorks",
+          "proficiency": "Intermediate",
+          "applications": ["Mechanical design", "Assembly modeling"]
+        }
+      ],
+
+      "development": [
+        {
+          "name": "Git",
+          "proficiency": "Expert",
+          "applications": ["Version control", "Collaboration", "Code review"]
+        },
+        {
+          "name": "VS Code",
+          "proficiency": "Expert",
+          "applications": ["Primary development environment", "Extension customization"]
+        },
+        {
+          "name": "Linux",
+          "proficiency": "Advanced",
+          "applications": ["Server management", "Development environment", "Embedded systems"]
+        }
+      ],
+
+      "data": [
+        {
+          "name": "NumPy",
+          "proficiency": "Expert",
+          "applications": ["Numerical computing", "Array operations", "Scientific computing"]
+        },
+        {
+          "name": "Pandas",
+          "proficiency": "Expert",
+          "applications": ["Data manipulation", "Time series analysis", "Data cleaning"]
+        },
+        {
+          "name": "Matplotlib",
+          "proficiency": "Advanced",
+          "applications": ["Data visualization", "Scientific plotting", "Analysis"]
+        }
+      ]
+    }
+  },
+
+  "softSkills": [
+    {
+      "skill": "Problem Decomposition",
+      "description": "Ability to break down complex problems into manageable components",
+      "evidence": [
+        "Hoverloon: decomposed hybrid aerial vehicle problem into buoyancy, control, and vision subsystems",
+        "WithAI: architecting LLM platform from ground up with modular components"
+      ]
+    },
+    {
+      "skill": "Systems Thinking",
+      "description": "Understanding how components interact in complex systems",
+      "evidence": [
+        "Robotics projects require integration of mechanical, electrical, and software systems",
+        "Climate research involves understanding complex interacting systems"
+      ]
+    },
+    {
+      "skill": "Rapid Learning",
+      "description": "Ability to quickly learn new domains and technologies",
+      "evidence": [
+        "Moved between climate science, robotics, finance, and AI/ML",
+        "Picked up new frameworks and tools as needed for projects"
+      ]
+    },
+    {
+      "skill": "Building 0-to-1",
+      "description": "Creating products and systems from scratch",
+      "evidence": [
+        "Founding engineer at WithAI building platform from ground up",
+        "Multiple projects started as blank slate (Hoverloon, LastCurb, humanoid robots)"
+      ]
+    },
+    {
+      "skill": "Technical Communication",
+      "description": "Explaining complex technical concepts clearly",
+      "evidence": [
+        "Research presentations at Princeton",
+        "Published academic paper on trading strategy",
+        "Documentation and code sharing"
+      ]
+    },
+    {
+      "skill": "Interdisciplinary Thinking",
+      "description": "Connecting insights across different domains",
+      "evidence": [
+        "Projects span robotics, AI, climate, finance",
+        "Applying ML concepts to physical systems",
+        "Using quantitative methods across domains"
+      ]
+    },
+    {
+      "skill": "Pragmatic Engineering",
+      "description": "Balancing ideal solutions with practical constraints",
+      "evidence": [
+        "Edge AI deployment requiring model optimization trade-offs",
+        "Hoverloon design balancing performance with weight and cost",
+        "Production systems requiring reliability over novelty"
+      ]
+    },
+    {
+      "skill": "Persistence Through Challenges",
+      "description": "Working through difficult problems and setbacks",
+      "evidence": [
+        "Iterative development on hardware projects with real-world testing",
+        "Debugging complex systems spanning hardware and software",
+        "Learning from failures and adjusting approach"
+      ]
+    }
+  ],
+
+  "learningApproach": {
+    "philosophy": "Learn by building. The best way to understand something is to create it.",
+
+    "methods": [
+      "Hands-on projects that force deep engagement with concepts",
+      "Reading documentation and research papers as needed",
+      "Iterative experimentation and debugging",
+      "Building increasingly complex systems over time",
+      "Learning from failures and unexpected results"
+    ],
+
+    "preferences": [
+      "Practical application over pure theory",
+      "Building working prototypes early",
+      "Testing ideas through implementation",
+      "Cross-domain learning to gain new perspectives"
+    ]
+  },
+
+  "strengthsAndGrowth": {
+    "coreStrengths": [
+      "Full-stack capability from research to production",
+      "Comfort with both hardware and software",
+      "Strong systems thinking and architecture",
+      "Ability to learn quickly across domains",
+      "Bias toward action and building",
+      "Interdisciplinary perspective"
+    ],
+
+    "growthAreas": [
+      "Deepening ML/AI theoretical foundations",
+      "Scaling systems and infrastructure",
+      "Team leadership and management",
+      "Product strategy and user research",
+      "Distributed systems and backend architecture"
+    ],
+
+    "interests": [
+      "Production ML systems and MLOps",
+      "Embodied AI and robotics",
+      "Computer vision applications",
+      "Climate technology and solutions",
+      "Novel applications of LLMs",
+      "Building practical tools that matter"
+    ]
+  }
+}

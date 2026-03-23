@@ -1,0 +1,298 @@
+{
+  "$schema": "https://schema.org",
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-25",
+
+  "philosophy": {
+    "motto": "Always building. Always thinking.",
+
+    "meaningOfMotto": {
+      "alwaysBuilding": "Bias toward action and creation. Learning happens through making things real. Better to build an imperfect prototype than to endlessly plan. Ship early, iterate often, and let real-world feedback guide development.",
+
+      "alwaysThinking": "While building fast is important, thoughtful consideration matters too. Take time to understand first principles, question assumptions, and consider alternative approaches. The best solutions come from balancing action with reflection.",
+
+      "balance": "The motto represents a tension between doing and thinking that both pushes forward and questions direction. Build to learn what works, think to understand why and what's next."
+    },
+
+    "coreValues": [
+      {
+        "value": "Bias Toward Action",
+        "description": "Default to building and trying rather than planning indefinitely. The fastest way to learn is often to start.",
+        "manifestation": [
+          "Multiple projects started and shipped",
+          "Preference for prototyping over extensive design docs",
+          "Learning through iteration rather than upfront research"
+        ]
+      },
+      {
+        "value": "Interdisciplinary Thinking",
+        "description": "Best solutions often come from combining insights across different fields. Comfort with not being the world's expert in any single domain.",
+        "manifestation": [
+          "Projects spanning robotics, AI, climate, finance, web development",
+          "Applying techniques from one domain to problems in another",
+          "Curiosity about how different fields approach similar challenges"
+        ]
+      },
+      {
+        "value": "Practical Impact",
+        "description": "Interested in problems that matter and solutions that work in the real world. Academic interest is good, but practical deployment is better.",
+        "manifestation": [
+          "Focus on projects with clear applications",
+          "Preference for working systems over theoretical exploration",
+          "Attention to deployment, reliability, and real-world constraints"
+        ]
+      },
+      {
+        "value": "First Principles Thinking",
+        "description": "Question assumptions and understand fundamentals. Sometimes the 'obvious' approach isn't optimal.",
+        "manifestation": [
+          "Hoverloon: questioning why drones fight gravity instead of using buoyancy",
+          "BTC carry: exploiting market inefficiency others overlooked",
+          "Willingness to try unconventional approaches"
+        ]
+      },
+      {
+        "value": "Learning Through Building",
+        "description": "The best way to understand something is to create it. Build to learn, not just to ship.",
+        "manifestation": [
+          "Diverse project portfolio spanning many domains",
+          "Taking on projects outside comfort zone",
+          "Treating failures as learning opportunities"
+        ]
+      }
+    ],
+
+    "approachToProblems": {
+      "pattern": [
+        "Understand the problem space and constraints",
+        "Question assumptions and consider alternatives",
+        "Start building quickly with minimal viable approach",
+        "Test in real world as early as possible",
+        "Iterate based on feedback and learnings",
+        "Ship when good enough, continue improving"
+      ],
+
+      "preferences": [
+        "Simple solutions over complex ones when possible",
+        "Pragmatic trade-offs over perfect implementations",
+        "Real-world testing over simulation when feasible",
+        "Modular architectures that allow iteration",
+        "Documentation and sharing learnings"
+      ]
+    },
+
+    "workPhilosophy": {
+      "onBuilding": "Build things that matter. Life's too short to work on problems you don't care about or solutions that won't see real use.",
+
+      "onLearning": "The best education is self-directed building. Courses and books provide foundation, but real learning happens through struggling with actual problems.",
+
+      "onExpertise": "Deep expertise in one area is valuable, but so is breadth across many areas. Sometimes the best robotics solution comes from understanding climate modeling, or the best ML system design comes from finance experience.",
+
+      "onFailure": "Most projects don't work out as planned. That's fine - the learning is in the journey. Ship things, learn what doesn't work, iterate.",
+
+      "onCollaboration": "Best work happens through collaboration with people who have different perspectives and expertise. Open source and knowledge sharing make everyone better."
+    }
+  },
+
+  "professionalInterests": [
+    {
+      "area": "Robotics & Embodied AI",
+      "description": "Making robots real - moving from research prototypes to practical, deployable systems that work reliably in the real world.",
+      "specificInterests": [
+        "Humanoid robots and dexterous manipulation",
+        "Teleoperation as a path to better autonomy",
+        "Learning from demonstration and imitation learning",
+        "Hybrid aerial vehicles and novel robot designs",
+        "Practical applications of robotics in industry and everyday life"
+      ],
+      "currentFocus": "Building humanoid robots and exploring teleoperation as System 1 for robot learning",
+      "motivation": "Robots have the potential to dramatically expand what humans can do, but they're still largely confined to labs and factories. Want to help make them practical and accessible."
+    },
+    {
+      "area": "AI & Machine Learning Systems",
+      "description": "Building reliable AI systems that work in production, not just in notebooks and demos.",
+      "specificInterests": [
+        "Large Language Models and their applications",
+        "Computer vision for real-world applications",
+        "Edge AI and resource-constrained deployment",
+        "Production ML systems and MLOps",
+        "AI for decision support and analysis"
+      ],
+      "currentFocus": "LLM infrastructure for financial applications at WithAI Research",
+      "motivation": "AI has immense potential but deployment challenges are underestimated. Interested in bridging the gap between research and reliable production systems."
+    },
+    {
+      "area": "Climate Technology",
+      "description": "Using technology to address climate change, from understanding intervention strategies to building practical solutions.",
+      "specificInterests": [
+        "Solar radiation management and climate engineering",
+        "Climate modeling and data analysis",
+        "Practical climate solutions and deployment",
+        "Carbon capture and removal technologies",
+        "Climate-focused engineering applications"
+      ],
+      "currentFocus": "Understanding potential technological interventions through research",
+      "motivation": "Climate change is an existential challenge requiring technological solutions alongside policy. Want to contribute to understanding what's possible."
+    },
+    {
+      "area": "Quantitative Finance",
+      "description": "Market microstructure, algorithmic trading, and the intersection of AI and finance.",
+      "specificInterests": [
+        "AI-driven financial analysis and trading",
+        "Market-neutral strategies and arbitrage",
+        "Cryptocurrency markets and derivatives",
+        "Quantitative research and backtesting",
+        "Risk management and portfolio optimization"
+      ],
+      "currentFocus": "Building LLM-powered tools for financial analysis",
+      "motivation": "Finance offers interesting quantitative challenges and direct feedback loops. The intersection of AI and finance is particularly compelling."
+    }
+  ],
+
+  "personalInterests": {
+    "piano": {
+      "description": "Classical pianist with extensive performance experience spanning baroque to contemporary repertoire.",
+
+      "background": "Years of classical training with focus on technical precision and artistic interpretation. Repertoire spans from Bach to contemporary jazz-influenced works.",
+
+      "favoriteComposers": [
+        {
+          "composer": "Maurice Ravel",
+          "period": "Late Romantic/Impressionist",
+          "appeal": "Intricate textures, rich harmonies, technical demands combined with expressive beauty",
+          "notablePieces": ["La Valse", "Gaspard de la nuit"]
+        },
+        {
+          "composer": "Claude Debussy",
+          "period": "Impressionist",
+          "appeal": "Color, atmosphere, innovative harmonies that paint pictures with sound",
+          "notablePieces": ["En blanc et noir", "Preludes"]
+        },
+        {
+          "composer": "Franz Liszt",
+          "period": "Romantic",
+          "appeal": "Virtuosic technical challenges combined with emotional depth",
+          "notablePieces": ["Waldesrauschen", "Transcendental Etudes"]
+        },
+        {
+          "composer": "Hiromi Uehara",
+          "period": "Contemporary Jazz",
+          "appeal": "Fusion of classical technique with jazz improvisation, incredible energy and creativity",
+          "notablePieces": ["The Gambler", "Place to Be"]
+        }
+      ],
+
+      "approach": "Focus on both technical mastery and artistic interpretation. Interested in pieces that are challenging both technically and musically. Enjoy performing for others and sharing music.",
+
+      "connectionToEngineering": "Piano and engineering both require: attention to detail, systematic practice and improvement, understanding of complex systems (harmony/architecture), and balance between technical precision and creative expression.",
+
+      "videos": [
+        { "piece": "The Gambler", "composer": "Hiromi", "url": "https://www.youtube.com/watch?v=bbVHVRnYNCc" },
+        { "piece": "La Valse", "composer": "Ravel", "url": "https://www.youtube.com/watch?v=yFAoNvYfLFc" },
+        { "piece": "En blanc et noir, I", "composer": "Debussy", "url": "https://www.youtube.com/watch?v=hLuJJEzfAmU" },
+        { "piece": "Waldesrauschen", "composer": "Liszt", "url": "https://www.youtube.com/watch?v=CdODEdTNAa0" }
+      ]
+    },
+
+    "travel": {
+      "description": "Passionate about exploring new places, cultures, and especially food. Travel as a way to gain new perspectives and experiences.",
+
+      "approach": "Balance of structured planning (key sites and restaurants) with spontaneous discovery. Always research best local food spots. Interested in authentic cultural experiences, not just tourist attractions.",
+
+      "interests": [
+        "Finding the best local food and restaurants",
+        "Experiencing different cultures and ways of life",
+        "Photography and visual documentation of places",
+        "Meeting people and hearing their stories",
+        "Understanding how different places solve similar problems"
+      ],
+
+      "philosophy": "Travel broadens perspective and challenges assumptions. Experiencing how people live differently helps understand that many things we take as 'obvious' are actually cultural choices.",
+
+      "documentation": "Maintain photo gallery of memorable travel experiences, particularly food and places that left an impression."
+    },
+
+    "foodAndCulinaryExploration": {
+      "description": "Deep appreciation for good food and culinary experiences. Food as art, science, and cultural expression.",
+
+      "interests": [
+        "Finding exceptional restaurants and hidden gems",
+        "Understanding techniques and ingredients",
+        "Experiencing diverse cuisines and flavors",
+        "The intersection of food science and culinary art",
+        "Food as window into culture and history"
+      ],
+
+      "approach": "Research-driven (reading reviews, asking locals) combined with adventurous trying of new things. Appreciate both high-end dining and exceptional street food.",
+
+      "connectionToEngineering": "Good cooking requires understanding chemistry, physics, precise timing and technique - much like engineering. Both involve combining components to create something greater than the sum of parts."
+    },
+
+    "reading": {
+      "interests": [
+        "Technical books and papers in areas of interest",
+        "Biographies of builders and innovators",
+        "Science fiction exploring technology and society",
+        "Popular science explaining complex concepts",
+        "Business and startup literature"
+      ],
+
+      "approach": "Read broadly across many domains. Focus on understanding ideas and concepts rather than completionism. Often jump between books based on current interests."
+    }
+  },
+
+  "creativeOutlets": {
+    "music": "Piano performance allows creative expression through interpretation of existing works and occasionally improvisation.",
+
+    "building": "Engineering and building projects themselves are creative outlets - designing systems, solving problems, making something new exist.",
+
+    "photography": "Casual photography during travel to document interesting visuals and experiences.",
+
+    "balance": "Creative pursuits (piano, photography) balance analytical technical work. Both require attention to detail but engage different parts of the brain."
+  },
+
+  "personalityTraits": {
+    "curiosity": "Driven by genuine curiosity about how things work and why. Tendency to go deep on topics of interest.",
+
+    "pragmatism": "Balance idealism with practical constraints. Better to ship something imperfect than to endlessly pursue perfection.",
+
+    "independence": "Comfortable working independently and self-directing learning and projects.",
+
+    "openness": "Open to new ideas and approaches. Willing to change mind based on evidence and experience.",
+
+    "persistence": "Stick with difficult problems even when progress is slow. View setbacks as learning opportunities.",
+
+    "humility": "Recognize limits of own knowledge. Comfortable saying 'I don't know' and asking questions."
+  },
+
+  "futureInterests": {
+    "nearTerm": [
+      "Advancing humanoid robot capabilities through better teleoperation and learning",
+      "Building production-grade LLM systems for financial applications",
+      "Exploring new applications of computer vision and edge AI",
+      "Contributing to climate tech solutions"
+    ],
+
+    "longTerm": [
+      "Making robots practical and accessible for everyday use",
+      "Contributing to major technological solutions for climate change",
+      "Building companies and products that create significant value",
+      "Continuing to learn and build across multiple domains",
+      "Mentoring others and sharing knowledge"
+    ],
+
+    "aspirations": "Build things that matter and last. Work on problems at the intersection of multiple domains where unique perspectives create value. Ship products that people actually use. Learn continuously and adapt to new challenges."
+  },
+
+  "socialAndCommunity": {
+    "openSource": "Believe in open source and knowledge sharing. Projects like LastCurb and BTC carry strategy published for community benefit.",
+
+    "teaching": "Enjoy explaining technical concepts and helping others learn. Documentation and sharing learnings is important.",
+
+    "collaboration": "Best work happens through collaboration. Interested in working with people who have complementary skills and perspectives.",
+
+    "networking": "Building connections with people doing interesting work across different domains. Value relationships based on mutual interest and learning."
+  }
+}

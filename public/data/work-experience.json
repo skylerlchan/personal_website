@@ -1,0 +1,188 @@
+{
+  "$schema": "https://schema.org",
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-25",
+
+  "experiences": [
+    {
+      "@type": "OrganizationRole",
+      "id": "withai-research",
+      "role": "Founding Engineer",
+      "company": {
+        "@type": "Organization",
+        "name": "WithAI Research",
+        "description": "YC W26 startup building LLMs for AI-native hedge funds",
+        "foundingDate": "2026",
+        "accelerator": "Y Combinator Winter 2026",
+        "industry": "Financial Technology, Artificial Intelligence",
+        "url": null
+      },
+      "startDate": "2026-01",
+      "endDate": null,
+      "current": true,
+      "location": "Remote",
+
+      "summary": "Building the core platform and infrastructure for large language models designed specifically for AI-native hedge funds. Developing systems that enable sophisticated financial analysis, market trend identification, and intelligent trading strategies through advanced language models.",
+
+      "responsibilities": [
+        "Architecting and implementing core LLM infrastructure for financial applications",
+        "Developing production ML systems for real-time market analysis",
+        "Building APIs and services for LLM-powered financial tools",
+        "Designing data pipelines for training and fine-tuning financial models",
+        "Implementing reliability and performance monitoring for production systems",
+        "Collaborating on research direction and model capabilities"
+      ],
+
+      "achievements": [
+        "Built foundational infrastructure for AI-native hedge fund platform from scratch",
+        "Developed LLM integration systems for financial data analysis",
+        "Implemented production-ready services handling real-time financial data"
+      ],
+
+      "technologies": {
+        "primary": ["Large Language Models", "Next.js", "Python", "TypeScript"],
+        "ml_ai": ["LLM APIs", "Model fine-tuning", "Prompt engineering", "ML pipelines"],
+        "infrastructure": ["Production deployment", "API design", "Data pipelines", "Monitoring"],
+        "finance": ["Financial data processing", "Market analysis", "Trading systems"]
+      },
+
+      "challenges": [
+        "Building reliable LLM systems for high-stakes financial decision-making",
+        "Ensuring model outputs are accurate, consistent, and explainable",
+        "Designing systems that handle real-time financial data at scale",
+        "Balancing model capability with latency and cost requirements"
+      ],
+
+      "learnings": [
+        "Production LLM engineering requires careful attention to reliability, consistency, and failure modes",
+        "Financial applications demand exceptionally high accuracy and explainability",
+        "Importance of robust data pipelines and validation for ML systems",
+        "Building 0-to-1 products requires balancing speed with technical rigor",
+        "Working at the intersection of AI and finance offers unique technical challenges"
+      ],
+
+      "motivation": "Excited by the opportunity to work at the frontier of AI applications in finance. Interested in building systems that leverage LLMs for complex analytical tasks that traditionally required human expertise. The challenge of making AI reliable enough for high-stakes financial decisions is compelling.",
+
+      "impact": "Contributing to the next generation of AI-powered financial analysis tools. Helping build infrastructure that could transform how hedge funds operate and make decisions.",
+
+      "context": "Joined as founding engineer during company formation, taking on full-stack responsibility for core platform development. Work involves both cutting-edge ML research and production engineering."
+    },
+
+    {
+      "@type": "OrganizationRole",
+      "id": "hmei-princeton",
+      "role": "Research Assistant",
+      "company": {
+        "@type": "ResearchOrganization",
+        "name": "Princeton High Meadows Environmental Institute (HMEI)",
+        "parentOrganization": "Princeton University",
+        "description": "Leading environmental research institute focused on climate science, environmental policy, and sustainability",
+        "url": "https://environment.princeton.edu"
+      },
+      "startDate": "2024",
+      "endDate": "2025",
+      "current": false,
+      "location": "Princeton, NJ",
+
+      "summary": "Conducted computational research on solar radiation management (SRM) strategies as potential climate intervention approaches. Investigated the effectiveness of different stratospheric aerosol types for global cooling, with focus on comparing black carbon and sulfate aerosols.",
+
+      "researchFocus": "Solar Radiation Management and Climate Engineering",
+
+      "researchQuestion": "How do different types of stratospheric aerosols compare in their effectiveness for global cooling through solar radiation management?",
+
+      "methodology": [
+        "Computational climate modeling using Python-based simulation tools",
+        "Comparative analysis of black carbon vs. sulfate aerosol effectiveness",
+        "Quantitative evaluation of cooling potential, radiative forcing, and climate impacts",
+        "Data visualization and statistical analysis of simulation outputs",
+        "Literature review of existing SRM research and methodologies"
+      ],
+
+      "keyFindings": [
+        {
+          "finding": "Black carbon aerosols in the stratosphere are approximately 10x more effective at cooling than traditional reflective sulfate aerosols",
+          "significance": "Challenges conventional assumptions in solar radiation management research",
+          "implications": "Suggests alternative approaches to climate intervention may be more cost-effective and require lower aerosol mass",
+          "caveat": "Black carbon aerosols also have different side effects and risks that must be evaluated"
+        }
+      ],
+
+      "achievements": [
+        "Discovered order-of-magnitude improvement in cooling effectiveness",
+        "Presented research findings to faculty and peers",
+        "Contributed to understanding of stratospheric aerosol behavior",
+        "Published research presentation documenting methodology and findings"
+      ],
+
+      "technologies": {
+        "programming": ["Python", "NumPy", "Pandas", "Matplotlib"],
+        "climate": ["Climate modeling software", "Radiative forcing analysis", "Temperature simulation"],
+        "data": ["Data analysis", "Statistical methods", "Visualization", "Scientific computing"]
+      },
+
+      "challenges": [
+        "Learning complex climate modeling tools and methodologies",
+        "Interpreting and validating simulation results",
+        "Understanding the physics of stratospheric aerosols and radiative transfer",
+        "Communicating technical findings to diverse audiences"
+      ],
+
+      "learnings": [
+        "Climate systems are extraordinarily complex with many interacting factors",
+        "Computational modeling requires careful validation and sensitivity analysis",
+        "Research findings often challenge existing assumptions",
+        "Importance of clear communication in scientific work",
+        "Climate intervention is technically possible but requires careful evaluation of trade-offs"
+      ],
+
+      "motivation": "Interested in understanding potential technological approaches to addressing climate change. Drawn to the interdisciplinary nature of climate science combining physics, data science, and policy implications. Wanted to contribute to research on climate intervention strategies.",
+
+      "impact": "Research contributes to scientific understanding of solar radiation management options. Findings suggest alternative aerosol types may be more effective than currently proposed approaches, potentially influencing future climate intervention research directions.",
+
+      "publications": [
+        {
+          "type": "Presentation",
+          "title": "Solar Radiation Management Research",
+          "url": "https://docs.google.com/presentation/d/1YvPFwQQvhCTwXfCP92kaV61j7GZU2b-I/edit?usp=sharing&ouid=108230747896924390036&rtpof=true&sd=true",
+          "date": "2025"
+        }
+      ],
+
+      "context": "This research was conducted as part of Princeton's HMEI program, which brings together researchers from multiple disciplines to address environmental challenges. The work combined computational skills with climate science to explore potential technological interventions for global warming."
+    }
+  ],
+
+  "careerProgression": {
+    "narrative": "Skyler's career path reflects a pattern of seeking high-impact opportunities at the intersection of multiple domains. From climate research at Princeton HMEI (combining data science with climate physics) to founding engineer at an AI-focused fintech startup (combining LLMs with financial systems), he consistently pursues roles that require both technical depth and interdisciplinary thinking. His progression shows increasing responsibility and scope, from research assistant to founding engineer, while maintaining focus on building systems that address meaningful problems.",
+
+    "themes": [
+      "Building at the intersection of multiple domains",
+      "Applying AI/ML to complex real-world problems",
+      "Combining research depth with practical engineering",
+      "Seeking high-impact opportunities in emerging fields",
+      "Learning through building and shipping products"
+    ]
+  },
+
+  "workStyle": {
+    "strengths": [
+      "Full-stack capability from ML research to production deployment",
+      "Comfortable with ambiguity and 0-to-1 product development",
+      "Strong systems thinking and architectural design",
+      "Ability to learn quickly across diverse domains",
+      "Balance of theoretical understanding and practical implementation"
+    ],
+
+    "approach": "Bias toward action and building. Prefers learning by doing rather than extended planning. Comfortable with technical depth but also pragmatic about shipping and iterating. Values clear communication and documentation.",
+
+    "interests": [
+      "Novel applications of AI and ML",
+      "Production engineering for ML systems",
+      "Problems requiring interdisciplinary approaches",
+      "Building tools that empower human decision-making",
+      "Research-driven product development"
+    ]
+  }
+}
