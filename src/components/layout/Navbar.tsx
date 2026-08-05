@@ -53,6 +53,13 @@ export default function Navbar() {
             <ThemeToggle />
           </nav>
 
+          {/* Read-progress rail. Scaled on a scroll timeline, so it tracks the
+              document on the compositor rather than through a scroll handler. */}
+          <div
+            aria-hidden
+            className="scroll-rail absolute inset-x-0 bottom-0 h-px origin-left bg-accent"
+          />
+
           <div className="flex sm:hidden items-center gap-1">
             <ThemeToggle />
             <button

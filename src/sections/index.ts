@@ -16,9 +16,13 @@ import Hero from "./hero";
 import About from "./about";
 import Work from "./work";
 import Projects from "./projects";
-import Walkthroughs from "./walkthroughs";
 import Hobbies from "./hobbies";
 import Contact from "./contact";
+
+// Walkthroughs is written and ready in ./walkthroughs, but WALKTHROUGHS is
+// still empty — rendering it would ship an "Empty state" panel telling
+// visitors which source file to edit. Re-add the import and the entry below
+// the moment there is a real tour to show.
 
 export type SectionDef = {
   id: string;
@@ -31,7 +35,6 @@ export const sections: SectionDef[] = [
   { id: "about", label: "About", Component: About },
   { id: "work", label: "Work", Component: Work },
   { id: "projects", label: "Projects", Component: Projects },
-  { id: "walkthroughs", label: "Walkthroughs", Component: Walkthroughs },
   { id: "hobbies", label: "Hobbies", Component: Hobbies },
   { id: "contact", label: "Contact", Component: Contact },
 ];

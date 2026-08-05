@@ -138,6 +138,13 @@ html[data-js] .in-view.is-visible {
       animation-timeline: view();
     }
 
+    /* Read-progress rail under the navbar, driven by document scroll. */
+    .scroll-rail {
+      transform: scaleX(0);
+      animation: railGrow linear both;
+      animation-timeline: scroll(root block);
+    }
+
     /* Copy inks in word by word as it crosses the viewport. */
     .scroll-fill {
       view-timeline-name: --scrollfill;
@@ -159,6 +166,10 @@ html[data-js] .in-view.is-visible {
 
 @keyframes inkFill {
   to { color: var(--fg); }
+}
+
+@keyframes railGrow {
+  to { transform: scaleX(1); }
 }
 
 /* Marquee: the track is duplicated, so translating by exactly -50% loops
