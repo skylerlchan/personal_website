@@ -1,163 +1,159 @@
 @import "tailwindcss";
 
-/* Override dark variant to use class strategy */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-background: var(--bg);
   --color-foreground: var(--fg);
   --color-accent: var(--accent);
-  --color-accent-light: var(--accent-light);
   --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
   --color-surface: var(--surface);
-  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
 
-  --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), monospace;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-serif: var(--font-fraunces), ui-serif, "Iowan Old Style", Georgia, serif;
 }
 
-/* Light theme (default) */
+/* Light — cool near-white, slate ink, electric blue accent. */
 :root {
-  --bg: #fafaf9;
-  --fg: #1c1917;
-  --accent: #2563eb;
-  --accent-light: #3b82f6;
-  --muted: #78716c;
-  --surface: #f5f5f4;
-  --surface-hover: #e7e5e4;
+  --bg: #fbfcfd;
+  --fg: #0b1220;
+  --muted: #556070;
+  --subtle: #5f6a7a;
+  --accent: #2f6bff;
+  --surface: #f1f4f8;
+  --border: #e2e8f0;
 }
 
-/* Dark theme */
+/* Dark — cool slate near-black, cool off-white, brighter electric accent. */
 .dark {
-  --bg: #0a0a0a;
-  --fg: #fafaf9;
-  --accent: #60a5fa;
-  --accent-light: #93c5fd;
-  --muted: #a8a29e;
-  --surface: #171717;
-  --surface-hover: #262626;
+  --bg: #0a0e16;
+  --fg: #e8edf4;
+  --muted: #95a1b3;
+  --subtle: #8893a6;
+  --accent: #5b8cff;
+  --surface: #121826;
+  --border: #1f2736;
 }
 
-/* Base styles */
+* {
+  border-color: var(--border);
+}
+
 html {
-  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg);
+  color: var(--fg);
+  font-feature-settings: "ss01", "cv11";
+  font-size: 1.0625rem; /* 17px — editorial reading comfort */
+  line-height: 1.6;
 }
 
-/* Lenis smooth scroll */
-html.lenis,
-html.lenis body {
-  height: auto;
+/* Editorial display serif. Optical sizing scales with type size. */
+.font-serif {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
 }
 
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
+/* Serif headings get tighter leading and a hair of negative tracking. */
+h1.font-serif, h2.font-serif, h3.font-serif {
+  letter-spacing: -0.015em;
 }
 
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
+::selection {
+  background-color: var(--accent);
+  color: var(--bg);
 }
 
-/* Hide default cursor on desktop when custom cursor is active */
-@media (min-width: 769px) {
-  .cursor-custom * {
-    cursor: none !important;
-  }
-}
-
-/* Equalizer bars animation */
-@keyframes eq {
-  0% { height: 30%; }
-  100% { height: 100%; }
-}
-
-/* Chat message entrance */
-@keyframes fadeSlideIn {
-  from {
+/* Section reveal: pure CSS, no JS observers needed for above-the-fold */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(12px);
+    animation: reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
+  .reveal[data-delay="1"] { animation-delay: 0.08s; }
+  .reveal[data-delay="2"] { animation-delay: 0.16s; }
+  .reveal[data-delay="3"] { animation-delay: 0.24s; }
+  .reveal[data-delay="4"] { animation-delay: 0.32s; }
+  .reveal[data-delay="5"] { animation-delay: 0.40s; }
+}
+
+@keyframes reveal {
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* Piano track list scrollbar */
-.piano-tracklist {
-  scrollbar-width: thin;
-  scrollbar-color: var(--muted) transparent;
+/* In-view reveal for sections below the fold.
+   Only hide when JS bootstrap has run (data-js on <html>) — otherwise
+   content stays visible for no-JS users and during the first paint. */
+html[data-js] .in-view {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.piano-tracklist::-webkit-scrollbar {
-  width: 4px;
-}
-.piano-tracklist::-webkit-scrollbar-track {
-  background: transparent;
-}
-.piano-tracklist::-webkit-scrollbar-thumb {
-  background: var(--muted);
-  border-radius: 9999px;
-  opacity: 0.3;
-}
-.piano-tracklist::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+html[data-js] .in-view.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* Chat messages scrollbar */
-.chat-messages {
-  scrollbar-width: thin;
-  scrollbar-color: var(--muted) transparent;
-}
-.chat-messages::-webkit-scrollbar {
-  width: 4px;
-}
-.chat-messages::-webkit-scrollbar-track {
-  background: transparent;
-}
-.chat-messages::-webkit-scrollbar-thumb {
-  background: var(--muted);
-  border-radius: 9999px;
-  opacity: 0.3;
-}
-.chat-messages::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-}
-
-/* Scrapbook swipe scroll – hide scrollbar */
-.scrapbook-scroll {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.scrapbook-scroll::-webkit-scrollbar {
-  display: none;
-}
-
-/* Selection */
-::selection {
-  background-color: var(--accent);
-  color: white;
-}
-
-/* Mobile optimizations */
-@media (max-width: 1023px) {
-  html {
-    -webkit-overflow-scrolling: touch;
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .in-view {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
   }
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Hide scrollbars on horizontal scrollers */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Anchor-jump polish: clear the fixed 56px navbar so linked sections
+   aren't tucked under it, and ease the jump. Applies on every device. */
+html {
+  scroll-padding-top: 3.75rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ── Mobile: native section-snap (Cici-style smoothness) ───────────────
+   Touch devices only — desktop pointer/wheel users keep free scroll —
+   and only when motion is welcome. `proximity` (not `mandatory`) is the
+   key: sections taller than the viewport (About, Work, Contact) stay
+   fully scrollable — it snaps as you near a boundary, never traps you
+   mid-section. The browser's compositor drives the snap off the main
+   thread, so it stays buttery smooth no matter what JS is running. */
+@media (pointer: coarse) and (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+  main > section {
+    scroll-snap-align: start;
   }
 }

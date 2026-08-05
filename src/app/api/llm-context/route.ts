@@ -188,7 +188,7 @@ export async function GET() {
 
       // Quick facts for LLM reference
       quickFacts: {
-        currentRole: 'Founding Engineer at WithAI Research (YC W26)',
+        currentRole: 'Founding Engineer at WithAI Research (YC P26)',
         education: 'Princeton University (Expected 2027)',
         location: 'Princeton, NJ',
         expertise: ['AI/ML', 'Robotics', 'Climate Science', 'Quantitative Finance', 'Full-stack Development'],

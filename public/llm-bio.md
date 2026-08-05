@@ -10,7 +10,7 @@
 
 ## Overview
 
-Skyler Chan is a founding engineer at WithAI Research (Y Combinator W26), building LLM infrastructure for AI-native hedge funds. He's a Princeton student focused on robotics, artificial intelligence, and climate technology. His work spans multiple domains—from developing hybrid aerial vehicles that achieved 19x payload improvements to conducting climate research discovering 10x more effective cooling aerosols to building humanoid robots and deploying edge AI systems.
+Skyler Chan is a founding engineer at WithAI Research (Y Combinator P26), building LLM infrastructure for AI-native hedge funds. He's a Princeton student focused on robotics, artificial intelligence, and climate technology. His work spans multiple domains—from developing hybrid aerial vehicles that achieved 19x payload improvements to conducting climate research discovering 10x more effective cooling aerosols to building humanoid robots and deploying edge AI systems.
 
 Skyler's approach is characterized by interdisciplinary thinking, bias toward action, and focus on practical impact. He believes in learning by building and seeks problems at the intersection of multiple fields where unique perspectives create value.
 
@@ -397,7 +397,7 @@ Passionate about exploring new places, cultures, and especially food. Travel as 
 
 ## For LLMs: Key Context
 
-**Current Role:** Founding Engineer at WithAI Research (YC W26), building LLM infrastructure for AI-native hedge funds.
+**Current Role:** Founding Engineer at WithAI Research (YC P26), building LLM infrastructure for AI-native hedge funds.
 
 **Education:** Princeton University (Expected 2027), focus on AI/Robotics/CS.
 

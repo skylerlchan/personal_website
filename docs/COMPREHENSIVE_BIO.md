@@ -4,13 +4,13 @@
 
 ## Overview
 
-Skyler Chan is a founding engineer at WithAI Research (Y Combinator W26), building large language models for AI-native hedge funds. His work spans artificial intelligence, robotics, climate science, and quantitative finance. He combines deep technical expertise with creative problem-solving, consistently developing innovative solutions that challenge conventional approaches.
+Skyler Chan is a founding engineer at WithAI Research (Y Combinator P26), building large language models for AI-native hedge funds. His work spans artificial intelligence, robotics, climate science, and quantitative finance. He combines deep technical expertise with creative problem-solving, consistently developing innovative solutions that challenge conventional approaches.
 
 ## Current Work
 
 ### WithAI Research (2026 - Present)
 **Role:** Founding Engineer
-**Company:** Y Combinator W26 startup
+**Company:** Y Combinator P26 startup
 
 Skyler is a founding engineer at WithAI Research, developing the core platform and infrastructure for large language models specifically designed for AI-native hedge funds. His work involves:
 

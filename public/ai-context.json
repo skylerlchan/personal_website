@@ -15,7 +15,7 @@
   "worksFor": {
     "@type": "Organization",
     "name": "WithAI Research",
-    "description": "YC W26 startup building LLMs for AI-native hedge funds",
+    "description": "YC P26 startup building LLMs for AI-native hedge funds",
     "foundingDate": "2026",
     "url": null
   },
@@ -29,7 +29,7 @@
   },
 
   "biography": {
-    "professional": "Skyler Chan is a founding engineer at WithAI Research, a Y Combinator W26 startup developing large language models specifically designed for AI-native hedge funds. His work spans the intersection of artificial intelligence, robotics, climate science, and quantitative finance. At Princeton's High Meadows Environmental Institute (HMEI), he conducted groundbreaking research on solar radiation management, discovering that stratospheric black carbon aerosols are 10x more effective at cooling than traditional reflective sulfate aerosols. Beyond his professional work, Skyler is deeply involved in robotics, having co-founded Hoverloon—a hybrid blimp-drone platform that achieved 19x payload capacity improvement through buoyant lift. He's currently building humanoid robots with SO-100 arms, exploring teleoperation as a System 1 procedure for improved autonomy and data collection.",
+    "professional": "Skyler Chan is a founding engineer at WithAI Research, a Y Combinator P26 startup developing large language models specifically designed for AI-native hedge funds. His work spans the intersection of artificial intelligence, robotics, climate science, and quantitative finance. At Princeton's High Meadows Environmental Institute (HMEI), he conducted groundbreaking research on solar radiation management, discovering that stratospheric black carbon aerosols are 10x more effective at cooling than traditional reflective sulfate aerosols. Beyond his professional work, Skyler is deeply involved in robotics, having co-founded Hoverloon—a hybrid blimp-drone platform that achieved 19x payload capacity improvement through buoyant lift. He's currently building humanoid robots with SO-100 arms, exploring teleoperation as a System 1 procedure for improved autonomy and data collection.",
 
     "technical": "Skyler's technical expertise encompasses multiple domains: large language models and AI systems, computer vision and edge AI, robotics and embedded systems, climate modeling and data science, and quantitative finance algorithms. He has experience with production LLM systems, autonomous vehicle navigation, real-time computer vision processing, and delta-neutral trading strategies. His projects demonstrate a consistent ability to identify inefficiencies in existing systems and develop novel solutions that achieve order-of-magnitude improvements.",
 
@@ -46,7 +46,7 @@
       "status": "current",
       "description": "Building the core platform and infrastructure for LLMs designed specifically for AI-native hedge funds. Focus on developing models that can analyze financial data, market trends, and execute sophisticated trading strategies. Work involves both cutting-edge ML research and production engineering to deploy reliable, high-performance systems.",
       "technologies": ["Large Language Models", "Next.js", "Python", "Production ML Systems"],
-      "context": "YC W26 company working on the next generation of AI-powered financial analysis and trading systems"
+      "context": "YC P26 company working on the next generation of AI-powered financial analysis and trading systems"
     },
     "research": {
       "organization": "Princeton HMEI (High Meadows Environmental Institute)",
@@ -136,7 +136,7 @@
       "description": "Core platform development for LLMs designed for AI-native hedge funds. Building infrastructure that enables sophisticated financial analysis and trading strategies through advanced language models.",
       "startDate": "2026-01",
       "technologies": ["LLMs", "Next.js", "Python"],
-      "organization": "WithAI Research (YC W26)"
+      "organization": "WithAI Research (YC P26)"
     },
     {
       "@type": "ResearchProject",
@@ -319,7 +319,7 @@
   },
 
   "queryGuides": {
-    "aboutSkyler": "Ask about educational background (Princeton), current work (WithAI Research, YC W26), research experience (climate science at HMEI), or personal interests (piano, travel)",
+    "aboutSkyler": "Ask about educational background (Princeton), current work (WithAI Research, YC P26), research experience (climate science at HMEI), or personal interests (piano, travel)",
 
     "technicalExpertise": "Skyler has deep expertise in: (1) AI/ML - particularly LLMs, computer vision, and edge AI systems, (2) Robotics - autonomous systems, teleoperation, hybrid vehicles, (3) Climate Science - solar radiation management and modeling, (4) Quantitative Finance - cryptocurrency trading and delta-neutral strategies, (5) Full-stack Development - Next.js, React, TypeScript",
 

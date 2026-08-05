@@ -1,70 +1,107 @@
 "use client";
 
-import { useState } from "react";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { sections } from "@/sections";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
 
-const NAV_ITEMS = [
-  { label: "Work", href: "#work" },
-  { label: "Projects", href: "#project" },
-  { label: "Hobbies", href: "#hobbies" },
-  { label: "Contact", href: "#contact" },
-];
+const VISIBLE = sections.filter((s) => s.id !== "hero").map((s) => ({
+  id: s.id,
+  label: s.label,
+}));
 
 export default function Navbar() {
-  const [visible, setVisible] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  useGSAP(() => {
-    ScrollTrigger.create({
-      trigger: "body",
-      start: "100vh top",
-      onEnter: () => setVisible(true),
-      onLeaveBack: () => setVisible(false),
-    });
-  });
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.nav
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -100, opacity: 0 }}
-          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-          className={cn(
-            "fixed top-4 left-1/2 -translate-x-1/2 z-50 flex",
-            "backdrop-blur-xl bg-surface/70 border border-foreground/5",
-            "rounded-full px-4 py-2.5 sm:px-6 sm:py-3",
-            "items-center gap-4 sm:gap-6"
-          )}
-        >
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              onClick={(e) => {
-                const id = item.href.replace("#", "");
-                const el = document.getElementById(id);
-                if (!el) return;
-                e.preventDefault();
-                // Use instant scroll on mobile to work with scroll-snap, smooth on desktop
-                const isMobile = window.matchMedia("(max-width: 1023px)").matches;
-                el.scrollIntoView({
-                  behavior: isMobile ? "instant" : "smooth",
-                  block: "start"
-                });
-              }}
-              className="text-xs sm:text-sm text-muted hover:text-foreground transition-colors duration-200"
-              data-cursor="link"
+    <>
+      <header
+        className={cn(
+          "fixed top-0 inset-x-0 z-40 transition-all duration-300",
+          scrolled
+            ? "backdrop-blur-xl bg-background/70 border-b border-border"
+            : "bg-transparent border-b border-transparent",
+        )}
+      >
+        <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 h-14 flex items-center justify-between">
+          <a
+            href="#hero"
+            className="text-sm font-medium tracking-tight text-foreground hover:opacity-70 transition-opacity"
+          >
+            Skyler Chan
+          </a>
+
+          <nav className="hidden sm:flex items-center gap-1">
+            {VISIBLE.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className="text-sm text-muted hover:text-foreground px-3 py-1.5 rounded-full hover:bg-surface transition-colors"
+              >
+                {item.label}
+              </a>
+            ))}
+            <div className="w-px h-4 bg-border mx-1" />
+            <ThemeToggle />
+          </nav>
+
+          <div className="flex sm:hidden items-center gap-1">
+            <ThemeToggle />
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-label="Toggle menu"
+              aria-expanded={open}
+              className="grid place-items-center w-11 h-11 rounded-full text-muted hover:text-foreground hover:bg-surface transition-colors"
             >
-              {item.label}
-            </a>
-          ))}
-          <ThemeToggle />
-        </motion.nav>
-      )}
-    </AnimatePresence>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {open ? (
+                  <>
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </>
+                ) : (
+                  <>
+                    <line x1="4" y1="7" x2="20" y2="7" />
+                    <line x1="4" y1="17" x2="20" y2="17" />
+                  </>
+                )}
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile menu sheet */}
+      <div
+        className={cn(
+          "fixed inset-x-0 top-14 z-30 sm:hidden transition-all duration-300",
+          open ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none",
+        )}
+      >
+        <div className="bg-background border-b border-border">
+          <nav className="max-w-6xl mx-auto px-6 py-4 flex flex-col">
+            {VISIBLE.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={() => setOpen(false)}
+                className="py-3 text-foreground text-lg border-b border-border last:border-b-0"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </div>
+    </>
   );
 }

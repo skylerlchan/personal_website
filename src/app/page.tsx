@@ -1,23 +1,19 @@
-"use client";
-
-import Hero from "@/components/sections/Hero";
-import Projects from "@/components/sections/Projects";
-import Hobbies from "@/components/sections/Hobbies";
-import Contact from "@/components/sections/Contact";
-import Socials from "@/components/sections/Socials";
-import GenerativeBackground from "@/components/ui/GenerativeBackground";
-import ScrollProgress from "@/components/ui/ScrollProgress";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import InViewReveal from "@/components/primitives/InViewReveal";
+import { sections } from "@/sections";
 
 export default function Home() {
   return (
     <>
-      <GenerativeBackground />
-      <ScrollProgress />
-      <Hero />
-      <Projects />
-      <Hobbies />
-      <Contact />
-      <Socials />
+      <Navbar />
+      <InViewReveal />
+      <main>
+        {sections.map(({ id, Component }) => (
+          <Component key={id} />
+        ))}
+      </main>
+      <Footer />
     </>
   );
 }

@@ -1,15 +1,23 @@
 
-> personal-website@0.1.0 dev
-> next dev
+> personal-website@0.2.0 dev /Users/skyler/Projects/personal/Personal Website
+> next dev --port 3000
 
-⚠ Port 3000 is in use by process 350300, using available port 3002 instead.
-⚠ turbopack.root should be absolute, using: C:\Users\skyle\OneDrive\Desktop\Current Project\Personal Website
+⚠ turbopack.root should be absolute, using: /Users/skyler/Projects/personal/Personal Website
 ▲ Next.js 16.1.6 (Turbopack)
-- Local:         http://localhost:3002
-- Network:       http://10.48.160.175:3002
+- Local:         http://localhost:3000
+- Network:       http://192.0.0.3:3000
 - Environments: .env.local
 
 ✓ Starting...
-⨯ Unable to acquire lock at C:\Users\skyle\OneDrive\Desktop\Current Project\Personal Website\.next\dev\lock, is another instance of next dev running?
-  Suggestion: If you intended to restart next dev, terminate the other process, and then try again.
+✓ Ready in 688ms
+ GET / 200 in 625ms (compile: 443ms, render: 182ms)
+ GET / 200 in 50ms (compile: 3ms, render: 47ms)
+ GET / 200 in 167ms (compile: 3ms, render: 163ms)
+ GET / 200 in 55ms (compile: 5ms, render: 50ms)
+ GET /apple-touch-icon-precomposed.png 404 in 118ms (compile: 45ms, render: 73ms)
+ GET / 200 in 48ms (compile: 3ms, render: 45ms)
+ GET /apple-touch-icon.png 404 in 15ms (compile: 1906µs, render: 13ms)
+ GET / 200 in 57ms (compile: 3ms, render: 53ms)
+⚠ Cross origin request detected from provision-points-benz-command.trycloudflare.com to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
 [?25h

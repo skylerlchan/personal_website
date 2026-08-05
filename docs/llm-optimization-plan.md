@@ -31,8 +31,8 @@ Create a `/public/data/` directory with JSON files:
   "title": "Engineer & Builder",
   "tagline": "Always building. Always thinking.",
   "bio": {
-    "short": "Founding engineer at WithAI Research (YC W26), Princeton student focused on robotics, AI, and climate tech. Building systems that matter.",
-    "long": "Skyler Chan is a founding engineer at WithAI Research, a Y Combinator W26 startup building LLMs for AI-native hedge funds. He's passionate about robotics, artificial intelligence, and climate technology. At Princeton, he conducted research at HMEI on solar radiation management, discovering that stratospheric black carbon aerosols are 10x more effective at cooling than reflective sulfate. He also founded Hoverloon under the Princeton Robotics Club, creating a blimp-drone hybrid that achieved 19x payload capacity through buoyant lift. Currently, he's building humanoid robots with SO-100 arms and exploring teleoperation as a pathway to better autonomy."
+    "short": "Founding engineer at WithAI Research (YC P26), Princeton student focused on robotics, AI, and climate tech. Building systems that matter.",
+    "long": "Skyler Chan is a founding engineer at WithAI Research, a Y Combinator P26 startup building LLMs for AI-native hedge funds. He's passionate about robotics, artificial intelligence, and climate technology. At Princeton, he conducted research at HMEI on solar radiation management, discovering that stratospheric black carbon aerosols are 10x more effective at cooling than reflective sulfate. He also founded Hoverloon under the Princeton Robotics Club, creating a blimp-drone hybrid that achieved 19x payload capacity through buoyant lift. Currently, he's building humanoid robots with SO-100 arms and exploring teleoperation as a pathway to better autonomy."
   },
   "education": {
     "institution": "Princeton University",
@@ -59,7 +59,7 @@ Create a `/public/data/` directory with JSON files:
       "id": "withai-research",
       "role": "Founding Engineer",
       "company": "WithAI Research",
-      "companyInfo": "YC W26 startup building LLMs for AI-native hedge funds",
+      "companyInfo": "YC P26 startup building LLMs for AI-native hedge funds",
       "startDate": "2025",
       "current": true,
       "description": "Developing core platform and infrastructure for AI-driven financial systems. Building LLM-powered tools for quantitative analysis and trading strategies.",

@@ -38,7 +38,7 @@ Transform the personal website into an LLM-friendly platform that allows AI syst
 **Content to include:**
 - Full biographical information
 - Educational background (Princeton University)
-- Current role at WithAI Research (YC W26)
+- Current role at WithAI Research (YC P26)
 - Areas of expertise (AI/ML, robotics, climate science, quantitative finance)
 - Skills and technologies
 - Research interests
@@ -99,7 +99,7 @@ Example enhanced structure:
     "responsibilities": [...],
     "technologies": [...],
     "achievements": [...],
-    "context": "YC W26 startup building LLMs for AI-native hedge funds"
+    "context": "YC P26 startup building LLMs for AI-native hedge funds"
   },
   {
     "organization": "Princeton HMEI",
@@ -345,7 +345,7 @@ Test with various LLMs:
 ```
 Skyler Chan (Person)
 ├── Current Work
-│   ├── WithAI Research (YC W26)
+│   ├── WithAI Research (YC P26)
 │   │   ├── Role: Founding Engineer
 │   │   ├── Focus: LLMs for hedge funds
 │   │   └── Technologies: [...]

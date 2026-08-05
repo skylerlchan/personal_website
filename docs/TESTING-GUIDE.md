@@ -377,7 +377,7 @@ Be specific with numbers and details from the data.
 
 If working correctly, LLMs should be able to:
 
-✓ Correctly state current role: "Founding Engineer at WithAI Research (YC W26)"
+✓ Correctly state current role: "Founding Engineer at WithAI Research (YC P26)"
 ✓ Cite specific numbers: "19x payload improvement with Hoverloon"
 ✓ Quote philosophy: "Always building. Always thinking."
 ✓ Describe technical approaches in detail
