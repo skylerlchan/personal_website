@@ -264,7 +264,7 @@ void main() {
   // leaves a cool blue-grey ink rather than the muddy complement you would
   // get from tinting per channel.
   float d = dot(h, vec3(0.299, 0.587, 0.114));
-  vec3 ink = exp(-d * uExposure * vec3(1.55, 1.35, 1.02));
+  vec3 ink = exp(-d * uExposure * vec3(1.35));
 
   // uBg arrives linearised, so compose in linear and encode once at the end.
   vec3 col = mix(uBg + glow, uBg * ink, uLight);
@@ -713,11 +713,12 @@ export default function AttractorField({
       gl.uniformMatrix4fv(uDraw.vp, false, vp);
       gl.uniform1i(uDraw.texW, TEX);
 
-      // The hue ramp is the field's own — tone mapping decides how it lands
-      // in either theme, so this no longer branches on light/dark.
-      gl.uniform3f(uDraw.c0, 0.80, 0.92, 1.00);
-      gl.uniform3f(uDraw.c1, 0.18, 0.48, 1.00);
-      gl.uniform3f(uDraw.c2, 0.40, 0.14, 0.90);
+      // Neutral grey ramp — no hue anywhere. Depth has to be carried purely by
+      // luminance, which is why the three stops are spaced so widely: with no
+      // colour separation, only a big value gap keeps the structure readable.
+      gl.uniform3f(uDraw.c0, 1.00, 1.00, 1.00);
+      gl.uniform3f(uDraw.c1, 0.52, 0.52, 0.52);
+      gl.uniform3f(uDraw.c2, 0.20, 0.20, 0.20);
 
       // Two passes: a wide dim one for glow, a tight bright one for the core.
       // Alphas are ~1/10 of the un-trailed values: the accumulator sums about

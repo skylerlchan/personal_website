@@ -15,11 +15,9 @@ export default function About() {
     <Section
       id="about"
       eyebrow="About"
-      title={
-        <>
-          I build systems at the edge of <span className="text-accent">research and production</span>.
-        </>
-      }
+      // A plain string, so Section gives it the word-rise. The emphasis that
+      // used to be carried by an accent colour is gone with the palette.
+      title="I build systems at the edge of research and production."
       description={
         <ScrollFill
           className="max-w-2xl text-lg leading-relaxed sm:text-xl"

@@ -132,7 +132,7 @@ export default function ProjectDeck({ items }: { items: Project[] }) {
                 <div
                   aria-hidden
                   className="absolute inset-x-6 top-0 h-px sm:inset-x-8"
-                  style={{ background: p.accent ?? "var(--accent)" }}
+                  style={{ background: "var(--accent)" }}
                 />
                 <div className="flex items-baseline justify-between gap-4 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-muted">
                   <span>

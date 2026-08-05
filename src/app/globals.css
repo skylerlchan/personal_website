@@ -16,27 +16,29 @@
   --font-serif: var(--font-fraunces), ui-serif, "Iowan Old Style", Georgia, serif;
 }
 
-/* Light — cool near-white, slate ink, electric blue accent. */
+/* Monochrome. There is no accent hue — emphasis is carried by weight, scale
+   and contrast alone, which is the harder and quieter way to do it. `--accent`
+   still exists so nothing downstream breaks; it just resolves to ink. */
 :root {
-  --bg: #fbfcfd;
-  --fg: #0b1220;
-  --muted: #556070;
-  --subtle: #5f6a7a;
-  --accent: #2f6bff;
-  --surface: #f1f4f8;
-  --border: #e2e8f0;
+  --bg: #ffffff;
+  --fg: #0a0a0a;
+  --muted: #6e6e6e;
+  --subtle: #8c8c8c;
+  --accent: #0a0a0a;
+  --surface: #f4f4f4;
+  --border: #e3e3e3;
 }
 
 /* Dark — near-black with a blue cast, so the attractor's glow reads as light
    emerging from the page rather than sitting on top of a grey card. */
 .dark {
-  --bg: #04060c;
-  --fg: #e6ecf6;
-  --muted: #8b97ab;
-  --subtle: #7d899d;
-  --accent: #4d8cff;
-  --surface: #0a0f1a;
-  --border: #18202e;
+  --bg: #050505;
+  --fg: #f2f2f2;
+  --muted: #909090;
+  --subtle: #757575;
+  --accent: #f2f2f2;
+  --surface: #101010;
+  --border: #1e1e1e;
 }
 
 * {

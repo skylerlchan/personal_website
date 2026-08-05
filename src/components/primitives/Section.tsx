@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import Words from "./Words";
 import type { ReactNode } from "react";
 
 type Props = {
@@ -53,10 +54,20 @@ export default function Section({
                 )}
               </div>
             )}
-            {title && (
-              <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-medium text-foreground max-w-3xl leading-[1.05]">
-                {title}
-              </h2>
+            {/* A plain-string title gets the word-rise; a ReactNode title is
+                rendered as given, since we cannot split it into words. */}
+            {typeof title === "string" ? (
+              <Words
+                as="h2"
+                text={title}
+                className="max-w-3xl text-4xl font-medium leading-[1.05] text-foreground sm:text-5xl md:text-6xl"
+              />
+            ) : (
+              title && (
+                <h2 className="max-w-3xl text-4xl font-medium leading-[1.05] text-foreground sm:text-5xl md:text-6xl">
+                  {title}
+                </h2>
+              )
             )}
             {/* A div, not a p: descriptions may be a component that renders
                 its own paragraph, and nesting <p> is invalid and breaks

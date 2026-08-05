@@ -8,7 +8,6 @@ export type Project = {
   repo?: string;
   paper?: string;
   href?: string;
-  accent?: string;
 };
 
 export const PROJECTS: Project[] = [
@@ -20,7 +19,6 @@ export const PROJECTS: Project[] = [
     image: "/images/projects/hoverloon/hoverloon.png",
     tags: ["Robotics", "Computer Vision", "ROS"],
     year: "2024-25",
-    accent: "#2563eb",
   },
   {
     slug: "humanoid-robots",
@@ -30,7 +28,6 @@ export const PROJECTS: Project[] = [
     image: "/images/projects/so1/so1-main.png",
     tags: ["Robotics", "C++", "ROS"],
     year: "2025",
-    accent: "#dc2626",
   },
   {
     slug: "lastcurb",
@@ -41,7 +38,6 @@ export const PROJECTS: Project[] = [
     tags: ["Edge AI", "Computer Vision", "Python"],
     year: "2024",
     repo: "https://github.com/skylerlchan/LastCurb",
-    accent: "#059669",
   },
   {
     slug: "btc-funding-carry",
@@ -53,6 +49,5 @@ export const PROJECTS: Project[] = [
     year: "2023-24",
     repo: "https://github.com/skylerlchan/Structured-Basis-Divergence-Arbitrage",
     paper: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5292305",
-    accent: "#f97316",
   },
 ];
