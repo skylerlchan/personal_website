@@ -138,6 +138,17 @@ html[data-js] .in-view.is-visible {
       animation-timeline: view();
     }
 
+    /* Story: each word rises out of its own clipping box on the line's
+       timeline. Scroll-linked, so scrolling back un-sets the type. */
+    .story-line {
+      view-timeline-name: --storyline;
+    }
+    .story-word > span {
+      transform: translateY(105%);
+      animation: wordRise cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: --storyline;
+    }
+
     /* Read-progress rail under the navbar, driven by document scroll. */
     .scroll-rail {
       transform: scaleX(0);
@@ -170,6 +181,26 @@ html[data-js] .in-view.is-visible {
 
 @keyframes railGrow {
   to { transform: scaleX(1); }
+}
+
+/* Base geometry for the story words, outside @supports: the clipping boxes
+   must exist even where view timelines do not, or the words would be hidden
+   with nothing to reveal them. Unanimated, they simply sit at rest. */
+.story-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Descenders (g, y, p) would be clipped by an exact-height box. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.story-word > span {
+  display: inline-block;
+  will-change: transform;
+}
+
+@keyframes wordRise {
+  to { transform: none; }
 }
 
 /* Marquee: the track is duplicated, so translating by exactly -50% loops
