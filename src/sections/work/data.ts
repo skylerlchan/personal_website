@@ -1,3 +1,5 @@
+import { MULTIPLIER_URL } from "@/lib/constants";
+
 export type WorkItem = {
   slug: string;
   company: string;
@@ -10,13 +12,14 @@ export type WorkItem = {
 
 export const WORK: WorkItem[] = [
   {
-    slug: "withai",
-    company: "WithAI Research",
+    slug: "multiplier",
+    company: "Multiplier — WithAI Research",
     role: "Founding Engineer",
     period: "2026 — Present",
     blurb:
-      "YC P26. Building the core LLM platform and infrastructure for AI-native hedge funds.",
-    tags: ["LLMs", "Infra", "Next.js", "Python"],
+      "YC P26. Multiplier is AI for asset managers — frontier agents that research across names, plug into the stack a firm already runs on (Bloomberg, FactSet, Aladdin), and learn how that firm actually makes decisions. It ships as a desktop app with packaged agent abilities, running on the client's own cloud. I build the agent runtime, the abilities system and the LLM infrastructure under it.",
+    tags: ["Agents", "LLM infra", "TypeScript", "Python"],
+    href: MULTIPLIER_URL || undefined,
   },
   {
     slug: "hmei",

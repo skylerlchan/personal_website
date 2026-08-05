@@ -27,15 +27,16 @@
   --border: #e2e8f0;
 }
 
-/* Dark — cool slate near-black, cool off-white, brighter electric accent. */
+/* Dark — near-black with a blue cast, so the attractor's glow reads as light
+   emerging from the page rather than sitting on top of a grey card. */
 .dark {
-  --bg: #0a0e16;
-  --fg: #e8edf4;
-  --muted: #95a1b3;
-  --subtle: #8893a6;
-  --accent: #5b8cff;
-  --surface: #121826;
-  --border: #1f2736;
+  --bg: #04060c;
+  --fg: #e6ecf6;
+  --muted: #8b97ab;
+  --subtle: #7d899d;
+  --accent: #4d8cff;
+  --surface: #0a0f1a;
+  --border: #18202e;
 }
 
 * {
@@ -121,6 +122,22 @@ html[data-js] .in-view.is-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 2px;
+}
+
+/* Marquee: the track is duplicated, so translating by exactly -50% loops
+   seamlessly. Paused for reduced-motion readers, who get a static row. */
+.marquee {
+  animation: marquee 42s linear infinite;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+  }
 }
 
 /* Hide scrollbars on horizontal scrollers */

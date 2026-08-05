@@ -3,7 +3,7 @@ import Section from "@/components/primitives/Section";
 export const meta = { id: "about", label: "About" };
 
 const FACTS = [
-  { label: "Currently", value: "Founding Engineer, WithAI Research (YC P26)" },
+  { label: "Currently", value: "Founding Engineer, Multiplier (YC P26)" },
   { label: "Studying", value: "Princeton University" },
   { label: "Researching", value: "Climate, robotics, LLMs" },
   { label: "Based in", value: "Princeton, NJ" },
