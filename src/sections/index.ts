@@ -13,7 +13,7 @@
 import type { ComponentType } from "react";
 
 import Hero from "./hero";
-import Story from "./story";
+import Fields from "./fields";
 import About from "./about";
 import Work from "./work";
 import Projects from "./projects";
@@ -33,7 +33,7 @@ export type SectionDef = {
 
 export const sections: SectionDef[] = [
   { id: "hero", label: "Intro", Component: Hero },
-  { id: "story", label: "Story", Component: Story },
+  { id: "fields", label: "Fields", Component: Fields },
   { id: "about", label: "About", Component: About },
   { id: "work", label: "Work", Component: Work },
   { id: "projects", label: "Projects", Component: Projects },
