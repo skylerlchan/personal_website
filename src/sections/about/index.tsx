@@ -1,4 +1,5 @@
 import Section from "@/components/primitives/Section";
+import ScrollFill from "@/components/primitives/ScrollFill";
 
 export const meta = { id: "about", label: "About" };
 
@@ -19,7 +20,12 @@ export default function About() {
           I build systems at the edge of <span className="text-accent">research and production</span>.
         </>
       }
-      description="From stratospheric climate models to LLM infrastructure for hedge funds, I move between deep research and shipping product. The throughline: building things that actually work in the messy real world."
+      description={
+        <ScrollFill
+          className="max-w-2xl text-lg leading-relaxed sm:text-xl"
+          text="From stratospheric climate models to LLM infrastructure for asset managers, I move between deep research and shipping product. The throughline: building things that actually work in the messy real world."
+        />
+      }
     >
       <dl className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-px bg-border rounded-2xl overflow-hidden border border-border">
         {FACTS.map((f) => (

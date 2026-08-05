@@ -124,6 +124,43 @@ html[data-js] .in-view.is-visible {
   border-radius: 2px;
 }
 
+/* ── Scroll-driven animation ──────────────────────────────────────────
+   These use native view timelines, which the browser runs on the compositor
+   off the main thread. That matters here: the GPU is already busy integrating
+   150k particles, so a JS scroll handler driving these would judder on a
+   phone. Guarded by @supports — without view timelines everything just sits
+   at its final state, fully visible. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Each pinned system panel fades up, holds, and fades away. */
+    .panel {
+      animation: panelFade linear both;
+      animation-timeline: view();
+    }
+
+    /* Copy inks in word by word as it crosses the viewport. */
+    .scroll-fill {
+      view-timeline-name: --scrollfill;
+    }
+    .scroll-fill-word {
+      color: var(--muted);
+      animation: inkFill linear both;
+      animation-timeline: --scrollfill;
+    }
+  }
+}
+
+@keyframes panelFade {
+  0% { opacity: 0; transform: translateY(30px); }
+  30% { opacity: 1; transform: none; }
+  70% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-30px); }
+}
+
+@keyframes inkFill {
+  to { color: var(--fg); }
+}
+
 /* Marquee: the track is duplicated, so translating by exactly -50% loops
    seamlessly. Paused for reduced-motion readers, who get a static row. */
 .marquee {

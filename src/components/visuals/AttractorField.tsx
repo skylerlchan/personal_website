@@ -331,13 +331,22 @@ function multiply(a: Float32Array, b: Float32Array) {
 export default function AttractorField({
   className,
   onStats,
+  scrollTrack,
 }: {
   className?: string;
   onStats?: (s: FieldStats) => void;
+  /**
+   * When given, the morph is scrubbed by how far this element has scrolled
+   * past, rather than cycling on a timer. That turns the field into a
+   * scroll-driven explainer instead of ambient decoration.
+   */
+  scrollTrack?: React.RefObject<HTMLElement | null>;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const statsRef = useRef(onStats);
   statsRef.current = onStats;
+  const trackRef = useRef(scrollTrack);
+  trackRef.current = scrollTrack;
 
   const [failed, setFailed] = useState(false);
 
@@ -547,6 +556,8 @@ export default function AttractorField({
       downY = e.clientY;
     };
     const onUp = (e: PointerEvent) => {
+      // Scroll owns the morph when a track is driving it; tapping would fight it.
+      if (trackRef.current?.current) return;
       const moved = Math.hypot(e.clientX - downX, e.clientY - downY);
       if (performance.now() - downAt < 500 && moved < 12) advance();
     };
@@ -613,12 +624,23 @@ export default function AttractorField({
 
       fpsAcc += rawDt; fpsN++;
 
-      if (now - lastSwitch > CYCLE_MS) advance();
+      // Scroll-scrubbed when a track is supplied; otherwise cycle on a timer.
+      const track = trackRef.current?.current;
+      if (track) {
+        const r = track.getBoundingClientRect();
+        const span = r.height - window.innerHeight;
+        const p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
+        targetMorph = p * (ATTRACTORS.length - 1);
+        index = Math.round(targetMorph);
+      } else if (now - lastSwitch > CYCLE_MS) {
+        advance();
+      }
 
       // Camera eases quickly; the morph is deliberately slow so the transition
-      // between two vector fields reads as a transformation, not a cut.
+      // between two vector fields reads as a transformation, not a cut. Under
+      // scroll it has to keep up with the thumb, so it eases roughly 4× faster.
       const ease = 1 - Math.pow(0.001, rawDt);
-      const morphEase = 1 - Math.pow(0.5, rawDt);
+      const morphEase = 1 - Math.pow(track ? 0.004 : 0.5, rawDt);
       morph += (targetMorph - morph) * morphEase;
       yaw += (targetYaw - yaw) * ease;
       pitch += (targetPitch - pitch) * ease;

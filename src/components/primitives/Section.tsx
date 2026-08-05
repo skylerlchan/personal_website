@@ -58,10 +58,13 @@ export default function Section({
                 {title}
               </h2>
             )}
+            {/* A div, not a p: descriptions may be a component that renders
+                its own paragraph, and nesting <p> is invalid and breaks
+                hydration. */}
             {description && (
-              <p className="mt-6 text-lg sm:text-xl text-muted max-w-2xl leading-relaxed">
+              <div className="mt-6 text-lg sm:text-xl text-muted max-w-2xl leading-relaxed">
                 {description}
-              </p>
+              </div>
             )}
           </header>
         )}
