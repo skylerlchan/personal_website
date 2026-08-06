@@ -23,24 +23,39 @@ export default function Kinetic({
   as: Tag = "p",
   className,
   delay = 0,
+  variant = "flip",
 }: {
   text: string;
   as?: ElementType;
   className?: string;
   /** Shifts the whole stagger later, so a caption trails its headline. */
   delay?: number;
+  /**
+   * Which move this line gets. The point is that they differ by role:
+   *
+   *   flip  — display type. A full 3-D swing up off the baseline. Loud, and
+   *           reserved for the thing you are meant to read first.
+   *   quiet — captions and mono meta. A short lift and fade, no rotation.
+   *           Present, but it never competes with the headline above it.
+   *
+   * Giving every element the same move is what makes motion meaningless:
+   * if everything is emphasised, nothing is.
+   */
+  variant?: "flip" | "quiet";
 }) {
   const words = text.split(" ");
 
   // Reveal across the lower-middle of the line's pass through the viewport.
   // A wide per-word window means neighbours overlap heavily, which is what
   // makes it read as one sweep instead of a row of separate reveals.
-  const START = 14 + delay * 16;
-  const SPAN = 28;
-  const WORD = 26;
+  // The quiet variant runs a touch tighter and finishes sooner — a caption
+  // should be settled and readable by the time you reach it.
+  const START = (variant === "quiet" ? 16 : 14) + delay * 16;
+  const SPAN = variant === "quiet" ? 20 : 28;
+  const WORD = variant === "quiet" ? 20 : 26;
 
   return (
-    <Tag className={cn("k-line", className)}>
+    <Tag className={cn("k-line", `k-${variant}`, className)}>
       {words.map((w, i) => {
         const from = START + (i / Math.max(words.length - 1, 1)) * SPAN;
         return (

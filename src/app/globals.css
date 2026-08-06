@@ -210,18 +210,19 @@ html[data-js] .in-view.is-visible {
    There is deliberately no idle animation: type that never stops moving
    cannot be read. Base geometry sits outside @supports so the words lay out
    correctly even where view timelines are unavailable. */
+/* Each word gets its own perspective so it pivots on its own vanishing point.
+   A single shared perspective on the line would swing words near the edges
+   through a visibly different arc than words in the middle. */
 .k-word {
   display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-  /* An exact-height box would shear descenders (g, y, p), so the box is grown
-     and the extra pulled back out of the layout. */
-  padding-bottom: 0.14em;
-  margin-bottom: -0.14em;
+  perspective: 460px;
 }
 .k-word > span {
   display: inline-block;
-  will-change: transform;
+  /* Hinged on the baseline, so the word swings up rather than tumbling. */
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 @supports (animation-timeline: view()) {
@@ -230,17 +231,41 @@ html[data-js] .in-view.is-visible {
       view-timeline-name: --kline;
     }
     .k-word > span {
-      /* Fully below the clip edge — no opacity fade. The mask does the work,
-         and a hard edge is what separates set type from a fade-in. */
-      transform: translateY(110%);
-      animation: kSlide cubic-bezier(0.22, 1, 0.36, 1) both;
+      opacity: 0;
+      animation-fill-mode: both;
       animation-timeline: --kline;
+    }
+
+    /* Display type: a full swing up off the baseline. Flat on its back,
+       facing up, then to vertical. Stopping just shy of 90° keeps a sliver of
+       the glyph visible so it never crosses exactly edge-on and pops. */
+    .k-flip .k-word > span {
+      transform: rotateX(-84deg);
+      animation-name: kFlip;
+      animation-timing-function: cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+
+    /* Captions and mono meta: a short lift, no rotation. Deliberately a
+       different *kind* of move, not a smaller dose of the same one — that is
+       what lets the eye rank them below the headline. */
+    .k-quiet .k-word > span {
+      transform: translateY(0.42em);
+      animation-name: kLift;
+      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
     }
   }
 }
 
-@keyframes kSlide {
+@keyframes kFlip {
   to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes kLift {
+  to {
+    opacity: 1;
     transform: none;
   }
 }

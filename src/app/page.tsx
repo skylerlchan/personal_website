@@ -102,6 +102,7 @@ export default function Home() {
         <Kinetic
           text="I build systems that leave the lab — robotics, climate, and the infrastructure under language models."
           delay={0.5}
+          variant="quiet"
           className="mt-5 max-w-md text-pretty text-lg leading-snug text-muted sm:text-xl"
         />
 
@@ -165,6 +166,7 @@ export default function Home() {
                 <Kinetic
                   text={e.meta}
                   delay={0.4}
+                  variant="quiet"
                   className="mt-6 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-muted"
                 />
               </Tag>
