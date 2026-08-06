@@ -1,4 +1,4 @@
-import Words from "@/components/primitives/Words";
+import Kinetic from "@/components/primitives/Kinetic";
 import StatRoll from "@/components/primitives/StatRoll";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { SITE_CONFIG, MULTIPLIER_URL } from "@/lib/constants";
@@ -94,13 +94,16 @@ export default function Home() {
           <ThemeToggle />
         </div>
 
-        <h1 className="mt-14 text-[clamp(2.75rem,11vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.045em] text-foreground sm:mt-20">
-          Skyler Chan
-        </h1>
-        <p className="mt-5 max-w-md text-pretty text-lg leading-snug text-muted sm:text-xl">
-          I build systems that leave the lab — robotics, climate, and the
-          infrastructure under language models.
-        </p>
+        <Kinetic
+          as="h1"
+          text="Skyler Chan"
+          className="mt-14 text-[clamp(2.75rem,11vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.045em] text-foreground sm:mt-20"
+        />
+        <Kinetic
+          text="I build systems that leave the lab — robotics, climate, and the infrastructure under language models."
+          delay={0.5}
+          className="mt-5 max-w-md text-pretty text-lg leading-snug text-muted sm:text-xl"
+        />
 
         {/* Contents. Six lines, and you know everything this page contains. */}
         <nav className="mt-auto pt-14">
@@ -154,12 +157,12 @@ export default function Home() {
                   </div>
                 )}
 
-                <Words
+                <Kinetic
                   text={e.line}
                   className="mt-8 max-w-2xl text-[clamp(1.5rem,6vw,2.5rem)] font-medium leading-[1.15] tracking-[-0.035em] text-foreground"
                 />
 
-                <Words
+                <Kinetic
                   text={e.meta}
                   delay={0.4}
                   className="mt-6 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-muted"
@@ -171,7 +174,7 @@ export default function Home() {
       </ol>
 
       <footer className="border-t border-border py-20 sm:py-28">
-        <Words
+        <Kinetic
           text="Open to interesting problems."
           className="text-[clamp(1.5rem,6vw,2.5rem)] font-medium leading-[1.15] tracking-[-0.035em] text-foreground"
         />

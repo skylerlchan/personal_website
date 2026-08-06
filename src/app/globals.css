@@ -205,6 +205,57 @@ html[data-js] .in-view.is-visible {
   to { transform: none; }
 }
 
+/* ── Kinetic type ──────────────────────────────────────────────────────
+   Base geometry lives outside @supports so the letters are laid out
+   correctly even where view timelines are missing. */
+.k-word {
+  display: inline-block;
+}
+.k-char {
+  display: inline-block;
+  will-change: transform;
+}
+.k-char > span {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* The idle bob runs everywhere motion is welcome — it is what keeps the type
+   alive when you are not scrolling at all. */
+@media (prefers-reduced-motion: no-preference) {
+  .k-char {
+    animation: kFloat ease-in-out infinite alternate;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .k-line {
+      view-timeline-name: --kline;
+    }
+    .k-char > span {
+      opacity: 0;
+      transform: translateY(0.65em) rotate(-7deg) scale(0.82);
+      /* Back-out: the control point past 1.0 makes each letter overshoot and
+         settle, which is what reads as bounce rather than a fade-in. */
+      animation: kRise cubic-bezier(0.34, 1.62, 0.58, 1) both;
+      animation-timeline: --kline;
+    }
+  }
+}
+
+@keyframes kRise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes kFloat {
+  from { transform: translateY(-0.05em) rotate(-0.6deg); }
+  to   { transform: translateY(0.05em) rotate(0.6deg); }
+}
+
 /* Marquee: the track is duplicated, so translating by exactly -50% loops
    seamlessly. Paused for reduced-motion readers, who get a static row. */
 .marquee {
