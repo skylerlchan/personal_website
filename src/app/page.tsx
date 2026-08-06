@@ -20,6 +20,8 @@ import { SITE_CONFIG, MULTIPLIER_URL } from "@/lib/constants";
 
 type Entry = {
   key: string;
+  /** Shown in the masthead index — the name of the thing, nothing more. */
+  short: string;
   line: string;
   meta: string;
   stat?: { value: number; unit: string };
@@ -29,12 +31,14 @@ type Entry = {
 const ENTRIES: Entry[] = [
   {
     key: "Now",
+    short: "Multiplier",
     line: "Agents for asset managers, running inside their own cloud.",
     meta: "Multiplier — founding engineer · YC P26",
     href: MULTIPLIER_URL || undefined,
   },
   {
     key: "Climate",
+    short: "Princeton HMEI",
     line: "Black carbon cools the stratosphere better than the sulfate everyone models.",
     meta: "Princeton HMEI — research assistant · 2024–25",
     stat: { value: 10, unit: "×" },
@@ -42,23 +46,27 @@ const ENTRIES: Entry[] = [
   },
   {
     key: "Flight",
+    short: "Hoverloon",
     line: "Buoyancy carried the load, so the motors did not have to.",
     meta: "Hoverloon — blimp-drone hybrid · 2024–25",
     stat: { value: 19, unit: "×" },
   },
   {
     key: "Machines",
+    short: "SO-101 arms",
     line: "Teleoperation treated as a data pipeline rather than a control scheme.",
     meta: "SO-101 arms · 2025",
   },
   {
     key: "Markets",
+    short: "SSRN paper",
     line: "Delta-neutral carry, harvesting the perpetual funding rate.",
     meta: "Published, SSRN · 2023–24",
     href: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5292305",
   },
   {
     key: "Sensing",
+    short: "LastCurb",
     line: "Edge vision reading open NYC traffic cameras for free kerb space.",
     meta: "LastCurb · 2024",
     href: "https://github.com/skylerlchan/LastCurb",
@@ -75,21 +83,41 @@ const LINKS = [
 export default function Home() {
   return (
     <main className="mx-auto w-full max-w-3xl px-6 sm:px-10">
-      <header className="flex min-h-[82svh] flex-col justify-end pb-24 pt-8">
-        <div className="mb-auto flex items-start justify-between">
+      {/* Masthead. The name sits at the top rather than the bottom, and the
+          index fills the rest — so the first screen shows the whole site at a
+          glance instead of a field of empty space you have to scroll past. */}
+      <header className="flex min-h-svh flex-col pb-16 pt-8">
+        <div className="flex items-start justify-between">
           <span className="font-mono text-[0.625rem] uppercase tracking-[0.28em] text-muted">
-            Skyler Chan
+            Princeton, NJ
           </span>
           <ThemeToggle />
         </div>
 
-        <h1 className="text-[clamp(2.75rem,11vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.045em] text-foreground">
+        <h1 className="mt-14 text-[clamp(2.75rem,11vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.045em] text-foreground sm:mt-20">
           Skyler Chan
         </h1>
-        <p className="mt-6 max-w-md text-pretty text-lg leading-snug text-muted sm:text-xl">
+        <p className="mt-5 max-w-md text-pretty text-lg leading-snug text-muted sm:text-xl">
           I build systems that leave the lab — robotics, climate, and the
           infrastructure under language models.
         </p>
+
+        {/* Contents. Six lines, and you know everything this page contains. */}
+        <nav className="mt-auto pt-14">
+          <ul className="border-t border-border">
+            {ENTRIES.map((e) => (
+              <li key={e.key} className="border-b border-border">
+                <a
+                  href={`#${e.key.toLowerCase()}`}
+                  className="flex min-h-11 items-baseline justify-between gap-6 py-2.5 font-mono text-[0.6875rem] uppercase tracking-[0.2em] transition-colors hover:text-foreground"
+                >
+                  <span className="text-foreground">{e.key}</span>
+                  <span className="truncate text-right text-muted">{e.short}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </header>
 
       <ol>
@@ -99,7 +127,11 @@ export default function Home() {
             ? { href: e.href, target: "_blank" as const, rel: "noreferrer" }
             : {};
           return (
-            <li key={e.key} className="border-t border-border">
+            <li
+              key={e.key}
+              id={e.key.toLowerCase()}
+              className="scroll-mt-4 border-t border-border"
+            >
               <Tag
                 {...props}
                 className="group block py-14 transition-opacity sm:py-20 [@media(hover:hover)]:hover:opacity-60"
