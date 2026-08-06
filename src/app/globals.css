@@ -206,54 +206,43 @@ html[data-js] .in-view.is-visible {
 }
 
 /* ── Kinetic type ──────────────────────────────────────────────────────
-   Base geometry lives outside @supports so the letters are laid out
-   correctly even where view timelines are missing. */
+   Words slide, rotate and drop into place on scroll — then stop dead.
+   There is deliberately no idle animation: type that never stops moving
+   cannot be read. Base geometry sits outside @supports so the words lay out
+   correctly even where view timelines are unavailable. */
 .k-word {
   display: inline-block;
 }
-.k-char {
-  display: inline-block;
-  will-change: transform;
-}
-.k-char > span {
+.k-word > span {
   display: inline-block;
   will-change: transform, opacity;
-}
-
-/* The idle bob runs everywhere motion is welcome — it is what keeps the type
-   alive when you are not scrolling at all. */
-@media (prefers-reduced-motion: no-preference) {
-  .k-char {
-    animation: kFloat ease-in-out infinite alternate;
-  }
 }
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .k-line {
       view-timeline-name: --kline;
+      /* Words travel in from the sides; clip sideways so they cannot widen
+         the document, but leave vertical overflow alone for descenders. */
+      overflow-x: clip;
+      overflow-clip-margin: 1em;
     }
-    .k-char > span {
+    .k-word > span {
       opacity: 0;
-      transform: translateY(0.65em) rotate(-7deg) scale(0.82);
-      /* Back-out: the control point past 1.0 makes each letter overshoot and
-         settle, which is what reads as bounce rather than a fade-in. */
-      animation: kRise cubic-bezier(0.34, 1.62, 0.58, 1) both;
+      transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(var(--sc));
+      /* Control point past 1.0 so each word overshoots a touch and settles,
+         instead of gliding politely to a stop. */
+      animation: kSlide cubic-bezier(0.24, 1.32, 0.44, 1) both;
       animation-timeline: --kline;
     }
   }
 }
 
-@keyframes kRise {
+@keyframes kSlide {
   to {
     opacity: 1;
     transform: none;
   }
-}
-
-@keyframes kFloat {
-  from { transform: translateY(-0.05em) rotate(-0.6deg); }
-  to   { transform: translateY(0.05em) rotate(0.6deg); }
 }
 
 /* Marquee: the track is duplicated, so translating by exactly -50% loops
