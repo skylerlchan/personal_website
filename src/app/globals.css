@@ -212,27 +212,28 @@ html[data-js] .in-view.is-visible {
    correctly even where view timelines are unavailable. */
 .k-word {
   display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* An exact-height box would shear descenders (g, y, p), so the box is grown
+     and the extra pulled back out of the layout. */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
 }
 .k-word > span {
   display: inline-block;
-  will-change: transform, opacity;
+  will-change: transform;
 }
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .k-line {
       view-timeline-name: --kline;
-      /* Words travel in from the sides; clip sideways so they cannot widen
-         the document, but leave vertical overflow alone for descenders. */
-      overflow-x: clip;
-      overflow-clip-margin: 1em;
     }
     .k-word > span {
-      opacity: 0;
-      transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(var(--sc));
-      /* Control point past 1.0 so each word overshoots a touch and settles,
-         instead of gliding politely to a stop. */
-      animation: kSlide cubic-bezier(0.24, 1.32, 0.44, 1) both;
+      /* Fully below the clip edge — no opacity fade. The mask does the work,
+         and a hard edge is what separates set type from a fade-in. */
+      transform: translateY(110%);
+      animation: kSlide cubic-bezier(0.22, 1, 0.36, 1) both;
       animation-timeline: --kline;
     }
   }
@@ -240,7 +241,6 @@ html[data-js] .in-view.is-visible {
 
 @keyframes kSlide {
   to {
-    opacity: 1;
     transform: none;
   }
 }

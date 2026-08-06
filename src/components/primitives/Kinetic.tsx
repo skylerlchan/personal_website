@@ -2,28 +2,22 @@ import { Fragment, type ElementType } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Words that slide, rotate and drop into place as you scroll past them.
+ * Words rising into place as you scroll past them.
  *
- * Deliberately per-word, not per-character: at body size, characters moving
- * independently read as broken text rather than as motion, and the line stops
- * being legible. Whole words carry the same energy and stay readable.
+ * Deliberately uniform: every word travels the same distance, in the same
+ * direction, on the same curve. An earlier version gave each word a random
+ * angle and side to arrive from, which read as chaos rather than character —
+ * with type, the restraint is the elegance. The only variation is *when* each
+ * word starts, which is what makes the line resolve left to right like it is
+ * being set rather than switched on.
  *
- * There is no idle animation. Once a line has arrived it is perfectly still —
- * type that never stops moving cannot be read. All the character is in the
- * arrival: each word comes from its own direction, at its own angle, and the
- * easing overshoots slightly so it settles rather than glides.
+ * Each word sits in an `overflow: hidden` box and starts fully below it, so it
+ * is genuinely clipped rather than faded — that hard edge is the whole effect.
  *
- * Offsets come from a deterministic hash of the word index, so the layout is
- * identical on server and client (no hydration mismatch) but no two words
- * travel the same path.
+ * Scroll-*linked*, not scroll-triggered: every word's position is a pure
+ * function of where its line sits in the viewport, so scrolling back up
+ * un-sets the type. Runs on one view timeline per line, no JS.
  */
-
-/** Cheap integer hash — stable across renders, varied across indices. */
-function noise(i: number, salt: number) {
-  const x = Math.sin((i + 1) * 12.9898 + salt * 78.233) * 43758.5453;
-  return x - Math.floor(x); // 0..1
-}
-
 export default function Kinetic({
   text,
   as: Tag = "p",
@@ -33,40 +27,32 @@ export default function Kinetic({
   text: string;
   as?: ElementType;
   className?: string;
+  /** Shifts the whole stagger later, so a caption trails its headline. */
   delay?: number;
 }) {
   const words = text.split(" ");
 
-  const START = 10 + delay * 16;
-  const SPAN = 34;
-  const WORD = 30;
+  // Reveal across the lower-middle of the line's pass through the viewport.
+  // A wide per-word window means neighbours overlap heavily, which is what
+  // makes it read as one sweep instead of a row of separate reveals.
+  const START = 14 + delay * 16;
+  const SPAN = 28;
+  const WORD = 26;
 
   return (
     <Tag className={cn("k-line", className)}>
       {words.map((w, i) => {
         const from = START + (i / Math.max(words.length - 1, 1)) * SPAN;
-
-        // Alternate the horizontal direction so the line assembles from both
-        // sides rather than drifting one way.
-        const dir = i % 2 === 0 ? -1 : 1;
-        const tx = (0.35 + noise(i, 1) * 0.75) * dir;      // em
-        const ty = 0.5 + noise(i, 2) * 0.7;                // em, always downward
-        const rot = (2.5 + noise(i, 3) * 7) * dir;         // deg
-        const sc = 0.88 + noise(i, 4) * 0.07;
-
         return (
+          // The space must be a sibling of the clipping box, not a child:
+          // inside an overflow-hidden inline-block a trailing space is
+          // trimmed and every word in the line runs together.
           <Fragment key={`${w}-${i}`}>
             <span className="k-word">
               <span
-                style={
-                  {
-                    "--tx": `${tx.toFixed(3)}em`,
-                    "--ty": `${ty.toFixed(3)}em`,
-                    "--rot": `${rot.toFixed(2)}deg`,
-                    "--sc": sc.toFixed(3),
-                    animationRange: `cover ${from.toFixed(1)}% cover ${(from + WORD).toFixed(1)}%`,
-                  } as React.CSSProperties
-                }
+                style={{
+                  animationRange: `cover ${from.toFixed(1)}% cover ${(from + WORD).toFixed(1)}%`,
+                }}
               >
                 {w}
               </span>
