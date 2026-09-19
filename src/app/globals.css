@@ -16,28 +16,27 @@
   --font-serif: var(--font-fraunces), ui-serif, "Iowan Old Style", Georgia, serif;
 }
 
-/* Monochrome. There is no accent hue — emphasis is carried by weight, scale
-   and contrast alone, which is the harder and quieter way to do it. `--accent`
-   still exists so nothing downstream breaks; it just resolves to ink. */
+/* Near-monochrome. Emphasis is carried by weight, scale and contrast; the one
+   hue is the safety orange on the arm's jaw tips, and the UI borrows it only
+   for pinpoints — the live dot, the focus ring. Paper is a warm off-white so
+   the arm's white shells still read as white against it. */
 :root {
-  --bg: #ffffff;
+  --bg: #f5f4f0;
   --fg: #0a0a0a;
   --muted: #6e6e6e;
   --subtle: #8c8c8c;
-  --accent: #0a0a0a;
-  --surface: #f4f4f4;
-  --border: #e3e3e3;
+  --accent: #ff5a1f;
+  --surface: #ecebe6;
+  --border: #dddcd6;
 }
 
-/* Dark — near-black with a blue cast, so the attractor's glow reads as light
-   emerging from the page rather than sitting on top of a grey card. */
 .dark {
-  --bg: #050505;
+  --bg: #0a0a0a;
   --fg: #f2f2f2;
   --muted: #909090;
   --subtle: #757575;
-  --accent: #f2f2f2;
-  --surface: #101010;
+  --accent: #ff6a30;
+  --surface: #141414;
   --border: #1e1e1e;
 }
 
@@ -72,7 +71,7 @@ h1.font-serif, h2.font-serif, h3.font-serif {
 }
 
 ::selection {
-  background-color: var(--accent);
+  background-color: var(--fg);
   color: var(--bg);
 }
 
@@ -294,10 +293,10 @@ html[data-js] .in-view.is-visible {
   display: none;
 }
 
-/* Anchor-jump polish: clear the fixed 56px navbar so linked sections
-   aren't tucked under it, and ease the jump. Applies on every device. */
+/* Anchor jumps land exactly on a stage — the v3 masthead floats over the
+   stage's own top padding, so there is no navbar to clear any more. */
 html {
-  scroll-padding-top: 3.75rem;
+  scroll-padding-top: 0;
 }
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -318,5 +317,56 @@ html {
   }
   main > section {
     scroll-snap-align: start;
+  }
+}
+
+/* ── The bench (v3) ───────────────────────────────────────────────────
+   Copy sits over the 3-D floor. In portrait the text block gets a scrim
+   rising from the bottom so the grid never fights the type; in landscape
+   the scrim comes in from the left behind the text column. The block eases
+   in as its stage becomes active and settles back when it leaves. */
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 56%;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    var(--bg) 0%,
+    color-mix(in srgb, var(--bg) 88%, transparent) 55%,
+    transparent 100%
+  );
+}
+@media (orientation: landscape) {
+  .stage::before {
+    inset: 0 auto 0 0;
+    width: min(50%, 38rem);
+    height: auto;
+    background: linear-gradient(
+      to right,
+      var(--bg) 0%,
+      color-mix(in srgb, var(--bg) 80%, transparent) 60%,
+      transparent 100%
+    );
+  }
+}
+.stage-copy {
+  position: relative;
+  opacity: 0.35;
+  transform: translateY(10px);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.stage[data-active] .stage-copy {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage-copy {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

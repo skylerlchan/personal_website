@@ -10,7 +10,31 @@ pnpm dev      # http://localhost:3000
 pnpm build    # production build
 ```
 
-## Architecture
+## v3 — the bench (current)
+
+`src/app/page.tsx` renders `src/sections/bench`: one three.js scene on a fixed canvas, with the copy as plain DOM scrolling over it. A five-axis desk arm in SO-101 proportions presents the site — each section is a *stage*, and the arm picks up a small working model of that project and holds it up while you read:
+
+| Stage | Prop | What it simulates |
+|---|---|---|
+| Now | swarm | agents orbiting inside a wireframe boundary |
+| Climate | globe | soot injected in the tropics, carried poleward (Brewer–Dobson) |
+| Flight | blimp | a buoyant hull on a tether, spring-damped around neutral |
+| Machines | — | the arm itself; tap toggles the gripper |
+| Markets | ribbon | the carry equity curve, drawn as you watch |
+| Sensing | cctv | a camera panning a kerb; the gap lights when it's in view |
+| Piano | piano | a phrase on 13 keys; tap makes it audible (Web Audio) |
+| Contact | — | handshake: reach toward the viewer, jaws open |
+
+- `src/components/visuals/arm/Arm.ts` — geometry, **analytic IK** (yaw + law-of-cosines shoulder/elbow + wrist pitch from a chosen tool angle), and a second-order servo model per joint (ω, ζ, velocity cap) so moves look like servos, not tweens.
+- `src/components/visuals/arm/ArmWorld.ts` — renderer, lights, floor grid, the target plane (a screen point → a spot on the bench in front of the base), the stage state machine (stow → swap → rise), pointer/touch/tilt input, theme sync, telemetry.
+- `src/components/visuals/arm/props.ts` — the props. Each group's origin is the point the gripper holds.
+- `src/components/visuals/ArmScene.tsx` — lazy-loads three.js, fades the canvas in on first frame, falls back to text-only if WebGL is missing.
+
+Framing is aspect-aware: the base sits bottom-left on a phone and bottom-right on a wide screen, so the arm sweeps diagonally to its anchor and is seen in profile. Touch anywhere and the tool point goes to your finger; the masthead shows live joint angles.
+
+Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 (attractor hero + deck) via the registry below.
+
+## Architecture (v1)
 
 The whole site is composed from a **section registry**: each section is a self-contained folder under `src/sections/`. Add a folder, register it in one file, you're done.
 
