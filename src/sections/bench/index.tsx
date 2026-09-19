@@ -2,24 +2,24 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import ArmScene from "@/components/visuals/ArmScene";
-import type { StageDef, Telemetry } from "@/components/visuals/arm/ArmWorld";
+import type { SceneDef, Telemetry } from "@/components/visuals/arm/RideWorld";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { SITE_CONFIG, MULTIPLIER_URL } from "@/lib/constants";
 
 /**
- * v3 — the bench.
+ * v3: the ride.
  *
- * One robot arm presents the whole site. Each section is a stage: the arm
- * picks up a small working model of that project and holds it up while you
- * read. The copy is the same six lines as v2; what changed is who is holding
- * them.
+ * Scrolling is the ride vehicle. It rolls past a row of lit platforms, one
+ * per section, each with its own animatronic arm holding a working model of
+ * that project. The copy is the same six lines as v2; what changed is that
+ * you now travel to them.
  *
  * Text is plain DOM over a fixed canvas, so scrolling, selection, search and
  * screen readers all work as they always did. The canvas ignores pointer
  * events; the world listens on `window`.
  */
 
-type Stage = StageDef & {
+type Stage = SceneDef & {
   id: string;
   label: string;
   eyebrow?: string;
@@ -30,90 +30,99 @@ type Stage = StageDef & {
   hint?: string;
 };
 
+/**
+ * Each stage has a set piece and a show colour: the platform's ring, light
+ * bars, spotlight and chase lights all take it, so every scene is its own
+ * room. The set kinds live in src/components/visuals/arm/sets.ts.
+ */
 const STAGES: Stage[] = [
   {
     id: "intro",
     label: "Intro",
-    prop: null,
-    pose: "track",
+    set: "attractor",
+    color: "#ffd2a0",
     eyebrow: SITE_CONFIG.location,
     title: "Skyler Chan",
-    meta: "I build systems that leave the lab — robotics, climate, and the infrastructure under language models.",
-    hint: "Touch anywhere. The arm follows.",
+    meta: "I build systems that leave the lab: robotics, climate, and the infrastructure under language models.",
+    hint: "Scroll to ride. Tap what you find.",
   },
   {
-    id: "now",
-    label: "Now",
-    prop: "swarm",
-    pose: "present",
+    id: "multiplier",
+    label: "Multiplier",
+    set: "swarm",
+    color: "#5b9cff",
     title: "Agents for asset managers, running inside their own cloud.",
-    meta: "Multiplier — founding engineer · YC P26",
+    meta: "Multiplier (YC Spring 2026) · founding engineer · 2026",
     href: MULTIPLIER_URL || undefined,
+    hint: "Tap the swarm to rebalance it.",
   },
   {
     id: "climate",
     label: "Climate",
-    prop: "globe",
-    pose: "present",
+    set: "globe",
+    color: "#7ae7ff",
     stat: "10×",
     title: "Black carbon cools the stratosphere better than the sulfate everyone models.",
-    meta: "Princeton HMEI — research assistant · 2024–25",
+    meta: "Princeton HMEI · research assistant · 2024 to 2025",
     href: "https://docs.google.com/presentation/d/1YvPFwQQvhCTwXfCP92kaV61j7GZU2b-I/edit",
-    hint: "Soot injected in the tropics, carried poleward.",
+    hint: "Tap the globe to inject at the equator.",
   },
   {
     id: "flight",
     label: "Flight",
-    prop: "blimp",
-    pose: "present",
+    set: "blimp",
+    color: "#b79cff",
     stat: "19×",
     title: "Buoyancy carried the load, so the motors did not have to.",
-    meta: "Hoverloon — blimp-drone hybrid · 2024–25",
+    meta: "Hoverloon · blimp-drone hybrid · 2024 to 2025",
+    hint: "Tap the blimp for a gust.",
   },
   {
     id: "machines",
     label: "Machines",
-    prop: null,
-    pose: "track",
-    grab: true,
+    set: "arms",
+    color: "#ff7a3d",
     title: "Teleoperation treated as a data pipeline rather than a control scheme.",
-    meta: "SO-101 arms · 2025",
-    hint: "This arm is the project. Tap to close the gripper.",
+    meta: "SO-101 leader → follower · 2025",
+    hint: "Hold to steer the leader. The follower is 280 ms behind.",
   },
   {
     id: "markets",
     label: "Markets",
-    prop: "ribbon",
-    pose: "present",
+    set: "market",
+    color: "#5dffb0",
     title: "Delta-neutral carry, harvesting the perpetual funding rate.",
-    meta: "Published, SSRN · 2023–24",
+    meta: "Published, SSRN · 2023 to 2024",
     href: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5292305",
+    hint: "Tap the tape for a funding shock.",
   },
   {
     id: "sensing",
     label: "Sensing",
-    prop: "cctv",
-    pose: "present",
+    set: "street",
+    color: "#ff5c7a",
     title: "Edge vision reading open NYC traffic cameras for free kerb space.",
     meta: "LastCurb · 2024",
     href: "https://github.com/skylerlchan/LastCurb",
+    hint: "Tap the camera to send a car away.",
   },
   {
     id: "piano",
     label: "Piano",
-    prop: "piano",
-    pose: "present",
+    set: "piano",
+    color: "#ff5ee0",
     title: "Eight recordings, Bach to Hiromi.",
     meta: "Piano · The Gambler, Hiromi",
     href: "https://www.youtube.com/watch?v=bbVHVRnYNCc",
-    hint: "Tap to hear it.",
+    hint: "Tap the piano to hear it.",
   },
   {
     id: "contact",
     label: "Contact",
-    prop: null,
-    pose: "handshake",
+    set: "gate",
+    color: "#ffd2a0",
     title: "Open to interesting problems.",
+    hint: "End of the ride.",
   },
 ];
 
@@ -126,10 +135,12 @@ const LINKS = [
 
 const MONO = "font-mono text-[0.625rem] uppercase tracking-[0.22em] text-muted";
 
+const SCENES: SceneDef[] = STAGES.map((s) => ({ set: s.set, color: s.color }));
+
 export default function Bench() {
   const [active, setActive] = useState(0);
   const hudRef = useRef<HTMLDivElement>(null);
-  const stage = STAGES[active];
+  const scoreRef = useRef<HTMLSpanElement>(null);
 
   // Which section is under the middle of the viewport.
   useEffect(() => {
@@ -150,31 +161,34 @@ export default function Bench() {
   const onTelemetry = useCallback((t: Telemetry) => {
     const el = hudRef.current;
     if (!el) return;
-    const j = t.joints.map((a) => (a < 0 ? "−" : "+") + Math.abs(a).toFixed(0).padStart(3, "0") + "°");
-    el.textContent = `θ ${j.join(" ")} · grip ${(t.grip * 100).toFixed(0).padStart(2, "0")} · ${t.fps} fps`;
+    el.textContent = `sc ${String(t.scene).padStart(2, "0")} · ${t.readout} · ${t.fps} fps · ${t.quality}`;
+    if (scoreRef.current) scoreRef.current.textContent = `found ${t.found} / ${t.total}`;
   }, []);
-
-  const stageDef: StageDef = { prop: stage.prop, pose: stage.pose, grab: stage.grab };
 
   return (
     <>
-      <ArmScene stage={stageDef} onTelemetry={onTelemetry} />
+      <ArmScene scenes={SCENES} onTelemetry={onTelemetry} />
+      {/* Windshield: darkens the corners so the frame reads as a vehicle. */}
+      <div aria-hidden className="vignette pointer-events-none fixed inset-0 z-[5]" />
 
       {/* Masthead */}
       <header className="pointer-events-none fixed inset-x-0 top-0 z-20 flex items-start justify-between px-5 pt-4 sm:px-8 sm:pt-5">
-        <div className="pointer-events-auto">
+        <div className="pointer-events-auto min-w-0 flex-1 overflow-hidden pr-4">
           <a href="#intro" className={`${MONO} text-foreground`}>
             Skyler Chan
           </a>
           <div
             ref={hudRef}
             aria-hidden
-            className="mt-1.5 whitespace-nowrap font-mono text-[0.5625rem] tracking-[0.08em] text-subtle tabular-nums"
+            className="mt-1.5 truncate font-mono text-[0.5625rem] tracking-[0.08em] text-subtle tabular-nums"
           >
-            θ +000° +000° +000° +000° +000° · grip 00 · 60 fps
+            sc 00 · boarding · 60 fps
           </div>
         </div>
-        <div className="pointer-events-auto -mr-2 -mt-2">
+        <div className="pointer-events-auto -mr-2 -mt-2 flex shrink-0 items-center gap-3">
+          <span ref={scoreRef} className={`${MONO} tabular-nums`}>
+            found 0 / 9
+          </span>
           <ThemeToggle />
         </div>
       </header>

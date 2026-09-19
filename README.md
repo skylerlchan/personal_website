@@ -10,29 +10,30 @@ pnpm dev      # http://localhost:3000
 pnpm build    # production build
 ```
 
-## v3 — the bench (current)
+## v3 — the ride (current)
 
-`src/app/page.tsx` renders `src/sections/bench`: one three.js scene on a fixed canvas, with the copy as plain DOM scrolling over it. A five-axis desk arm in SO-101 proportions presents the site — each section is a *stage*, and the arm picks up a small working model of that project and holds it up while you read:
+`src/app/page.tsx` renders `src/sections/bench`: a three.js **dark ride** on a fixed canvas, with the copy as plain DOM scrolling over it. Scrolling is the ride vehicle. It rolls along a track past nine lit platforms, one per section, each a scene-scale working model of that project in its own show colour. The spotlight, platform ring, light bars and the chase lights ahead all take the scene's colour; the camera turns its head toward the platform, dwells, then glides on under an archway. Bloom, a mirror floor and dust in the beams sell the theatre.
 
-| Stage | Prop | What it simulates |
-|---|---|---|
-| Now | swarm | agents orbiting inside a wireframe boundary |
-| Climate | globe | soot injected in the tropics, carried poleward (Brewer–Dobson) |
-| Flight | blimp | a buoyant hull on a tether, spring-damped around neutral |
-| Machines | — | the arm itself; tap toggles the gripper |
-| Markets | ribbon | the carry equity curve, drawn as you watch |
-| Sensing | cctv | a camera panning a kerb; the gap lights when it's in view |
-| Piano | piano | a phrase on 13 keys; tap makes it audible (Web Audio) |
-| Contact | — | handshake: reach toward the viewer, jaws open |
+| Scene | Set piece | What it simulates | Tap it and… |
+|---|---|---|---|
+| Intro | attractor | 16,000 particles integrating the Lorenz system (RK2) live | ρ swells to 50 and settles |
+| Now | swarm | 180 agents orbiting a core inside a wireframe boundary | they scatter and regroup |
+| Climate | globe | 5,000 stratospheric parcels injected in the tropics, carried poleward | a fresh injection |
+| Flight | blimp | a tethered blimp flying laps, spring-damped altitude | a gust; rotors fight it |
+| Machines | arms | SO-101 leader → follower teleop; the follower replays the leader's joints 280 ms late | hold to steer the leader |
+| Markets | market | a live funding-rate tape; equity accrues the carry | a funding shock |
+| Sensing | street | a kerb with cars arriving and leaving; a camera pans and locks on free bays | the nearest car pulls out |
+| Piano | piano | two octaves playing a phrase, notes rising off the keys | audible (Web Audio) |
+| Contact | gate | the exit ring | it pulses |
 
-- `src/components/visuals/arm/Arm.ts` — geometry, **analytic IK** (yaw + law-of-cosines shoulder/elbow + wrist pitch from a chosen tool angle), and a second-order servo model per joint (ω, ζ, velocity cap) so moves look like servos, not tweens.
-- `src/components/visuals/arm/ArmWorld.ts` — renderer, lights, floor grid, the target plane (a screen point → a spot on the bench in front of the base), the stage state machine (stow → swap → rise), pointer/touch/tilt input, theme sync, telemetry.
-- `src/components/visuals/arm/props.ts` — the props. Each group's origin is the point the gripper holds.
-- `src/components/visuals/ArmScene.tsx` — lazy-loads three.js, fades the canvas in on first frame, falls back to text-only if WebGL is missing.
+Hits count toward **found n / 9** in the masthead, which also shows each scene's live readout (ρ, parcels past 50°, funding rate, joint angles…). Drag sideways (or tilt, on Android) to look around from the vehicle.
 
-Framing is aspect-aware: the base sits bottom-left on a phone and bottom-right on a wide screen, so the arm sweeps diagonally to its anchor and is seen in profile. Touch anywhere and the tool point goes to your finger; the masthead shows live joint angles.
+- `src/components/visuals/arm/RideWorld.ts` — track (Catmull-Rom), platforms, show lighting, chase lights, mirror floor, bloom, the vehicle camera (per-segment dwell easing, sub-stepped spring, bank on curves, bob at speed), head-turn input, tap raycasting, telemetry, **adaptive quality**.
+- `src/components/visuals/arm/sets.ts` — the nine set pieces. Each lives in its platform's frame (+Z toward the rider) and exposes `update / poke / steer? / readout`.
+- `src/components/visuals/arm/Arm.ts` — the five-axis arm: analytic IK and a servo model per joint.
+- `src/components/visuals/ArmScene.tsx` — lazy-loads the ride (one ~160 KB gz chunk after first paint), fades the canvas in, falls back to text-only without WebGL.
 
-Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 (attractor hero + deck) via the registry below.
+**Devices.** Phones start one quality rung down (no mirror, pixel ratio ≤ 1.5); if frames keep missing ~38 fps the world steps down again (lower DPR → lighter bloom → no post/shadows). `?q=0..3` pins a rung for checking a device by hand; `window.__ride` is exposed for poking at scenes from devtools. Sets only simulate while their platform is near the vehicle. Dark is the default theme; light mode is a white gallery of the same scenes. Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 (attractor hero + deck) via the registry below.
 
 ## Architecture (v1)
 

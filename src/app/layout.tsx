@@ -27,13 +27,13 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_CONFIG.url),
-  title: `${SITE_CONFIG.name} — ${SITE_CONFIG.role}`,
+  title: SITE_CONFIG.name,
   description: SITE_CONFIG.description,
   authors: [{ name: SITE_CONFIG.name }],
   creator: SITE_CONFIG.name,
   icons: { icon: { url: "/favicon.svg", type: "image/svg+xml" } },
   openGraph: {
-    title: `${SITE_CONFIG.name} — ${SITE_CONFIG.role}`,
+    title: SITE_CONFIG.name,
     description: SITE_CONFIG.description,
     url: SITE_CONFIG.url,
     siteName: SITE_CONFIG.name,
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_CONFIG.name} — ${SITE_CONFIG.role}`,
+    title: SITE_CONFIG.name,
     description: SITE_CONFIG.description,
     images: ["/images/og-image.jpg"],
     creator: "@SkylerChan17",
@@ -78,7 +78,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.classList.toggle('dark',d);document.documentElement.setAttribute('data-js','')}catch(e){}})()`,
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':true;document.documentElement.classList.toggle('dark',d);document.documentElement.setAttribute('data-js','')}catch(e){}})()`,
           }}
         />
         <script

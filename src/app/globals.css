@@ -370,3 +370,14 @@ html {
     transition: none;
   }
 }
+
+/* The ride vehicle: vertical touch is the scroll, horizontal is a head turn
+   handled in JS, so tell the browser not to claim sideways gestures. */
+body {
+  touch-action: pan-y;
+}
+
+/* The vehicle's windshield: a soft vignette over the ride, under the copy. */
+.vignette {
+  background: radial-gradient(ellipse 80% 70% at 50% 45%, transparent 55%, color-mix(in srgb, var(--bg) 75%, transparent) 100%);
+}
