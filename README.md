@@ -10,18 +10,26 @@ pnpm dev      # http://localhost:3000
 pnpm build    # production build
 ```
 
-## v3, the screen (current)
+## v3, the page with a select screen (current)
 
-`src/app/page.tsx` renders `src/sections/corridor`: one black screen in three.js. The camera never moves. One station's words are up at a time, centred, set in the page's own Geist (drawn to a canvas, stretched over a subdivided plane, bent by a vertex shader): a year, a name, and the result figure very large and very dim behind them. Every word carries the same slow ripple and a faint cylindrical curve. Stepping to the next station is the same transition each time: the words warp harder and thin out, the next set warps in and settles. The view goes through a faint lens (a little barrel warp, a hair of colour fringing, a vignette). Nothing depends on where the pointer is.
+`src/app/page.tsx` renders `src/sections/page`. The copy is plain HTML (headings, sentences, numbers, links) so a person, a crawler or a model reads the same thing; `public/llms.txt` carries the same facts as Markdown. The other half is a **roster**, the way a game switches characters: one three.js model of a thing he built stands on a platform with a small idle loop, and whichever entry you are reading (or pick from the roster) is the one that's up. On a phone the platform sits at the top and stays while the entries scroll under it; on a wide screen it holds the right column.
 
-Stations: intro · 2023 BTC funding carry (16.0%) · 2024 LastCurb (4 / 4) · 2024–25 stratospheric black carbon (10×) · 2024–25 Hoverloon (19×) · 2025 SO-101 teleop (280 ms) · 2026 Multiplier ($208K) · next.
+| Roster | Model |
+|---|---|
+| Skyler | a Lorenz attractor, integrated live |
+| Multiplier | the client's cloud, the runtime in it, the data it draws on |
+| SO-101 | leader and follower arms, reaching slowly (analytic IK, servo model) |
+| Hoverloon | the craft hovering on its tether, rotors idling |
+| Black carbon | a globe with its soot shell, turning |
+| LastCurb | the camera, and the one real frame it saw, on a monitor |
+| Carry | 3.3 years of real BTC funding (`public/data/btc-funding.json`) as bars, with the equity they compound to |
 
-- `src/components/visuals/corridor/text.ts`: words as meshes from `--font-geist` / `--font-geist-mono`, with the bend + ripple shader.
-- `src/components/visuals/corridor/CorridorWorld.ts`: the screen, the one transition, the lens pass, **adaptive quality** (`?q=0..3` pins a rung; `window.__screen` for devtools).
-- `src/sections/corridor/index.tsx`: one snap point per station, the same words for screen readers, the links pinned to the bottom edge, and the two buttons (arrow keys, space and page keys work too).
-- `src/components/visuals/CorridorScene.tsx`: lazy-loads the world after first paint; text-only without WebGL.
+- `src/components/visuals/roster/RosterWorld.ts`: platform, light, the swap (leaving drops, arriving pops), theme sync, pause when off-screen. Nothing reacts to the pointer.
+- `src/components/visuals/roster/models.ts`: the seven models. `Arm.ts`: the five-axis arm.
+- `src/components/visuals/Roster.tsx`: lazy-loads three.js after first paint; the page reads fine without it.
+- `src/sections/page/index.tsx`: the copy, the roster row, and the selection: an IntersectionObserver on the entries, plus picks that scroll to the entry.
 
-Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 via the registry below.
+Copy rules: his own sentences, no em dashes, "Multiplier" never "WithAI". Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 via the registry below.
 
 ## Architecture (v1)
 

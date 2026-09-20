@@ -1,0 +1,21 @@
+# Skyler Chan
+
+> Princeton, NJ. I build systems that leave the lab: robotics, climate, and the infrastructure under language models.
+
+Site: https://skyler-chan.com · Email: skylerlchan@gmail.com · GitHub: https://github.com/skylerlchan · LinkedIn: https://www.linkedin.com/in/skylerchan · X: https://x.com/SkylerChan17
+
+## Work
+
+- **Multiplier (YC Spring 2026), founding engineer, Jan to Sep 2026.** Agents for asset managers, running inside their own cloud. Owned product for 6 enterprise clients: user research, usage analytics, roadmap scoping, and the company's first paid product. $208K ARR, from zero, in eight months.
+
+## Projects
+
+- **SO-101 teleoperation, 2025, Princeton Robotics Club.** Teleoperation treated as a data pipeline rather than a control scheme: a leader arm's joint stream, replayed by a follower.
+- **Hoverloon, 2024 to 2025, Princeton Robotics Club (tech lead).** A blimp-drone hybrid. Buoyant lift gave 19× the drone's payload capacity.
+- **Stratospheric black carbon, 2024 to 2025, Princeton HMEI (research assistant).** Solar radiation management research. Stratospheric black carbon aerosols are 10× more cooling-effective per unit mass than reflective sulfate. Deck: https://docs.google.com/presentation/d/1YvPFwQQvhCTwXfCP92kaV61j7GZU2b-I/edit
+- **LastCurb, 2024.** Edge vision reading open NYC traffic cameras for free kerb space. Real-time urban sensing on commodity hardware, no sensors installed. Code: https://github.com/skylerlchan/LastCurb
+- **BTC funding carry, 2023 to 2024, published on SSRN June 2025.** "Leveraged BTC Funding Carry Algorithm: A Delta-Neutral Long-Spot/Short-Future Strategy." 3× leveraged, delta-neutral long-spot, short-perpetual strategy harvesting the funding rate. Backtested on three years of tick-level data: 16.0% annualized, 6.1 Sharpe, under 2% max drawdown. 500+ downloads. Paper: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5292305 · Code: https://github.com/skylerlchan/Structured-Basis-Divergence-Arbitrage
+
+## Elsewhere
+
+- Piano recordings: https://www.youtube.com/watch?v=bbVHVRnYNCc

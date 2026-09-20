@@ -304,19 +304,6 @@ html {
   }
 }
 
-/* ── One station per screen ────────────────────────────────────────────
-   Every station is a snap point on every device, so a scroll, a swipe, a
-   key or a button all land on exactly one screen. `mandatory`, not
-   `proximity`: there is nothing between stations to stop on. */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-snap-type: y mandatory;
-  }
-}
-main > section {
-  scroll-snap-align: start;
-}
-
 /* Taps should fire at once (no double-tap zoom wait); pans stay native. */
 body {
   touch-action: manipulation;
