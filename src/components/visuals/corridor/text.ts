@@ -10,11 +10,14 @@ import * as THREE from "three";
 const VS = /* glsl */ `
 uniform float uTime;
 uniform float uRipple;
+uniform float uBend;
 varying vec2 vUv;
 void main() {
   vUv = uv;
   vec3 p = position;
-  // One slow wave along the word, a fainter one across it. Never faster.
+  // The surface is a gentle cylinder around the viewer: the ends of a long
+  // word fall away. Then one slow wave along it, a fainter one across it.
+  p.z -= uBend * p.x * p.x;
   p.z += uRipple * (0.5 * sin(p.x * 1.4 + uTime * 0.45) + 0.2 * sin(p.y * 3.0 - uTime * 0.3));
   gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
 }`;
@@ -109,6 +112,7 @@ export class Word {
         uOpacity: { value: 1 },
         uTime: { value: 0 },
         uRipple: { value: style.ripple ?? 0 },
+        uBend: { value: 0.03 },
       },
       transparent: true,
       depthWrite: false,
@@ -118,6 +122,9 @@ export class Word {
   }
   set opacity(v: number) {
     this.material.uniforms.uOpacity.value = v;
+  }
+  set ripple(v: number) {
+    this.material.uniforms.uRipple.value = v;
   }
   tick(t: number) {
     this.material.uniforms.uTime.value = t;

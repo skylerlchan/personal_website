@@ -10,26 +10,18 @@ pnpm dev      # http://localhost:3000
 pnpm build    # production build
 ```
 
-## v3, the corridor (current)
+## v3, the screen (current)
 
-`src/app/page.tsx` renders `src/sections/corridor`: one straight black hall in three.js. The words are the objects. Each station is a few standing words set in Geist (drawn to a canvas, stretched over a subdivided plane so a vertex shader can run one slow ripple through them), a number painted on the floor before the words (perspective warps it as you pass over), and the machine it refers to, at rest under one pool of light. Scrolling is a slow dolly forward. The whole view is seen through a faint lens: a little barrel warp, a hair of colour fringing, a vignette. Nothing else moves faster than a breath.
+`src/app/page.tsx` renders `src/sections/corridor`: one black screen in three.js. The camera never moves. One station's words are up at a time, centred, set in the page's own Geist (drawn to a canvas, stretched over a subdivided plane, bent by a vertex shader): a year, a name, and the result figure very large and very dim behind them. Every word carries the same slow ripple and a faint cylindrical curve. Stepping to the next station is the same transition each time: the words warp harder and thin out, the next set warps in and settles. The view goes through a faint lens (a little barrel warp, a hair of colour fringing, a vignette). Nothing depends on where the pointer is.
 
-| Station | Floor | Machine, at rest |
-|---|---|---|
-| 2023 · BTC funding carry | 16.0% | the real funding series (`public/data/btc-funding.json`, 3.3 yrs) as bars, with the equity it compounds to |
-| 2024 · LastCurb | 4 / 4 | the camera, and the one real frame it saw, on a monitor |
-| 2024–25 · Stratospheric black carbon | 10× | a globe with its soot shell, turning once every long while |
-| 2024–25 · Hoverloon | 19× | the craft hovering on its tether, rotors idling |
-| 2025 · SO-101 teleop | 280 ms | leader and follower holding the same slow pose |
-| 2026 · Multiplier | $208K | the client's cloud, the runtime in it, the data it draws on |
+Stations: intro · 2023 BTC funding carry (16.0%) · 2024 LastCurb (4 / 4) · 2024–25 stratospheric black carbon (10×) · 2024–25 Hoverloon (19×) · 2025 SO-101 teleop (280 ms) · 2026 Multiplier ($208K) · next.
 
-- `src/components/visuals/corridor/text.ts`: words as meshes, from the page's own fonts (`--font-geist`, `--font-geist-mono`), with the ripple shader.
-- `src/components/visuals/corridor/CorridorWorld.ts`: hall, mirror floor, grid, lens pass, the dolly, station layout per orientation, distance fades, **adaptive quality** (`?q=0..3` pins a rung; `window.__hall` for devtools).
-- `src/components/visuals/corridor/props.ts`: the machines. `Arm.ts`: the five-axis arm (analytic IK, servo model).
-- `src/sections/corridor/index.tsx`: scroll length, the same words for screen readers, and the links, pinned to the bottom edge.
+- `src/components/visuals/corridor/text.ts`: words as meshes from `--font-geist` / `--font-geist-mono`, with the bend + ripple shader.
+- `src/components/visuals/corridor/CorridorWorld.ts`: the screen, the one transition, the lens pass, **adaptive quality** (`?q=0..3` pins a rung; `window.__screen` for devtools).
+- `src/sections/corridor/index.tsx`: one snap point per station, the same words for screen readers, the links pinned to the bottom edge, and the two buttons (arrow keys, space and page keys work too).
 - `src/components/visuals/CorridorScene.tsx`: lazy-loads the world after first paint; text-only without WebGL.
 
-Phones start one quality rung down (no mirror, DPR ≤ 1.5) and step down further if frames miss ~38 fps. Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 via the registry below.
+Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 via the registry below.
 
 ## Architecture (v1)
 

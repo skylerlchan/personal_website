@@ -304,20 +304,17 @@ html {
   }
 }
 
-/* ── Mobile: native section-snap (Cici-style smoothness) ───────────────
-   Touch devices only — desktop pointer/wheel users keep free scroll —
-   and only when motion is welcome. `proximity` (not `mandatory`) is the
-   key: sections taller than the viewport (About, Work, Contact) stay
-   fully scrollable — it snaps as you near a boundary, never traps you
-   mid-section. The browser's compositor drives the snap off the main
-   thread, so it stays buttery smooth no matter what JS is running. */
-@media (pointer: coarse) and (prefers-reduced-motion: no-preference) {
+/* ── One station per screen ────────────────────────────────────────────
+   Every station is a snap point on every device, so a scroll, a swipe, a
+   key or a button all land on exactly one screen. `mandatory`, not
+   `proximity`: there is nothing between stations to stop on. */
+@media (prefers-reduced-motion: no-preference) {
   html {
-    scroll-snap-type: y proximity;
+    scroll-snap-type: y mandatory;
   }
-  main > section {
-    scroll-snap-align: start;
-  }
+}
+main > section {
+  scroll-snap-align: start;
 }
 
 /* Taps should fire at once (no double-tap zoom wait); pans stay native. */
