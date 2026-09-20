@@ -320,52 +320,6 @@ html {
   }
 }
 
-/* ── The montage (v3) ─────────────────────────────────────────────────
-   Copy sits over the 3-D bench. Portrait gets a scrim rising from the
-   bottom so the type never fights the render; landscape gets it from the
-   left. Chapter copy eases in when its chapter is under the viewport, and
-   the result stamps in the moment the build runs. */
-.stage::before {
-  content: "";
-  display: block;
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  margin-bottom: -100svh;
-  pointer-events: none;
-  background: linear-gradient(to top, color-mix(in srgb, var(--bg) 92%, transparent) 0%, color-mix(in srgb, var(--bg) 70%, transparent) 28%, transparent 48%);
-}
-@media (orientation: landscape) {
-  .stage::before {
-    background: linear-gradient(to right, color-mix(in srgb, var(--bg) 92%, transparent) 0%, color-mix(in srgb, var(--bg) 70%, transparent) 30%, transparent 55%);
-  }
-}
-.chapter {
-  opacity: 0.25;
-  transform: translateY(8px);
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.chapter[data-active] {
-  opacity: 1;
-  transform: none;
-}
-.result {
-  opacity: 0;
-  transform: scale(1.08);
-  transform-origin: left bottom;
-  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.result[data-show] {
-  opacity: 1;
-  transform: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .chapter, .result {
-    transition: none;
-    transform: none;
-  }
-}
-
 /* Taps should fire at once (no double-tap zoom wait); pans stay native. */
 body {
   touch-action: manipulation;

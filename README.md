@@ -10,25 +10,24 @@ pnpm dev      # http://localhost:3000
 pnpm build    # production build
 ```
 
-## v3, the montage (current)
+## v3, the corridor (current)
 
-`src/app/page.tsx` renders `src/sections/story`: a builder's montage in three.js. Six things he built, in the order he built them, on one bench. Every chapter plays the same four beats as you scroll: empty bench, the parts arrive in order, it switches on and runs, the result stamps in. Then it sinks away and the bench is empty for the next one. The copy is labels, numbers and receipts; the builds do the talking.
+`src/app/page.tsx` renders `src/sections/corridor`: one straight black hall in three.js. The words are the objects. Each station is a few standing words set in Geist (drawn to a canvas, stretched over a subdivided plane so a vertex shader can run one slow ripple through them), a number painted on the floor before the words (perspective warps it as you pass over), and the machine it refers to, at rest under one pool of light. Scrolling is a slow dolly forward. The whole view is seen through a faint lens: a little barrel warp, a hair of colour fringing, a vignette. Nothing else moves faster than a breath.
 
-| Year | Build | What runs when it's on | Result |
-|---|---|---|---|
-| 2023 | BTC funding carry | 3× carry on 3.3 years of **real** BTC perp funding (`public/data/btc-funding.json`, Hyperliquid hourly summed to 8h) | 16.0% annualized, 6.1 Sharpe |
-| 2024 | LastCurb | the real NYC DOT frame lands on the monitor; a sweep, then four detections | 4 / 4 bays |
-| 2024–25 | Stratospheric black carbon | an injector aircraft seeds the tropics; parcels drift poleward; a gauge reads efficacy (tap: swap for sulfate) | 10× |
-| 2024–25 | Hoverloon | the envelope inflates, buoyancy takes the payload, the rotors idle down | 19× |
-| 2025 | SO-101 teleop | leader traces a path (or your finger, long-press); the follower replays the joint stream 280 ms later | 280 ms |
-| 2026 | Multiplier | agents shuttle between the runtime and the firm's data, never leaving the client's cloud; ARR climbs | $208K |
+| Station | Floor | Machine, at rest |
+|---|---|---|
+| 2023 · BTC funding carry | 16.0% | the real funding series (`public/data/btc-funding.json`, 3.3 yrs) as bars, with the equity it compounds to |
+| 2024 · LastCurb | 4 / 4 | the camera, and the one real frame it saw, on a monitor |
+| 2024–25 · Stratospheric black carbon | 10× | a globe with its soot shell, turning once every long while |
+| 2024–25 · Hoverloon | 19× | the craft hovering on its tether, rotors idling |
+| 2025 · SO-101 teleop | 280 ms | leader and follower holding the same slow pose |
+| 2026 · Multiplier | $208K | the client's cloud, the runtime in it, the data it draws on |
 
-The intro is 14,000 particles resolving from dust into the Lorenz attractor; the outro is the links.
-
-- `src/components/visuals/story/StoryWorld.ts`: bench, lights, mirror floor, bloom, the scroll director (chapter + progress → beats), the switch, taps, long-press steering, **adaptive quality** (`?q=0..3` pins a rung; `window.__story` for devtools).
-- `src/components/visuals/story/builds.ts`: the six builds as part lists (fly-in order, tumble) plus their running behaviour, `poke()`, `result()`, `readout()`.
-- `src/components/visuals/story/Arm.ts`: the five-axis arm, analytic IK and servo model.
-- `src/components/visuals/StoryScene.tsx`: lazy-loads the world after first paint; text-only without WebGL.
+- `src/components/visuals/corridor/text.ts`: words as meshes, from the page's own fonts (`--font-geist`, `--font-geist-mono`), with the ripple shader.
+- `src/components/visuals/corridor/CorridorWorld.ts`: hall, mirror floor, grid, lens pass, the dolly, station layout per orientation, distance fades, **adaptive quality** (`?q=0..3` pins a rung; `window.__hall` for devtools).
+- `src/components/visuals/corridor/props.ts`: the machines. `Arm.ts`: the five-axis arm (analytic IK, servo model).
+- `src/sections/corridor/index.tsx`: scroll length, the same words for screen readers, and the links, pinned to the bottom edge.
+- `src/components/visuals/CorridorScene.tsx`: lazy-loads the world after first paint; text-only without WebGL.
 
 Phones start one quality rung down (no mirror, DPR ≤ 1.5) and step down further if frames miss ~38 fps. Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 via the registry below.
 

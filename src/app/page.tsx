@@ -1,12 +1,12 @@
-import Story from "@/sections/story";
+import Corridor from "@/sections/corridor";
 
 /**
- * v3: a builder's montage. See src/sections/story.
+ * v3: the corridor. See src/sections/corridor.
  *
  * Earlier versions are one import away:
  *   v2, words alone:        import Words from "@/sections/words"
  *   v1, attractor + deck:   the registry in src/sections/index.ts
  */
 export default function Home() {
-  return <Story />;
+  return <Corridor />;
 }
