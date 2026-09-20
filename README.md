@@ -10,30 +10,27 @@ pnpm dev      # http://localhost:3000
 pnpm build    # production build
 ```
 
-## v3 — the ride (current)
+## v3, the montage (current)
 
-`src/app/page.tsx` renders `src/sections/bench`: a three.js **dark ride** on a fixed canvas, with the copy as plain DOM scrolling over it. Scrolling is the ride vehicle. It rolls along a track past nine lit platforms, one per section, each a scene-scale working model of that project in its own show colour. The spotlight, platform ring, light bars and the chase lights ahead all take the scene's colour; the camera turns its head toward the platform, dwells, then glides on under an archway. Bloom, a mirror floor and dust in the beams sell the theatre.
+`src/app/page.tsx` renders `src/sections/story`: a builder's montage in three.js. Six things he built, in the order he built them, on one bench. Every chapter plays the same four beats as you scroll: empty bench, the parts arrive in order, it switches on and runs, the result stamps in. Then it sinks away and the bench is empty for the next one. The copy is labels, numbers and receipts; the builds do the talking.
 
-| Scene | Set piece | What it simulates | Tap it and… |
+| Year | Build | What runs when it's on | Result |
 |---|---|---|---|
-| Intro | attractor | 16,000 particles integrating the Lorenz system (RK2) live | ρ swells to 50 and settles |
-| Now | swarm | 180 agents orbiting a core inside a wireframe boundary | they scatter and regroup |
-| Climate | globe | 5,000 stratospheric parcels injected in the tropics, carried poleward | a fresh injection |
-| Flight | blimp | a tethered blimp flying laps, spring-damped altitude | a gust; rotors fight it |
-| Machines | arms | SO-101 leader → follower teleop; the follower replays the leader's joints 280 ms late | hold to steer the leader |
-| Markets | market | a live funding-rate tape; equity accrues the carry | a funding shock |
-| Sensing | street | a kerb with cars arriving and leaving; a camera pans and locks on free bays | the nearest car pulls out |
-| Piano | piano | two octaves playing a phrase, notes rising off the keys | audible (Web Audio) |
-| Contact | gate | the exit ring | it pulses |
+| 2023 | BTC funding carry | 3× carry on 3.3 years of **real** BTC perp funding (`public/data/btc-funding.json`, Hyperliquid hourly summed to 8h) | 16.0% annualized, 6.1 Sharpe |
+| 2024 | LastCurb | the real NYC DOT frame lands on the monitor; a sweep, then four detections | 4 / 4 bays |
+| 2024–25 | Stratospheric black carbon | an injector aircraft seeds the tropics; parcels drift poleward; a gauge reads efficacy (tap: swap for sulfate) | 10× |
+| 2024–25 | Hoverloon | the envelope inflates, buoyancy takes the payload, the rotors idle down | 19× |
+| 2025 | SO-101 teleop | leader traces a path (or your finger, long-press); the follower replays the joint stream 280 ms later | 280 ms |
+| 2026 | Multiplier | agents shuttle between the runtime and the firm's data, never leaving the client's cloud; ARR climbs | $208K |
 
-Hits count toward **found n / 9** in the masthead, which also shows each scene's live readout (ρ, parcels past 50°, funding rate, joint angles…). Drag sideways (or tilt, on Android) to look around from the vehicle.
+The intro is 14,000 particles resolving from dust into the Lorenz attractor; the outro is the links.
 
-- `src/components/visuals/arm/RideWorld.ts` — track (Catmull-Rom), platforms, show lighting, chase lights, mirror floor, bloom, the vehicle camera (per-segment dwell easing, sub-stepped spring, bank on curves, bob at speed), head-turn input, tap raycasting, telemetry, **adaptive quality**.
-- `src/components/visuals/arm/sets.ts` — the nine set pieces. Each lives in its platform's frame (+Z toward the rider) and exposes `update / poke / steer? / readout`.
-- `src/components/visuals/arm/Arm.ts` — the five-axis arm: analytic IK and a servo model per joint.
-- `src/components/visuals/ArmScene.tsx` — lazy-loads the ride (one ~160 KB gz chunk after first paint), fades the canvas in, falls back to text-only without WebGL.
+- `src/components/visuals/story/StoryWorld.ts`: bench, lights, mirror floor, bloom, the scroll director (chapter + progress → beats), the switch, taps, long-press steering, **adaptive quality** (`?q=0..3` pins a rung; `window.__story` for devtools).
+- `src/components/visuals/story/builds.ts`: the six builds as part lists (fly-in order, tumble) plus their running behaviour, `poke()`, `result()`, `readout()`.
+- `src/components/visuals/story/Arm.ts`: the five-axis arm, analytic IK and servo model.
+- `src/components/visuals/StoryScene.tsx`: lazy-loads the world after first paint; text-only without WebGL.
 
-**Devices.** Phones start one quality rung down (no mirror, pixel ratio ≤ 1.5); if frames keep missing ~38 fps the world steps down again (lower DPR → lighter bloom → no post/shadows). `?q=0..3` pins a rung for checking a device by hand; `window.__ride` is exposed for poking at scenes from devtools. Sets only simulate while their platform is near the vehicle. Dark is the default theme; light mode is a white gallery of the same scenes. Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 (attractor hero + deck) via the registry below.
+Phones start one quality rung down (no mirror, DPR ≤ 1.5) and step down further if frames miss ~38 fps. Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 via the registry below.
 
 ## Architecture (v1)
 

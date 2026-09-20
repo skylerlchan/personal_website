@@ -246,6 +246,11 @@ export class Arm {
     this.jaw.rotation.z = -this.grip * 0.55;
   }
 
+  /** The joint groups, base to wrist: what assembles, in order. */
+  jointGroups() {
+    return this.joints.slice();
+  }
+
   /** World position of the point between the jaws. */
   toolPosition(out: THREE.Vector3) {
     return this.tool.getWorldPosition(out);

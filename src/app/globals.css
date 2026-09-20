@@ -320,64 +320,53 @@ html {
   }
 }
 
-/* ── The bench (v3) ───────────────────────────────────────────────────
-   Copy sits over the 3-D floor. In portrait the text block gets a scrim
-   rising from the bottom so the grid never fights the type; in landscape
-   the scrim comes in from the left behind the text column. The block eases
-   in as its stage becomes active and settles back when it leaves. */
+/* ── The montage (v3) ─────────────────────────────────────────────────
+   Copy sits over the 3-D bench. Portrait gets a scrim rising from the
+   bottom so the type never fights the render; landscape gets it from the
+   left. Chapter copy eases in when its chapter is under the viewport, and
+   the result stamps in the moment the build runs. */
 .stage::before {
   content: "";
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 56%;
+  display: block;
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  margin-bottom: -100svh;
   pointer-events: none;
-  background: linear-gradient(
-    to top,
-    var(--bg) 0%,
-    color-mix(in srgb, var(--bg) 88%, transparent) 55%,
-    transparent 100%
-  );
+  background: linear-gradient(to top, color-mix(in srgb, var(--bg) 92%, transparent) 0%, color-mix(in srgb, var(--bg) 70%, transparent) 28%, transparent 48%);
 }
 @media (orientation: landscape) {
   .stage::before {
-    inset: 0 auto 0 0;
-    width: min(50%, 38rem);
-    height: auto;
-    background: linear-gradient(
-      to right,
-      var(--bg) 0%,
-      color-mix(in srgb, var(--bg) 80%, transparent) 60%,
-      transparent 100%
-    );
+    background: linear-gradient(to right, color-mix(in srgb, var(--bg) 92%, transparent) 0%, color-mix(in srgb, var(--bg) 70%, transparent) 30%, transparent 55%);
   }
 }
-.stage-copy {
-  position: relative;
-  opacity: 0.35;
-  transform: translateY(10px);
-  transition:
-    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+.chapter {
+  opacity: 0.25;
+  transform: translateY(8px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.stage[data-active] .stage-copy {
+.chapter[data-active] {
+  opacity: 1;
+  transform: none;
+}
+.result {
+  opacity: 0;
+  transform: scale(1.08);
+  transform-origin: left bottom;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.result[data-show] {
   opacity: 1;
   transform: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .stage-copy {
-    opacity: 1;
-    transform: none;
+  .chapter, .result {
     transition: none;
+    transform: none;
   }
 }
 
-/* The ride vehicle: vertical touch is the scroll, horizontal is a head turn
-   handled in JS, so tell the browser not to claim sideways gestures. */
+/* Taps should fire at once (no double-tap zoom wait); pans stay native. */
 body {
-  touch-action: pan-y;
-}
-
-/* The vehicle's windshield: a soft vignette over the ride, under the copy. */
-.vignette {
-  background: radial-gradient(ellipse 80% 70% at 50% 45%, transparent 55%, color-mix(in srgb, var(--bg) 75%, transparent) 100%);
+  touch-action: manipulation;
 }
