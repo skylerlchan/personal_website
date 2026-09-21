@@ -1,21 +1,30 @@
 # Skyler Chan
 
-> Princeton, NJ. I build systems that leave the lab: robotics, climate, and the infrastructure under language models.
+> Princeton, NJ. Princeton ORFE (B.S.E. Operations Research and Financial Engineering), minor in Computer Science, GPA 3.85, expected May 2028. Founding engineer at a YC startup, $0 to $208K ARR. Two robotics ventures. Two SSRN papers.
 
 Site: https://skyler-chan.com · Email: skylerlchan@gmail.com · GitHub: https://github.com/skylerlchan · LinkedIn: https://www.linkedin.com/in/skylerchan · X: https://x.com/SkylerChan17
 
-## Work
+## Experience
 
-- **Multiplier (YC Spring 2026), founding engineer, Jan to Sep 2026.** Agents for asset managers, running inside their own cloud. Owned product for 6 enterprise clients: user research, usage analytics, roadmap scoping, and the company's first paid product. $208K ARR, from zero, in eight months.
+- **Founding Software Engineer, Multiplier (Y Combinator Spring 2026), Feb to Sep 2026.** AI agents for hedge-fund analysts. Owned the product end to end for six enterprise clients and grew it into the company's first paid product at $208K ARR, with 18 daily active users across ~30 seats. One of five engineers; wrote ~30% of the codebase (114K of 386K lines): the AI chat client, charting engine, markdown editor, and automations backend. Built the in-app AI coding agent on the Claude Agent SDK: 3,500+ AI work sessions, 72% of 3,727 client requests completed by the agent itself. Owned CI/CD and release engineering: release success from 63% to 96%, fleet update delivery from 25 to 13 minutes, cadence from weekly to same-day. Forward-deployed at three hedge-fund clients.
+- **Quant Developer, Paragon Global Investments, Jan 2025 to May 2026.** Engineered a high-frequency, exchange-agnostic backtesting engine across spot and perpetual futures with modular venues and collateral. Shipped the winning strategy off it, a 3x-leveraged delta-neutral BTC funding-carry trade, and published the results as a sole-author SSRN paper: 16.0% annualized, Sharpe 6.1, max drawdown under 2% over three years of tick data. Paper: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5292305 · Code: https://github.com/skylerlchan/Structured-Basis-Divergence-Arbitrage
+- **Early ID Program Participant, RBC Capital Markets, Oct 2025 to 2026.** Selected as one of ~150 of 1,500 applicants; produced a full equity research report and investment recommendation with a senior advisor.
+- **Climate Modeling Research Intern, Princeton HMEI (Vecchi Research Group), Jun to Aug 2025.** Built Python pipelines over 15 CMIP6 climate models to quantify how rainfall responds to solar geoengineering; found black carbon aerosols cool ~10x more effectively than sulfates; cut data-processing time ~40%.
 
-## Projects
+## Ventures and projects
 
-- **SO-101 teleoperation, 2025, Princeton Robotics Club.** Teleoperation treated as a data pipeline rather than a control scheme: a leader arm's joint stream, replayed by a follower.
-- **Hoverloon, 2024 to 2025, Princeton Robotics Club (tech lead).** A blimp-drone hybrid. Buoyant lift gave 19× the drone's payload capacity.
-- **Stratospheric black carbon, 2024 to 2025, Princeton HMEI (research assistant).** Solar radiation management research. Stratospheric black carbon aerosols are 10× more cooling-effective per unit mass than reflective sulfate. Deck: https://docs.google.com/presentation/d/1YvPFwQQvhCTwXfCP92kaV61j7GZU2b-I/edit
-- **LastCurb, 2024.** Edge vision reading open NYC traffic cameras for free kerb space. Real-time urban sensing on commodity hardware, no sensors installed. Code: https://github.com/skylerlchan/LastCurb
-- **BTC funding carry, 2023 to 2024, published on SSRN June 2025.** "Leveraged BTC Funding Carry Algorithm: A Delta-Neutral Long-Spot/Short-Future Strategy." 3× leveraged, delta-neutral long-spot, short-perpetual strategy harvesting the funding rate. Backtested on three years of tick-level data: 16.0% annualized, 6.1 Sharpe, under 2% max drawdown. 500+ downloads. Paper: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5292305 · Code: https://github.com/skylerlchan/Structured-Basis-Divergence-Arbitrage
+- **Exahuman, robot teleoperation lab (Founder and Tech Lead, Princeton Robotics Club, Aug 2026 to now).** Secured $4,500 and recruited a 5-person research team; built SO-ARM101 leader / follower arms at 50 Hz and collected datasets for ACT and SmolVLA imitation-learning policies. C++, ROS, Python, LeRobot, MuJoCo. https://exahuman.io
+- **Hoverloon, aerial logistics blimp-drone hybrid (Founder and Project Lead, Jul 2025 to Jan 2026).** Won $5,000 in funding and led an 8-person team; buoyant lift reached 19x the drone's own payload capacity at roughly the same power draw; indoor test flight Dec 2025. ROS, CAD, computer vision, embedded systems.
+- **Beta Flow Browser (VS Code Marketplace, Apr to Jun 2026).** Open-source MIT extension putting a full web browser in the editor sidebar: spaces, vertical tabs, per-profile cookie isolation. 200+ downloads. TypeScript.
+- **LastCurb, real-time NYC parking finder (Jun to Aug 2025).** On-device computer vision over public NYC traffic cameras to spot open curb space in real time, with free public cameras as the only sensor layer. Python. https://github.com/skylerlchan/LastCurb
 
-## Elsewhere
+## Publications and honors
 
-- Piano recordings: https://www.youtube.com/watch?v=bbVHVRnYNCc
+- Two sole-author SSRN papers (640 downloads, 9,000+ views): Leveraged BTC Funding Carry Algorithm (2025) and Financial Intermediary Leverage, Volatility, and the Cross-Section of Asset Returns (2021, written in high school; Asset Pricing eJournal).
+- Y Combinator Spring 2026 · RBC Early ID Program (~150 of 1,500) · $9,500 in Princeton Robotics Club funding.
+
+## Skills and interests
+
+- Languages and frameworks: Python, TypeScript, Java, C++, SQL, R; React, Next.js, Node.js, pandas, NumPy, Supabase, ROS.
+- AI, product, and finance: Claude Agent SDK, LLM agents, retrieval / RAG, Docker, GitHub Actions CI/CD, Azure, PostHog, user interviews, usage analytics, backtesting, time-series analysis, statistical modeling, equity research.
+- Interests: classical piano (Ravel, Liszt, Bach), Princeton Piano Ensemble, squash, robotics. Piano recordings: https://www.youtube.com/watch?v=bbVHVRnYNCc

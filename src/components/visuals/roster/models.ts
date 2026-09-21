@@ -11,7 +11,7 @@ import { Arm } from "./Arm";
  * the viewer, +X to the viewer's right. Everything fits in ~3 × 3 × 2.
  */
 
-export type PropKind = "attractor" | "carry" | "curb" | "aerosol" | "hoverloon" | "teleop" | "multiplier";
+export type PropKind = "attractor" | "carry" | "curb" | "aerosol" | "hoverloon" | "teleop" | "multiplier" | "browser";
 
 export interface Prop {
   group: THREE.Group;
@@ -27,9 +27,15 @@ const INK = 0x1a1a1a;
 abstract class Base implements Prop {
   group = new THREE.Group();
   protected trash: Disposable[] = [];
+  protected accent: THREE.Color;
   protected shell = this.keep(new THREE.MeshStandardMaterial({ color: SHELL, roughness: 0.55 }));
   protected ink = this.keep(new THREE.MeshStandardMaterial({ color: INK, roughness: 0.45, metalness: 0.15 }));
-  protected lit = this.keep(new THREE.MeshBasicMaterial({ color: 0xffffff }));
+  /** The build's own colour, for the parts that glow. */
+  protected lit: THREE.MeshBasicMaterial;
+  constructor(accent: THREE.Color) {
+    this.accent = accent.clone();
+    this.lit = this.keep(new THREE.MeshBasicMaterial({ color: accent }));
+  }
   protected keep<T extends Disposable>(x: T): T {
     this.trash.push(x);
     return x;
@@ -54,8 +60,8 @@ abstract class Base implements Prop {
 
 /** Real funding prints and the equity they compound to, as a still chart. */
 class CarryProp extends Base {
-  constructor() {
-    super();
+  constructor(accent: THREE.Color) {
+    super(accent);
     this.rbox(2.6, 0.08, 0.7, this.ink, 0, 0.04, 0);
     fetch("/data/btc-funding.json")
       .then((r) => r.json())
@@ -83,7 +89,7 @@ class CarryProp extends Base {
         }
         bars.castShadow = true;
         this.group.add(bars);
-        const line = new THREE.Line(this.keep(new THREE.BufferGeometry().setFromPoints(curve)), this.keep(new THREE.LineBasicMaterial({ color: 0xffffff })));
+        const line = new THREE.Line(this.keep(new THREE.BufferGeometry().setFromPoints(curve)), this.keep(new THREE.LineBasicMaterial({ color: this.accent })));
         this.group.add(line);
       })
       .catch(() => {});
@@ -92,8 +98,8 @@ class CarryProp extends Base {
 
 /** The camera, and the one frame it saw. */
 class CurbProp extends Base {
-  constructor() {
-    super();
+  constructor(accent: THREE.Color) {
+    super(accent);
     this.mesh(new THREE.CylinderGeometry(0.035, 0.045, 2.2, 12), this.ink, -1.0, 1.1, -0.2);
     const head = new THREE.Group();
     head.position.set(-1.0, 2.25, -0.2);
@@ -122,8 +128,8 @@ class CurbProp extends Base {
 /** A globe with its soot shell, turning once every long while. */
 class AerosolProp extends Base {
   private sphere = new THREE.Group();
-  constructor() {
-    super();
+  constructor(accent: THREE.Color) {
+    super(accent);
     this.mesh(new THREE.CylinderGeometry(0.45, 0.55, 0.08, 40), this.ink, 0, 0.04, 0);
     this.mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.9, 10), this.ink, 0, 0.53, 0);
     this.sphere.position.y = 2.0;
@@ -146,7 +152,7 @@ class AerosolProp extends Base {
     }
     const g = this.keep(new THREE.BufferGeometry());
     g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-    this.sphere.add(new THREE.Points(g, this.keep(new THREE.PointsMaterial({ color: 0xffffff, size: 0.02, transparent: true, opacity: 0.8 }))));
+    this.sphere.add(new THREE.Points(g, this.keep(new THREE.PointsMaterial({ color: accent, size: 0.02, transparent: true, opacity: 0.9 }))));
   }
   update(dt: number) {
     this.sphere.rotation.y += dt * 0.05;
@@ -157,8 +163,8 @@ class AerosolProp extends Base {
 class HoverloonProp extends Base {
   private rotors: THREE.Mesh[] = [];
   private craft = new THREE.Group();
-  constructor() {
-    super();
+  constructor(accent: THREE.Color) {
+    super(accent);
     this.mesh(new THREE.CylinderGeometry(0.18, 0.2, 0.14, 24), this.ink, 0, 0.07, 0);
     const c = this.craft;
     c.position.y = 1.9;
@@ -169,7 +175,7 @@ class HoverloonProp extends Base {
     for (const [x, z] of [[-0.7, -0.5], [0.7, -0.5], [-0.7, 0.5], [0.7, 0.5]]) {
       const arm = this.rbox(Math.hypot(x, z), 0.04, 0.04, this.ink, x / 2, 0, z / 2);
       arm.rotation.y = -Math.atan2(z, x);
-      const rotor = this.mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.01, 28), this.keep(new THREE.MeshStandardMaterial({ color: 0x444444, roughness: 0.4 })), x, 0.08, z);
+      const rotor = this.mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.01, 28), this.keep(new THREE.MeshStandardMaterial({ color: accent, emissive: accent, emissiveIntensity: 0.35, roughness: 0.4 })), x, 0.08, z);
       this.rotors.push(rotor);
       c.add(arm, rotor);
     }
@@ -189,9 +195,9 @@ class TeleopProp extends Base {
   private leader: Arm;
   private follower: Arm;
   private target = new THREE.Vector3();
-  constructor() {
-    super();
-    const colors = { shell: new THREE.Color(SHELL), servo: new THREE.Color(INK), accent: new THREE.Color(0x8a8a8a) };
+  constructor(accent: THREE.Color) {
+    super(accent);
+    const colors = { shell: new THREE.Color(SHELL), servo: new THREE.Color(INK), accent };
     this.leader = new Arm(colors);
     this.follower = new Arm(colors);
     this.leader.root.position.set(-0.9, 0, 0);
@@ -199,7 +205,7 @@ class TeleopProp extends Base {
     this.leader.root.scale.setScalar(0.62);
     this.follower.root.scale.setScalar(0.62);
     this.group.add(this.leader.root, this.follower.root);
-    const pipe = this.mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.8, 8), this.keep(new THREE.MeshBasicMaterial({ color: 0x8a8a8a })), 0, 0.1, 0);
+    const pipe = this.mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.8, 8), this.lit, 0, 0.1, 0);
     pipe.rotation.z = Math.PI / 2;
   }
   update(dt: number, t: number) {
@@ -221,9 +227,9 @@ class TeleopProp extends Base {
 /** The client's cloud, the runtime in it, the data it draws on. */
 class MultiplierProp extends Base {
   private core: THREE.Mesh;
-  constructor() {
-    super();
-    const cage = new THREE.LineSegments(this.keep(new THREE.EdgesGeometry(this.keep(new THREE.BoxGeometry(3.0, 2.0, 1.8)))), this.keep(new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 })));
+  constructor(accent: THREE.Color) {
+    super(accent);
+    const cage = new THREE.LineSegments(this.keep(new THREE.EdgesGeometry(this.keep(new THREE.BoxGeometry(3.0, 2.0, 1.8)))), this.keep(new THREE.LineBasicMaterial({ color: accent, transparent: true, opacity: 0.55 })));
     cage.position.y = 1.0;
     this.group.add(cage);
     this.rbox(1.3, 0.07, 0.8, this.ink, 0, 0.035, 0.2);
@@ -240,8 +246,8 @@ class AttractorModel extends Base {
   private pos: Float32Array;
   private geo: THREE.BufferGeometry;
   private hub = new THREE.Group();
-  constructor() {
-    super();
+  constructor(accent: THREE.Color) {
+    super(accent);
     const N = 6000;
     this.pos = new Float32Array(N * 3);
     for (let i = 0; i < N; i++) {
@@ -252,7 +258,7 @@ class AttractorModel extends Base {
     for (let k = 0; k < 500; k++) this.step(0.006);
     this.geo = this.keep(new THREE.BufferGeometry());
     this.geo.setAttribute("position", new THREE.BufferAttribute(this.pos, 3));
-    const pts = new THREE.Points(this.geo, this.keep(new THREE.PointsMaterial({ color: 0xffffff, size: 0.022, transparent: true, opacity: 0.8, depthWrite: false })));
+    const pts = new THREE.Points(this.geo, this.keep(new THREE.PointsMaterial({ color: accent, size: 0.022, transparent: true, opacity: 0.85, depthWrite: false })));
     pts.position.z = -26;
     this.hub.position.y = 1.35;
     this.hub.rotation.x = -Math.PI / 2 + 0.3;
@@ -279,21 +285,52 @@ class AttractorModel extends Base {
   }
 }
 
-export function makeProp(kind: PropKind): Prop {
+/** An editor window with a browser living in its sidebar. */
+class BrowserProp extends Base {
+  private win = new THREE.Group();
+  constructor(accent: THREE.Color) {
+    super(accent);
+    const w = this.win;
+    w.position.y = 1.35;
+    w.rotation.y = -0.25;
+    // The editor: a dark slab with a title bar and a few lines of code.
+    w.add(this.rbox(3.0, 1.95, 0.08, this.ink, 0, 0, 0, 0.06));
+    const pane = this.keep(new THREE.MeshStandardMaterial({ color: 0x2a2a2a, roughness: 0.7 }));
+    w.add(this.rbox(2.9, 0.16, 0.02, pane, 0, 0.86, 0.045, 0.01));
+    for (let i = 0; i < 3; i++) w.add(this.mesh(new THREE.SphereGeometry(0.03, 8, 6), i === 0 ? this.lit : pane, -1.3 + i * 0.1, 0.86, 0.07));
+    const code = this.keep(new THREE.MeshStandardMaterial({ color: 0x4a4a4a, roughness: 0.8 }));
+    const widths = [0.9, 1.3, 0.6, 1.1, 0.8, 1.2, 0.5];
+    widths.forEach((cw, i) => w.add(this.rbox(cw, 0.05, 0.02, code, -1.35 + cw / 2 + (i % 3) * 0.1, 0.62 - i * 0.2, 0.045, 0.01)));
+    // The browser sidebar: a lighter pane with a page in it, and vertical tabs.
+    w.add(this.rbox(1.05, 1.62, 0.03, this.shell, 0.9, -0.08, 0.05, 0.03));
+    const page = this.keep(new THREE.MeshStandardMaterial({ color: 0xb0aca2, roughness: 0.9 }));
+    for (let i = 0; i < 5; i++) w.add(this.rbox(0.7 - (i % 2) * 0.2, 0.05, 0.02, page, 0.86 - ((i % 2) * 0.2) / 2, 0.42 - i * 0.16, 0.075, 0.01));
+    w.add(this.rbox(0.75, 0.3, 0.02, page, 0.9, -0.5, 0.075, 0.02));
+    for (let i = 0; i < 4; i++) w.add(this.rbox(0.08, 0.08, 0.02, i === 1 ? this.lit : page, 0.44, 0.6 - i * 0.16, 0.075, 0.02));
+    this.group.add(w);
+  }
+  update(dt: number, t: number) {
+    this.win.position.y = 1.35 + 0.02 * Math.sin(t * 0.6);
+  }
+}
+
+export function makeProp(kind: PropKind, accent: THREE.Color): Prop {
   switch (kind) {
+    case "browser":
+      return new BrowserProp(accent);
     case "attractor":
-      return new AttractorModel();
+      return new AttractorModel(accent);
     case "carry":
-      return new CarryProp();
+      return new CarryProp(accent);
     case "curb":
-      return new CurbProp();
+      return new CurbProp(accent);
     case "aerosol":
-      return new AerosolProp();
+      return new AerosolProp(accent);
     case "hoverloon":
-      return new HoverloonProp();
+      return new HoverloonProp(accent);
     case "teleop":
-      return new TeleopProp();
+      return new TeleopProp(accent);
     case "multiplier":
-      return new MultiplierProp();
+      return new MultiplierProp(accent);
   }
 }

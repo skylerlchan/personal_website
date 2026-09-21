@@ -10,26 +10,28 @@ pnpm dev      # http://localhost:3000
 pnpm build    # production build
 ```
 
-## v3, the page with a select screen (current)
+## v3, one screen per thing (current)
 
-`src/app/page.tsx` renders `src/sections/page`. The copy is plain HTML (headings, sentences, numbers, links) so a person, a crawler or a model reads the same thing; `public/llms.txt` carries the same facts as Markdown. The other half is a **roster**, the way a game switches characters: one three.js model of a thing he built stands on a platform with a small idle loop, and whichever entry you are reading (or pick from the roster) is the one that's up. On a phone the platform sits at the top and stays while the entries scroll under it; on a wide screen it holds the right column.
+`src/app/page.tsx` renders `src/sections/page`. The copy is plain HTML, one screen per thing he built, with facts and sentences lifted from his September 2026 resume; `public/llms.txt` carries the full resume as Markdown and the page carries JSON-LD. Behind the copy, a fixed stage holds one three.js model floating in the centre (no base), and **the scroll is the animation**: each screen of text scrolls past while the model turns a quarter, shrinks away, and the next one grows in its place, with the light behind them crossing to that build's colour. Scrubbed, not played. Nothing reacts to the pointer. Dots on the right edge show where you are.
 
-| Roster | Model |
-|---|---|
-| Skyler | a Lorenz attractor, integrated live |
-| Multiplier | the client's cloud, the runtime in it, the data it draws on |
-| SO-101 | leader and follower arms, reaching slowly (analytic IK, servo model) |
-| Hoverloon | the craft hovering on its tether, rotors idling |
-| Black carbon | a globe with its soot shell, turning |
-| LastCurb | the camera, and the one real frame it saw, on a monitor |
-| Carry | 3.3 years of real BTC funding (`public/data/btc-funding.json`) as bars, with the equity they compound to |
+| Screen | Colour | Model |
+|---|---|---|
+| Skyler Chan | warm | a Lorenz attractor, integrated live |
+| Multiplier | blue | the client's cloud, the runtime in it, the data it draws on |
+| Exahuman | orange | SO-ARM101 leader and follower arms, reaching slowly (analytic IK, servo model) |
+| Beta Flow Browser | cyan | an editor window with a browser in its sidebar |
+| BTC funding carry | green | 3.3 years of real BTC funding (`public/data/btc-funding.json`) as bars, with the equity they compound to |
+| Hoverloon | violet | the craft hovering on its tether, rotors idling |
+| LastCurb | red | the camera, and the one real frame it saw, on a monitor |
+| Solar geoengineering | sky | a globe with its soot shell, turning |
+| Elsewhere | warm | the attractor again |
 
-- `src/components/visuals/roster/RosterWorld.ts`: platform, light, the swap (leaving drops, arriving pops), theme sync, pause when off-screen. Nothing reacts to the pointer.
-- `src/components/visuals/roster/models.ts`: the seven models. `Arm.ts`: the five-axis arm.
-- `src/components/visuals/Roster.tsx`: lazy-loads three.js after first paint; the page reads fine without it.
-- `src/sections/page/index.tsx`: the copy, the roster row, and the selection: an IntersectionObserver on the entries, plus picks that scroll to the entry.
+- `src/components/visuals/roster/ScrollWorld.ts`: the stage, the coloured glow and fill, the scroll-scrubbed hand-off, theme sync.
+- `src/components/visuals/roster/models.ts`: the models, each taking its accent colour. `Arm.ts`: the five-axis arm.
+- `src/components/visuals/Stage.tsx`: the fixed canvas; feeds `scrollY / innerHeight` to the world; lazy-loads three.js after first paint.
+- `src/sections/page/index.tsx`: the screens and their copy.
 
-Copy rules: his own sentences, no em dashes, "Multiplier" never "WithAI". Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 via the registry below.
+Copy rules: his own sentences, no em dashes, "Multiplier" never "WithAI", no valuation or AUM on a public page. Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 via the registry below.
 
 ## Architecture (v1)
 
