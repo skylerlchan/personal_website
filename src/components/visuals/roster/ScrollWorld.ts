@@ -164,8 +164,6 @@ export class ScrollWorld {
     this.x += (this.xGoal - this.x) * (this.reduced ? 1 : Math.min(1, dt * 9));
     const x = this.x;
 
-    // A quarter turn per screen, so the scroll is visibly turning the thing.
-    this.stage.rotation.y = this.reduced ? 0 : x * 0.5;
 
     // The light behind crosses from one build's colour to the next.
     const i0 = Math.floor(x), f = x - i0;
@@ -186,7 +184,9 @@ export class ScrollWorld {
       if (!g.visible) continue;
       const e = k * k * (3 - 2 * k);
       g.scale.setScalar(Math.max(0.001, e));
-      // Drifts down as it leaves, up into place as it arrives.
+      // Faces front on its own screen; turns as it arrives and leaves, and
+      // drifts down as it goes, up as it comes.
+      g.rotation.y = this.reduced ? 0 : d * 0.7;
       g.position.y = (1 - e) * (d > 0 ? -0.5 : 0.5);
       m.prop.update(this.reduced ? 0 : dt, t);
     }

@@ -23,6 +23,11 @@ Site: https://skyler-chan.com · Email: skylerlchan@gmail.com · GitHub: https:/
 - Two sole-author SSRN papers (640 downloads, 9,000+ views): Leveraged BTC Funding Carry Algorithm (2025) and Financial Intermediary Leverage, Volatility, and the Cross-Section of Asset Returns (2021, written in high school; Asset Pricing eJournal).
 - Y Combinator Spring 2026 · RBC Early ID Program (~150 of 1,500) · $9,500 in Princeton Robotics Club funding.
 
+## Hobbies
+
+- Classical piano (Ravel, Liszt, Bach), Princeton Piano Ensemble. Recordings: https://www.youtube.com/watch?v=bbVHVRnYNCc
+- Squash.
+
 ## Skills and interests
 
 - Languages and frameworks: Python, TypeScript, Java, C++, SQL, R; React, Next.js, Node.js, pandas, NumPy, Supabase, ROS.

@@ -10,26 +10,28 @@ pnpm dev      # http://localhost:3000
 pnpm build    # production build
 ```
 
-## v3, one screen per thing (current)
+## v3, one screen per thing, four ways down (current)
 
-`src/app/page.tsx` renders `src/sections/page`. The copy is plain HTML, one screen per thing he built, with facts and sentences lifted from his September 2026 resume; `public/llms.txt` carries the full resume as Markdown and the page carries JSON-LD. Behind the copy, a fixed stage holds one three.js model floating in the centre (no base), and **the scroll is the animation**: each screen of text scrolls past while the model turns a quarter, shrinks away, and the next one grows in its place, with the light behind them crossing to that build's colour. Scrubbed, not played. Nothing reacts to the pointer. Dots on the right edge show where you are.
+`src/app/page.tsx` renders `src/sections/page`. The first screen is him (a real photo, `public/images/skyler.jpg`) and a fork: **Work, Projects, Hobbies, Contact**, each a run of screens; the header keeps the four routes one tap away and lights the current one. The copy is plain HTML, one screen per thing, with facts and sentences lifted from his September 2026 resume; `public/llms.txt` carries the full resume as Markdown and the page carries JSON-LD. Behind the copy, a fixed stage holds one three.js model floating in the centre (no base), **doing what the thing did**, and the scroll is the animation: each screen of text scrolls past while the model turns to face you, the last one shrinks away, and the light behind them crosses to that screen's colour. Scrubbed, not played. Nothing reacts to the pointer. Dots on the right edge show where you are.
 
-| Screen | Colour | Model |
+| Route | Screen | What the model does |
 |---|---|---|
-| Skyler Chan | warm | a Lorenz attractor, integrated live |
-| Multiplier | blue | the client's cloud, the runtime in it, the data it draws on |
-| Exahuman | orange | SO-ARM101 leader and follower arms, reaching slowly (analytic IK, servo model) |
-| Beta Flow Browser | cyan | an editor window with a browser in its sidebar |
-| BTC funding carry | green | 3.3 years of real BTC funding (`public/data/btc-funding.json`) as bars, with the equity they compound to |
-| Hoverloon | violet | the craft hovering on its tether, rotors idling |
-| LastCurb | red | the camera, and the one real frame it saw, on a monitor |
-| Solar geoengineering | sky | a globe with its soot shell, turning |
-| Elsewhere | warm | the attractor again |
+| | Skyler Chan | his portrait, in a ring |
+| Work | Multiplier | the app: chat bubbles arrive, the chart draws |
+| Work | BTC funding carry | 3.3 years of real funding as bars; the equity line compounds across them |
+| Work | Solar geoengineering, modeled | aerosol injected at the equator drifts poleward |
+| Projects | Exahuman | the leader arm reaches; the follower copies it 0.3 s later |
+| Projects | Hoverloon | the envelope fills, the craft lifts its payload, rotors idle |
+| Projects | Beta Flow Browser | a page loads in the editor's sidebar; tabs switch |
+| Projects | LastCurb | a pass down the real camera frame, then the four open bays light |
+| Hobbies | Classical piano | two octaves playing a phrase |
+| Hobbies | Squash | a rally off the front wall |
+| Contact | Open to interesting problems | his portrait again, and the links |
 
-- `src/components/visuals/roster/ScrollWorld.ts`: the stage, the coloured glow and fill, the scroll-scrubbed hand-off, theme sync.
-- `src/components/visuals/roster/models.ts`: the models, each taking its accent colour. `Arm.ts`: the five-axis arm.
+- `src/components/visuals/roster/ScrollWorld.ts`: the stage, the coloured glow and fill, the scroll-scrubbed hand-off (each model faces front on its own screen), theme sync.
+- `src/components/visuals/roster/models.ts`: the models and their loops. `Arm.ts`: the five-axis arm.
 - `src/components/visuals/Stage.tsx`: the fixed canvas; feeds `scrollY / innerHeight` to the world; lazy-loads three.js after first paint.
-- `src/sections/page/index.tsx`: the screens and their copy.
+- `src/sections/page/index.tsx`: the fork, the routes, the screens and their copy.
 
 Copy rules: his own sentences, no em dashes, "Multiplier" never "WithAI", no valuation or AUM on a public page. Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 via the registry below.
 

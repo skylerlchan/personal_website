@@ -7,21 +7,26 @@ import ThemeToggle from "@/components/ui/ThemeToggle";
 import { SITE_CONFIG } from "@/lib/constants";
 
 /**
- * v3: one screen per thing, the thing in the centre.
+ * v3: one screen per thing, the thing in the centre, four ways down.
  *
- * The copy is plain HTML so a person, a crawler or a model reads the same
- * thing. Behind it, a fixed stage holds one three.js model of a thing he
- * built, and the scroll is the animation: each screen of text scrolls past
- * while the model turns, shrinks away, and the next one grows in its place,
- * the light behind them crossing to that build's colour.
+ * The first screen is him and a fork: Work, Projects, Hobbies, Contact.
+ * Each is a run of screens. The copy is plain HTML so a person, a crawler
+ * or a model reads the same thing. Behind it, a fixed stage holds one
+ * three.js model of the thing on screen, doing what it did, and the scroll
+ * is the animation: each screen of text scrolls past while the model turns,
+ * shrinks away, and the next one grows in its place, the light behind them
+ * crossing to that screen's colour.
  *
  * Facts and sentences are lifted from his resume (Sep 2026). Copy rules:
  * his own sentences, no em dashes, "Multiplier" never "WithAI", no
  * valuation or AUM on a public page.
  */
 
+type Group = "work" | "projects" | "hobbies" | "contact";
+
 type Entry = {
   id: string;
+  group: Group;
   model: PropKind;
   color: string;
   when: string;
@@ -32,9 +37,17 @@ type Entry = {
   links?: { label: string; href: string }[];
 };
 
+const GROUPS: { id: Group; label: string; color: string }[] = [
+  { id: "work", label: "Work", color: "#5b9cff" },
+  { id: "projects", label: "Projects", color: "#ff7a3d" },
+  { id: "hobbies", label: "Hobbies", color: "#ff5ee0" },
+  { id: "contact", label: "Contact", color: "#ffd2a0" },
+];
+
 const ENTRIES: Entry[] = [
   {
     id: "multiplier",
+    group: "work",
     model: "multiplier",
     color: "#5b9cff",
     when: "Feb to Sep 2026",
@@ -45,6 +58,7 @@ const ENTRIES: Entry[] = [
   },
   {
     id: "exahuman",
+    group: "projects",
     model: "teleop",
     color: "#ff7a3d",
     when: "Aug 2026 to now",
@@ -56,6 +70,7 @@ const ENTRIES: Entry[] = [
   },
   {
     id: "betaflow",
+    group: "projects",
     model: "browser",
     color: "#7ae7ff",
     when: "Apr to Jun 2026",
@@ -66,6 +81,7 @@ const ENTRIES: Entry[] = [
   },
   {
     id: "carry",
+    group: "work",
     model: "carry",
     color: "#5dffb0",
     when: "Jan 2025 to May 2026",
@@ -80,6 +96,7 @@ const ENTRIES: Entry[] = [
   },
   {
     id: "hoverloon",
+    group: "projects",
     model: "hoverloon",
     color: "#b79cff",
     when: "Jul 2025 to Jan 2026",
@@ -90,6 +107,7 @@ const ENTRIES: Entry[] = [
   },
   {
     id: "lastcurb",
+    group: "projects",
     model: "curb",
     color: "#ff5c7a",
     when: "Jun to Aug 2025",
@@ -99,6 +117,7 @@ const ENTRIES: Entry[] = [
   },
   {
     id: "hmei",
+    group: "work",
     model: "aerosol",
     color: "#7ad0ff",
     when: "Jun to Aug 2025",
@@ -107,6 +126,26 @@ const ENTRIES: Entry[] = [
     line: "Built Python pipelines over 15 CMIP6 climate models to quantify how rainfall responds to solar geoengineering; cut data-processing time ~40%.",
     stat: { value: "~10×", note: "black carbon aerosols cool more effectively than sulfates" },
   },
+  {
+    id: "piano",
+    group: "hobbies",
+    model: "piano",
+    color: "#ff5ee0",
+    when: "Since childhood",
+    org: "Princeton Piano Ensemble",
+    title: "Classical piano",
+    line: "Ravel, Liszt, Bach. Eight recordings, from Hiromi to a Bach fugue.",
+    links: [{ label: "Recordings", href: "https://www.youtube.com/watch?v=bbVHVRnYNCc" }],
+  },
+  {
+    id: "squash",
+    group: "hobbies",
+    model: "squash",
+    color: "#ffb84d",
+    when: "Princeton",
+    title: "Squash",
+    line: "The other place things move fast and the wall always answers.",
+  },
 ];
 
 const ELSEWHERE = [
@@ -114,18 +153,22 @@ const ELSEWHERE = [
   { label: "GitHub", href: "https://github.com/skylerlchan" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/skylerchan" },
   { label: "X", href: "https://x.com/SkylerChan17" },
-  { label: "Piano", href: "https://www.youtube.com/watch?v=bbVHVRnYNCc" },
 ];
 
 const MONO = "font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-muted";
 
-type Screen = { id: string; model: PropKind; color: string; entry?: Entry; kind: "intro" | "entry" | "end" };
+type Screen = { id: string; model: PropKind; color: string; group?: Group; entry?: Entry; kind: "intro" | "entry" | "end" };
 
+// Screens run group by group, in the order of the fork.
 const SCREENS: Screen[] = [
-  { id: "top", model: "attractor", color: "#ffd2a0", kind: "intro" },
-  ...ENTRIES.map((e): Screen => ({ id: e.id, model: e.model, color: e.color, entry: e, kind: "entry" })),
-  { id: "next", model: "attractor", color: "#ffd2a0", kind: "end" },
+  { id: "top", model: "portrait", color: "#ffd2a0", kind: "intro" },
+  ...(["work", "projects", "hobbies"] as Group[]).flatMap((g) =>
+    ENTRIES.filter((e) => e.group === g).map((e): Screen => ({ id: e.id, model: e.model, color: e.color, group: g, entry: e, kind: "entry" })),
+  ),
+  { id: "contact", model: "portrait", color: "#ffd2a0", group: "contact", kind: "end" },
 ];
+
+const firstOf = (g: Group) => SCREENS.find((s) => s.group === g)?.id ?? "top";
 
 const graph = {
   "@context": "https://schema.org",
@@ -154,11 +197,11 @@ const graph = {
   ],
 };
 
-function Copy({ e }: { e: Entry }) {
+function Copy({ e, index, count }: { e: Entry; index: number; count: number }) {
   return (
     <>
       <p className={MONO}>
-        {e.when}
+        <span style={{ color: e.color }}>{GROUPS.find((g) => g.id === e.group)?.label} {index + 1} / {count}</span> · {e.when}
         {e.org ? ` · ${e.org}` : ""}
       </p>
       <h2 className="mt-3 text-[1.75rem] font-medium leading-tight tracking-[-0.03em] text-foreground sm:text-4xl">{e.title}</h2>
@@ -199,6 +242,8 @@ export default function Page() {
     return () => window.removeEventListener("scroll", read);
   }, []);
 
+  const here = SCREENS[Math.min(at, SCREENS.length - 1)]?.group;
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }} />
@@ -206,10 +251,18 @@ export default function Page() {
       {/* The stage: fixed, full-screen, behind everything. */}
       <Stage slots={SCREENS.map((s) => ({ kind: s.model, color: s.color }))} className="pointer-events-none fixed inset-0 z-0 h-full w-full" />
 
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-20 flex items-center justify-between px-6 py-5 sm:px-10">
-        <a href="#top" className={`${MONO} pointer-events-auto text-foreground`}>
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-20 flex items-center justify-between gap-4 px-6 py-5 sm:px-10">
+        <a href="#top" className={`${MONO} pointer-events-auto shrink-0 text-foreground`}>
           Skyler Chan
         </a>
+        {/* The four ways down, always one tap away. */}
+        <nav aria-label="Sections" className="pointer-events-auto hidden items-center gap-5 sm:flex">
+          {GROUPS.map((g) => (
+            <a key={g.id} href={`#${firstOf(g.id)}`} className={`${MONO} transition-colors hover:text-foreground`} style={{ color: here === g.id ? g.color : undefined }}>
+              {g.label}
+            </a>
+          ))}
+        </nav>
         <div className="pointer-events-auto">
           <ThemeToggle />
         </div>
@@ -248,19 +301,34 @@ export default function Page() {
                     <p className="mt-4 max-w-md text-pretty text-base leading-snug text-muted sm:text-lg">
                       Founding engineer at a YC startup, $0 to $208K ARR. Two robotics ventures. Two SSRN papers.
                     </p>
-                    <p className={`${MONO} mt-6 flex items-center gap-2 text-subtle`}>
-                      <span aria-hidden className="inline-block h-4 w-px animate-pulse bg-subtle" />
-                      scroll
-                    </p>
+                    {/* The fork. */}
+                    <ul className="mt-7 grid grid-cols-2 gap-x-6 gap-y-3 sm:flex sm:flex-wrap sm:gap-x-8">
+                      {GROUPS.map((g) => {
+                        const n = g.id === "contact" ? 0 : ENTRIES.filter((e) => e.group === g.id).length;
+                        return (
+                          <li key={g.id}>
+                            <a href={`#${firstOf(g.id)}`} className="group flex items-baseline gap-2 text-xl font-medium tracking-[-0.02em] text-foreground sm:text-2xl">
+                              <span aria-hidden className="inline-block h-2 w-2 shrink-0 rounded-full" style={{ background: g.color }} />
+                              {g.label}
+                              <span className={`${MONO} text-subtle`}>{n ? n : "↗"}</span>
+                            </a>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </>
                 )}
-                {s.kind === "entry" && s.entry && <Copy e={s.entry} />}
+                {s.kind === "entry" && s.entry && s.group && (
+                  <Copy e={s.entry} index={SCREENS.filter((x) => x.group === s.group).findIndex((x) => x.id === s.id)} count={SCREENS.filter((x) => x.group === s.group).length} />
+                )}
                 {s.kind === "end" && (
                   <>
-                    <p className={MONO}>Elsewhere</p>
+                    <p className={MONO}>
+                      <span style={{ color: "#ffd2a0" }}>Contact</span>
+                    </p>
                     <h2 className="mt-3 text-[1.75rem] font-medium leading-tight tracking-[-0.03em] text-foreground sm:text-4xl">Open to interesting problems.</h2>
                     <p className="mt-3 max-w-md text-pretty text-[0.9375rem] leading-relaxed text-muted sm:text-base">
-                      Also: RBC Capital Markets Early ID Program, ~150 of 1,500. A second SSRN paper, written in high school. Classical piano, Princeton Piano Ensemble. Squash.
+                      Also: RBC Capital Markets Early ID Program, ~150 of 1,500. A second SSRN paper, written in high school.
                     </p>
                     <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
                       {ELSEWHERE.map((l) => (
