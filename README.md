@@ -16,7 +16,7 @@ pnpm build    # production build
 
 | Route | Screen | What the model does |
 |---|---|---|
-| | Skyler Chan | **full bleed**: him in black and white, double-exposed with a skyline. San Francisco in warm light on the left (the Golden Gate, Coit Tower, the Transamerica Pyramid, Salesforce Tower), New York in cool light on the right (the Empire State, the Chrysler crown, One World Trade, the Brooklyn Bridge). Neon wireframe, windows lighting one by one, scanlines, and a torn seam where the two cities meet |
+| | Skyler Chan | him in black and white **on one side**, the cities on the other, tearing into each other across the seam. The city is `public/images/cities.jpg`, a generated surreal photograph: the Golden Gate and the Brooklyn Bridge fused into one span, the Transamerica Pyramid beside the Empire State and the Chrysler crown, and a second city hanging upside down out of the sky. The drawn neon skyline stays underneath it, faint |
 | Work | Multiplier | the app: chat bubbles arrive, the chart draws |
 | Work | BTC funding carry | 3.3 years of real funding as bars; the equity line compounds across them |
 | Work | Solar geoengineering, modeled | aerosol injected at the equator drifts poleward |
@@ -29,10 +29,12 @@ pnpm build    # production build
 | Contact | Open to interesting problems | his portrait again, and the links |
 
 - `src/components/visuals/roster/ScrollWorld.ts`: the stage, the coloured glow and fill, the scroll-scrubbed hand-off (each model faces front on its own screen), theme sync.
-- `src/components/visuals/roster/backdrop.ts`: the first and last screens. A full-frame plane parented to the camera: the photo (`public/images/skyler.jpg`) desaturated and pushed for contrast, with the city screen-blended into its shadows only, so his lit face stays his face. In the light theme the photo clears out from under the copy instead of washing out.
+- `src/components/visuals/roster/backdrop.ts`: the first and last screens. A full-frame plane parented to the camera. The photo (`public/images/skyler.jpg`) holds the right third on a wide screen and the top on a phone; the generated city (`public/images/cities.jpg`) holds the rest; across a wide seam his photo tears out row by row as the skyline comes up through it. Both are desaturated and graded, darker in the light theme so they read against paper, and the photo clears out from under the copy. The city image is optional: without it the drawn skyline carries the frame on its own.
 - `src/components/visuals/roster/skyline.ts`: draws that skyline once to a canvas and packs two masks into one texture, the solid silhouette in red (where windows may light) and an edge-detected outline in green (the neon wireframe).
 - `src/components/visuals/roster/models.ts`: the models and their loops. `Arm.ts`: the five-axis arm.
 - `src/components/visuals/Stage.tsx`: the fixed canvas; feeds `scrollY / innerHeight` to the world; lazy-loads three.js after first paint.
+
+On a wide screen the whole stage slides into the right half so it never runs into the copy column, clamped so the widest model still fits the frame; on a phone it stays centred, above the copy.
 - `src/sections/page/index.tsx`: the fork, the routes, the screens and their copy.
 
 Copy rules: his own sentences, no em dashes, "Multiplier" never "WithAI", no valuation or AUM on a public page. Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 via the registry below.

@@ -158,14 +158,26 @@ export class ScrollWorld {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.matchMedia("(pointer: coarse)").matches ? 1.5 : 2));
     this.renderer.setSize(w, h, false);
     this.camera.aspect = w / h;
-    // The model floats in the upper half on a phone (text below) and just
-    // right of centre on a wide screen (text at the left).
+    // The model floats in the upper half on a phone (the copy is below it)
+    // and in the right half on a wide screen (the copy is down the left).
     const portrait = w / h < 1;
     this.camera.fov = portrait ? 40 : 32;
     this.camera.position.set(0, portrait ? 2.4 : 2.2, portrait ? 10.2 : 7.6);
     this.camera.lookAt(0, portrait ? -0.35 : 1.05, 0);
     this.camera.updateProjectionMatrix();
     this.backdrop.resize(this.camera, portrait);
+
+    // How much world fits across the frame where the models stand.
+    const visH = 2 * this.camera.position.z * Math.tan(THREE.MathUtils.degToRad(this.camera.fov) / 2);
+    const visW = visH * this.camera.aspect;
+    // Landscape: shrink a touch, then slide right until the copy is clear,
+    // but never so far that the widest model runs off the frame.
+    const scale = portrait ? 1 : 0.92;
+    const halfModel = 1.8 * scale;
+    const shift = portrait ? 0 : Math.min(visW * 0.22, Math.max(0, visW / 2 - halfModel - 0.2));
+    this.stage.scale.setScalar(scale);
+    this.stage.position.x = shift;
+    this.glow.position.x = shift;
   }
 
   private frame = () => {

@@ -2,14 +2,15 @@ import * as THREE from "three";
 import { skylineTexture } from "./skyline";
 
 /**
- * The first and last screens: him, full bleed, in black and white, with San
- * Francisco and New York merged into the dark of the frame.
+ * The first and last screens: him on one side, in black and white, and the
+ * cities on the other, with the two dissolving into each other where they
+ * meet rather than butting up against a line.
  *
- * It is a double exposure. The photo is desaturated and pushed for contrast;
- * the city is a neon wireframe with its windows lit, screen-blended into the
- * shadows only, so his lit face stays his face. Warm light on the left is San
- * Francisco, cool light on the right is New York, and where they meet in the
- * middle the two feeds tear into each other a few pixels at a time.
+ * On a wide screen he holds the right third and the city runs off to the
+ * left behind the copy; on a phone he holds the top and the city the middle.
+ * The seam is the whole point: across a wide band, his photo thins out as
+ * the skyline comes up through it, torn a few pixels at a time, so it reads
+ * as one image that cannot quite decide what it is.
  *
  * It lives as a child of the camera, so it always fills the frame.
  */
@@ -32,6 +33,11 @@ uniform vec2  uBand;       // where the city stands: base and top, in screen uv
 uniform vec3  uWarm;
 uniform vec3  uCool;
 uniform float uDimLeft;    // 1 where the copy sits down the left
+uniform sampler2D uScene; // the generated city, when there is one
+uniform float uHasScene;
+uniform vec2  uSceneCover;
+uniform vec2  uSceneFocus;
+uniform vec4  uHim;        // where he sits: begin, full, end of the dissolve, axis
 varying vec2 vUv;
 
 float hash21(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
@@ -40,7 +46,16 @@ void main() {
   /* him, black and white */
   vec2 puv = (vUv - 0.5) * uCover + uFocus;
   float g = dot(texture2D(uPhoto, clamp(puv, 0.001, 0.999)).rgb, vec3(0.299, 0.587, 0.114));
-  g = clamp((g - 0.46) * 1.3 + 0.4, 0.0, 1.0);
+  g = clamp((g - 0.46) * (1.3 + 0.35 * uLight) + 0.4 - 0.16 * uLight, 0.0, 1.0);
+
+  // How much of him is left here. 1 on his side, 0 past the dissolve, and
+  // in between it tears: whole rows of him drop out at a time.
+  float axis = mix(vUv.y, vUv.x, uHim.w);
+  float him = smoothstep(uHim.x, uHim.y, axis);
+  float band = 1.0 - abs(him - 0.5) * 2.0;
+  float row = floor(mix(vUv.x, vUv.y, uHim.w) * 70.0);
+  float tear = step(0.45, hash21(vec2(row, floor(uTime * 0.6))));
+  him = clamp(him + band * band * (tear - 0.5) * 0.7, 0.0, 1.0);
 
   /* the two cities */
   vec3 city = vec3(0.0);
@@ -62,12 +77,30 @@ void main() {
     float windows = fill * lit * shape * flicker;
     vec3 tint = mix(uWarm, uCool, smoothstep(0.28, 0.72, vUv.x));
     city = tint * (1.35 * edge + 0.10 * fill + 1.15 * windows);
+    city *= 1.0 - 0.72 * uHasScene;
     city *= smoothstep(0.0, 0.14, cy) * (1.0 - smoothstep(0.62, 1.0, cy) * 0.9);
   }
 
-  /* the city burns in the shadows, never over his lit face */
-  float w = uStrength * (1.0 - smoothstep(0.10, 0.44, g));
-  vec3 col = 1.0 - (1.0 - vec3(g)) * (1.0 - city * w);
+  /* the generated city, where there is one, standing behind everything */
+  vec3 scene = vec3(0.0);
+  float hasScene = 0.0;
+  if (uHasScene > 0.5) {
+    vec2 suv = (vUv - 0.5) * uSceneCover + uSceneFocus;
+    // Only inside the picture: past its edges it feathers out to nothing
+    // rather than smearing the last row of pixels across the frame.
+    vec2 fe = smoothstep(vec2(0.0), vec2(0.035), suv) * smoothstep(vec2(0.0), vec2(0.035), 1.0 - suv);
+    hasScene = fe.x * fe.y;
+    float sg = dot(texture2D(uScene, clamp(suv, 0.001, 0.999)).rgb, vec3(0.299, 0.587, 0.114));
+    scene = vec3(clamp((sg - 0.5) * (1.2 + 0.4 * uLight) + 0.36 - 0.14 * uLight, 0.0, 1.0)) * hasScene;
+  }
+
+  /* him on his side, the city on the other, dissolving through the middle */
+  vec3 base = mix(scene, vec3(g), him);
+  float lum = mix(dot(scene, vec3(0.333)), g, him);
+
+  /* the drawn city burns in the shadows, never over his lit face */
+  float w = uStrength * (1.0 - smoothstep(0.10, 0.44, lum));
+  vec3 col = 1.0 - (1.0 - base) * (1.0 - city * w);
 
   /* the screen it is shown on */
   float scan = 1.0 - 0.055 * step(0.5, fract(gl_FragCoord.y * 0.25 + uTime * 0.04));
@@ -77,6 +110,9 @@ void main() {
 
   /* the copy needs a quiet corner to sit in */
   col *= mix(1.0, mix(0.42, 1.0, smoothstep(0.04, 0.52, vUv.x)), uDimLeft);
+
+  /* the header lives up there */
+  col *= 1.0 - 0.45 * smoothstep(0.86, 1.0, vUv.y);
 
   /* it fades out at the edges rather than ending on a hard line */
   float d = length((vUv - 0.5) * vec2(1.05, 1.0));
@@ -98,6 +134,8 @@ export class Backdrop {
   private mat: THREE.ShaderMaterial;
   private tex: THREE.Texture;
   private city: THREE.Texture;
+  private scene: THREE.Texture | null = null;
+  private frameAspect = 1.6;
 
   constructor(private distance = 25) {
     this.city = skylineTexture();
@@ -120,6 +158,11 @@ export class Backdrop {
         uWarm: { value: new THREE.Color(0xffa24d) },
         uCool: { value: new THREE.Color(0x8ec8ff) },
         uDimLeft: { value: 1 },
+        uScene: { value: blank },
+        uHasScene: { value: 0 },
+        uSceneCover: { value: new THREE.Vector2(1, 1) },
+        uSceneFocus: { value: new THREE.Vector2(0.5, 0.5) },
+        uHim: { value: new THREE.Vector4(0.34, 0.72, 0, 1) },
       },
       transparent: true,
       depthTest: false,
@@ -130,11 +173,24 @@ export class Backdrop {
     this.mesh.renderOrder = -10;
     this.mesh.frustumCulled = false;
 
-    new THREE.TextureLoader().load("/images/skyler.jpg", (tx) => {
+    const loader = new THREE.TextureLoader();
+    loader.load("/images/skyler.jpg", (tx) => {
       tx.colorSpace = THREE.SRGBColorSpace;
       this.mat.uniforms.uPhoto.value = tx;
       this.tex = tx;
     });
+    // The generated city, if it has been added to the project. Optional on
+    // purpose: without it the drawn skyline still carries the frame.
+    loader.load(
+      "/images/cities.jpg",
+      (tx) => {
+        tx.colorSpace = THREE.SRGBColorSpace;
+        this.scene = tx;
+        this.setScene(tx);
+      },
+      undefined,
+      () => {},
+    );
   }
 
   /** Size the plane to fill the camera's frustum, and frame the face. */
@@ -142,6 +198,7 @@ export class Backdrop {
     const h = 2 * this.distance * Math.tan((camera.fov * Math.PI) / 360);
     const w = h * camera.aspect;
     this.mesh.scale.set(w, h, 1);
+    this.frameAspect = camera.aspect;
     // Cover: the photo is square, so the long side of the frame is the one
     // that shows in full. A little zoom leaves room to sit the face high.
     const planeAspect = camera.aspect;
@@ -160,6 +217,46 @@ export class Backdrop {
     // copy takes the bottom third.
     this.mat.uniforms.uBand.value.set(portrait ? 0.3 : 0.05, portrait ? 0.88 : 0.64);
     this.mat.uniforms.uDimLeft.value = portrait ? 0 : 1;
+    // Where he ends and the city begins. Wide: he holds the right, dissolving
+    // leftward across the middle. Phone: he holds the top, dissolving down.
+    this.mat.uniforms.uHim.value.set(portrait ? 0.33 : 0.28, portrait ? 0.6 : 0.62, 0, portrait ? 0 : 1);
+    this.frameScene(portrait);
+  }
+
+  /**
+   * Frame the generated city. On a wide screen it covers the frame; on a
+   * phone the whole panorama is shown across the width and sits as a band in
+   * the middle, because cropping a 16:9 city into a tall strip leaves three
+   * buildings and no city.
+   */
+  private frameScene(portrait: boolean) {
+    const img = 1024 / 572;
+    const frame = this.frameAspect;
+    const cover = this.mat.uniforms.uSceneCover.value as THREE.Vector2;
+    const focus = this.mat.uniforms.uSceneFocus.value as THREE.Vector2;
+    if (portrait) {
+      // The whole panorama across the width, as a band in the middle: the
+      // window in image space is taller than the image, and everything
+      // outside it feathers away to nothing.
+      // A little narrower than the full panorama, so the band has some height.
+      const fit = 0.78;
+      cover.set(fit, (img / frame) * fit);
+      const bandCentre = 0.44;
+      focus.set(0.5, 0.5 + (0.5 - bandCentre) * cover.y);
+    } else {
+      // Cover, with a little zoom, sitting the skyline just below centre.
+      const zoom = 1.06;
+      if (frame > img) cover.set(1 / zoom, img / frame / zoom);
+      else cover.set(frame / img / zoom, 1 / zoom);
+      focus.set(0.5, THREE.MathUtils.clamp(0.52, cover.y / 2, 1 - cover.y / 2));
+    }
+  }
+
+  /** Hang a generated cityscape behind him. */
+  setScene(tex: THREE.Texture) {
+    this.mat.uniforms.uScene.value = tex;
+    this.mat.uniforms.uHasScene.value = 1;
+    this.frameScene(this.frameAspect < 1);
   }
 
   update(t: number, opacity: number, dark: boolean) {
@@ -176,5 +273,6 @@ export class Backdrop {
     this.mat.dispose();
     this.city.dispose();
     this.tex.dispose();
+    this.scene?.dispose();
   }
 }
