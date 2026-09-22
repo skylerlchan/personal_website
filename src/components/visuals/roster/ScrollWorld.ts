@@ -202,9 +202,9 @@ export class ScrollWorld {
     // The backdrop is up on the portrait screens, and fades between them.
     let backdropUp = 0;
     for (const i of this.portraitAt) backdropUp = Math.max(backdropUp, 1 - THREE.MathUtils.smoothstep(Math.abs(x - i), 0.2, 0.7));
-    this.backdrop.update(t, backdropUp, this.dark);
-    // On those screens the light behind should not glow through the photo.
-    this.glowMat.opacity = (this.dark ? 1 : 0.45) * (1 - backdropUp);
+    this.backdrop.update(t, backdropUp);
+    // On those screens the light behind should not glow through the picture.
+    this.glowMat.opacity = 1 - backdropUp;
 
     for (let i = 0; i < this.models.length; i++) {
       const d = x - i; // negative: still ahead; positive: passed

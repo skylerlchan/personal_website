@@ -310,13 +310,20 @@ body {
 }
 
 /* ── Screens (v3) ─────────────────────────────────────────────────────
-   Copy sits over the fixed stage. A scrim rises from the bottom of every
-   screen so the type never fights the render; the model stands above it. */
-.screen::before {
-  content: "";
-  position: absolute;
+   The copy needs the render to quieten under it. One fixed veil across the
+   bottom of the viewport does that, rather than one per screen: a scrim per
+   screen reaches solid background at its own bottom edge, and where two
+   screens meet that shows up as a hard horizontal line. */
+.veil {
+  position: fixed;
   inset: auto 0 0 0;
-  height: 55%;
+  height: 62svh;
+  z-index: 5;
   pointer-events: none;
-  background: linear-gradient(to top, var(--bg) 0%, color-mix(in srgb, var(--bg) 85%, transparent) 45%, transparent 100%);
+  background: linear-gradient(
+    to top,
+    var(--bg) 0%,
+    color-mix(in srgb, var(--bg) 82%, transparent) 38%,
+    transparent 100%
+  );
 }

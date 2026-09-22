@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Stage from "@/components/visuals/Stage";
 import type { PropKind } from "@/components/visuals/roster/models";
-import ThemeToggle from "@/components/ui/ThemeToggle";
 import { SITE_CONFIG } from "@/lib/constants";
 
 /**
@@ -251,11 +250,17 @@ export default function Page() {
       {/* The stage: fixed, full-screen, behind everything. */}
       <Stage slots={SCREENS.map((s) => ({ kind: s.model, color: s.color }))} className="pointer-events-none fixed inset-0 z-0 h-full w-full" />
 
+      {/* One veil across the bottom of the viewport, so the copy always has
+          something quiet under it and no screen boundary ever shows. */}
+      <div aria-hidden className="veil" />
+
       <header className="pointer-events-none fixed inset-x-0 top-0 z-20 flex items-center justify-between gap-4 px-6 py-5 sm:px-10">
         <a href="#top" className={`${MONO} pointer-events-auto shrink-0 text-foreground`}>
           Skyler Chan
         </a>
         {/* The four ways down, always one tap away. */}
+        {/* Wide screens get the four routes in the header; on a phone the
+            fork on the first screen and the dots on the edge carry it. */}
         <nav aria-label="Sections" className="pointer-events-auto hidden items-center gap-5 sm:flex">
           {GROUPS.map((g) => (
             <a key={g.id} href={`#${firstOf(g.id)}`} className={`${MONO} transition-colors hover:text-foreground`} style={{ color: here === g.id ? g.color : undefined }}>
@@ -263,9 +268,6 @@ export default function Page() {
             </a>
           ))}
         </nav>
-        <div className="pointer-events-auto">
-          <ThemeToggle />
-        </div>
       </header>
 
       {/* Where you are: one dot per screen, the current one in its colour. */}
@@ -291,7 +293,7 @@ export default function Page() {
 
       <main className="relative z-10">
         {SCREENS.map((s) => (
-          <section key={s.id} id={s.id} className="screen relative flex h-svh flex-col justify-end">
+          <section key={s.id} id={s.id} className="relative flex h-svh flex-col justify-end">
             <div className="relative mx-auto w-full max-w-6xl px-6 pb-[max(2.5rem,env(safe-area-inset-bottom))] sm:px-10 lg:pb-16">
               <div className="max-w-md">
                 {s.kind === "intro" && (
