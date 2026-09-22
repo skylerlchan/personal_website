@@ -16,7 +16,7 @@ pnpm build    # production build
 
 | Route | Screen | What the model does |
 |---|---|---|
-| | Skyler Chan | his portrait, double-exposed with a skyline: the Golden Gate and San Francisco in warm light on the left, Manhattan and the Brooklyn Bridge in cool light on the right, windows coming on one by one |
+| | Skyler Chan | **full bleed**: him in black and white, double-exposed with a skyline. San Francisco in warm light on the left (the Golden Gate, Coit Tower, the Transamerica Pyramid, Salesforce Tower), New York in cool light on the right (the Empire State, the Chrysler crown, One World Trade, the Brooklyn Bridge). Neon wireframe, windows lighting one by one, scanlines, and a torn seam where the two cities meet |
 | Work | Multiplier | the app: chat bubbles arrive, the chart draws |
 | Work | BTC funding carry | 3.3 years of real funding as bars; the equity line compounds across them |
 | Work | Solar geoengineering, modeled | aerosol injected at the equator drifts poleward |
@@ -29,7 +29,9 @@ pnpm build    # production build
 | Contact | Open to interesting problems | his portrait again, and the links |
 
 - `src/components/visuals/roster/ScrollWorld.ts`: the stage, the coloured glow and fill, the scroll-scrubbed hand-off (each model faces front on its own screen), theme sync.
-- `src/components/visuals/roster/models.ts`: the models and their loops. The portrait is a shader double exposure: the photo (`public/images/skyler.jpg`), a skyline mask, and window lights screen-blended into the shadows so his lit face stays his face. `skyline.ts` draws that skyline once to a canvas (SF landmarks left, NYC right, one shared horizon, bridges in front). `Arm.ts`: the five-axis arm.
+- `src/components/visuals/roster/backdrop.ts`: the first and last screens. A full-frame plane parented to the camera: the photo (`public/images/skyler.jpg`) desaturated and pushed for contrast, with the city screen-blended into its shadows only, so his lit face stays his face. In the light theme the photo clears out from under the copy instead of washing out.
+- `src/components/visuals/roster/skyline.ts`: draws that skyline once to a canvas and packs two masks into one texture, the solid silhouette in red (where windows may light) and an edge-detected outline in green (the neon wireframe).
+- `src/components/visuals/roster/models.ts`: the models and their loops. `Arm.ts`: the five-axis arm.
 - `src/components/visuals/Stage.tsx`: the fixed canvas; feeds `scrollY / innerHeight` to the world; lazy-loads three.js after first paint.
 - `src/sections/page/index.tsx`: the fork, the routes, the screens and their copy.
 

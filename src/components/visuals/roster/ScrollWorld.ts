@@ -1,9 +1,12 @@
 import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { makeProp, type Prop, type PropKind } from "./models";
+import { Backdrop } from "./backdrop";
 
 /**
- * The product stage. One model floats in the centre of a fixed canvas; the
+ * The product stage. The first and last screens are a full-bleed backdrop
+ * (him, and the two cities); every screen between them is one model floating
+ * in the centre of a fixed canvas; the
  * page scrolls past it one screen of text at a time, and the scroll position
  * is the animation. Between screen i and screen i+1 the model turns a little,
  * shrinks away, and the next one grows in its place, with the light behind
@@ -28,6 +31,8 @@ export class ScrollWorld {
   private stage = new THREE.Group();
   private glow: THREE.Mesh;
   private glowMat: THREE.MeshBasicMaterial;
+  private backdrop = new Backdrop();
+  private portraitAt: number[] = [];
   private key: THREE.DirectionalLight;
   private hemi: THREE.HemisphereLight;
   private fill: THREE.PointLight;
@@ -87,8 +92,15 @@ export class ScrollWorld {
     this.glow.position.set(0, 1.3, -3);
     this.scene.add(this.glow);
 
+    // The backdrop rides with the camera, so it always fills the frame.
+    this.camera.add(this.backdrop.mesh);
+    this.scene.add(this.camera);
+
     this.scene.add(this.stage);
     // Every model is built up front; the scroll decides which one is grown.
+    slots.forEach((slot, i) => {
+      if (slot.kind === "portrait") this.portraitAt.push(i);
+    });
     for (const slot of slots) {
       const color = new THREE.Color(slot.color);
       const prop = makeProp(slot.kind, color);
@@ -117,6 +129,7 @@ export class ScrollWorld {
     this.ro.disconnect();
     this.mo.disconnect();
     for (const m of this.models) m.prop.dispose();
+    this.backdrop.dispose();
     this.scene.traverse((o) => {
       if (o instanceof THREE.Mesh || o instanceof THREE.Points) {
         o.geometry.dispose();
@@ -152,6 +165,7 @@ export class ScrollWorld {
     this.camera.position.set(0, portrait ? 2.4 : 2.2, portrait ? 10.2 : 7.6);
     this.camera.lookAt(0, portrait ? -0.35 : 1.05, 0);
     this.camera.updateProjectionMatrix();
+    this.backdrop.resize(this.camera, portrait);
   }
 
   private frame = () => {
@@ -172,6 +186,13 @@ export class ScrollWorld {
     this.tmpC.copy(c0).lerp(c1, f * f * (3 - 2 * f));
     this.glowMat.color.copy(this.tmpC);
     this.fill.color.copy(this.tmpC);
+
+    // The backdrop is up on the portrait screens, and fades between them.
+    let backdropUp = 0;
+    for (const i of this.portraitAt) backdropUp = Math.max(backdropUp, 1 - THREE.MathUtils.smoothstep(Math.abs(x - i), 0.2, 0.7));
+    this.backdrop.update(t, backdropUp, this.dark);
+    // On those screens the light behind should not glow through the photo.
+    this.glowMat.opacity = (this.dark ? 1 : 0.45) * (1 - backdropUp);
 
     for (let i = 0; i < this.models.length; i++) {
       const d = x - i; // negative: still ahead; positive: passed

@@ -76,8 +76,8 @@ const ENTRIES: Entry[] = [
     when: "Apr to Jun 2026",
     org: "VS Code Marketplace",
     title: "Beta Flow Browser",
-    line: "An open-source MIT extension putting a full web browser in the editor sidebar: spaces, vertical tabs, per-profile cookie isolation. TypeScript.",
-    stat: { value: "200+", note: "downloads" },
+    line: "An open-source MIT extension putting a full web browser in the editor sidebar: spaces with their own tabs and favorites, vertical tabs, per-profile cookie isolation, and one click to sort a messy pile of tabs. TypeScript.",
+    links: [{ label: "Marketplace", href: "https://marketplace.visualstudio.com/items?itemName=SkylerChan.beta-flow-browser" }],
   },
   {
     id: "carry",
@@ -327,9 +327,6 @@ export default function Page() {
                       <span style={{ color: "#ffd2a0" }}>Contact</span>
                     </p>
                     <h2 className="mt-3 text-[1.75rem] font-medium leading-tight tracking-[-0.03em] text-foreground sm:text-4xl">Open to interesting problems.</h2>
-                    <p className="mt-3 max-w-md text-pretty text-[0.9375rem] leading-relaxed text-muted sm:text-base">
-                      Also: RBC Capital Markets Early ID Program, ~150 of 1,500. A second SSRN paper, written in high school.
-                    </p>
                     <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
                       {ELSEWHERE.map((l) => (
                         <li key={l.href}>

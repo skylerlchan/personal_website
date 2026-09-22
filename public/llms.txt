@@ -15,7 +15,7 @@ Site: https://skyler-chan.com · Email: skylerlchan@gmail.com · GitHub: https:/
 
 - **Exahuman, robot teleoperation lab (Founder and Tech Lead, Princeton Robotics Club, Aug 2026 to now).** Secured $4,500 and recruited a 5-person research team; built SO-ARM101 leader / follower arms at 50 Hz and collected datasets for ACT and SmolVLA imitation-learning policies. C++, ROS, Python, LeRobot, MuJoCo. https://exahuman.io
 - **Hoverloon, aerial logistics blimp-drone hybrid (Founder and Project Lead, Jul 2025 to Jan 2026).** Won $5,000 in funding and led an 8-person team; buoyant lift reached 19x the drone's own payload capacity at roughly the same power draw; indoor test flight Dec 2025. ROS, CAD, computer vision, embedded systems.
-- **Beta Flow Browser (VS Code Marketplace, Apr to Jun 2026).** Open-source MIT extension putting a full web browser in the editor sidebar: spaces, vertical tabs, per-profile cookie isolation. 200+ downloads. TypeScript.
+- **Beta Flow Browser (VS Code Marketplace, Apr to Jun 2026).** Open-source MIT extension putting a full web browser in the editor sidebar: spaces with their own tabs and favorites, vertical tabs, per-profile cookie isolation, and one-click tab tidying. TypeScript. https://marketplace.visualstudio.com/items?itemName=SkylerChan.beta-flow-browser
 - **LastCurb, real-time NYC parking finder (Jun to Aug 2025).** On-device computer vision over public NYC traffic cameras to spot open curb space in real time, with free public cameras as the only sensor layer. Python. https://github.com/skylerlchan/LastCurb
 
 ## Publications and honors

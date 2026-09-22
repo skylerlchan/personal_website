@@ -2,8 +2,12 @@ import * as THREE from "three";
 
 /**
  * One skyline, drawn once: San Francisco on the left, New York on the right,
- * sharing a horizon, so the two cities read as one. White shapes on
- * transparent, used as a silhouette mask by the portrait shader.
+ * sharing a horizon, so the two cities read as one.
+ *
+ * Two masks packed into one texture, on opaque black with additive drawing:
+ * the red channel is the solid silhouette (where windows may light), the
+ * green channel is the outline (the neon wireframe). The portrait shader
+ * reads both.
  *
  * Landmarks, left to right: the Golden Gate, Coit Tower, the Transamerica
  * Pyramid, Salesforce Tower, then the Empire State Building, the Chrysler
@@ -22,8 +26,12 @@ export function skylineCanvas(): HTMLCanvasElement {
   c.height = H;
   const g = c.getContext("2d")!;
   const ground = H;
-  g.fillStyle = "#fff";
-  g.strokeStyle = "#fff";
+  // Opaque black, then everything adds light, so the two channels stay clean.
+  g.fillStyle = "#000";
+  g.fillRect(0, 0, W, H);
+  g.globalCompositeOperation = "lighter";
+  g.fillStyle = "#f00";
+  g.strokeStyle = "#f00";
 
   // Deterministic, so the city is the same on every load.
   let seed = 7;
@@ -202,6 +210,28 @@ export function skylineCanvas(): HTMLCanvasElement {
   /* ── the bridges, in front ── */
   suspension(196, 320, 252, 96, false); // Golden Gate
   suspension(902, 994, 182, 88, true); // Brooklyn Bridge
+
+  // The outline pass: the same silhouette, edge-detected into the green
+  // channel. Cheaper and truer than drawing every shape twice: take the red
+  // mask, and keep the pixels that have a neighbour outside it.
+  const src = g.getImageData(0, 0, W, H);
+  const out = g.createImageData(W, H);
+  const a = src.data, b = out.data;
+  const at = (x: number, y: number) => (x < 0 || y < 0 || x >= W || y >= H ? 0 : a[(y * W + x) * 4]);
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4;
+      const v = a[i];
+      // An edge is a lit pixel touching an unlit one, in any direction.
+      const edge = v > 40 && (at(x - 1, y) < 40 || at(x + 1, y) < 40 || at(x, y - 1) < 40 || at(x, y + 1) < 40 || y === H - 1) ? 255 : 0;
+      b[i] = v; // keep the fill in red
+      b[i + 1] = edge; // the outline in green
+      b[i + 2] = 0;
+      b[i + 3] = 255;
+    }
+  }
+  g.globalCompositeOperation = "source-over";
+  g.putImageData(out, 0, 0);
 
   cached = c;
   return c;
