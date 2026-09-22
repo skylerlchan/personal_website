@@ -165,7 +165,7 @@ export class ScrollWorld {
     this.camera.position.set(0, portrait ? 2.4 : 2.2, portrait ? 10.2 : 7.6);
     this.camera.lookAt(0, portrait ? -0.35 : 1.05, 0);
     this.camera.updateProjectionMatrix();
-    this.backdrop.resize(this.camera, portrait);
+    this.backdrop.resize(this.camera);
 
     // How much world fits across the frame where the models stand.
     const visH = 2 * this.camera.position.z * Math.tan(THREE.MathUtils.degToRad(this.camera.fov) / 2);

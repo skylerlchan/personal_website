@@ -78,7 +78,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-js','')}catch(e){}})()`,
+            __html: `(function(){try{document.documentElement.setAttribute('data-js','')}catch(e){}})()`,
           }}
         />
         <script

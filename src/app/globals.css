@@ -317,13 +317,30 @@ body {
 .veil {
   position: fixed;
   inset: auto 0 0 0;
-  height: 62svh;
+  height: 58svh;
   z-index: 5;
   pointer-events: none;
   background: linear-gradient(
     to top,
     var(--bg) 0%,
-    color-mix(in srgb, var(--bg) 82%, transparent) 38%,
+    var(--bg) 15%,
+    color-mix(in srgb, var(--bg) 78%, transparent) 44%,
+    color-mix(in srgb, var(--bg) 40%, transparent) 72%,
+    transparent 100%
+  );
+}
+
+/* The header needs the same courtesy over a bright sky. */
+.veil-top {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 16svh;
+  z-index: 5;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--bg) 85%, transparent) 0%,
+    color-mix(in srgb, var(--bg) 40%, transparent) 45%,
     transparent 100%
   );
 }

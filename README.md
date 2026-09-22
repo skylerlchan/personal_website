@@ -16,8 +16,8 @@ pnpm build    # production build
 
 | Route | Screen | What the model does |
 |---|---|---|
-| | Skyler Chan | one impossible city: `public/images/cities.jpg`, a generated surreal photograph where the Golden Gate and the Brooklyn Bridge are fused into one span, the Transamerica Pyramid stands beside the Empire State and the Chrysler crown, and a second city hangs upside down out of the sky. The drawn neon skyline sits faintly on top of it, windows lit |
-| Work | Multiplier | the app: chat bubbles arrive, the chart draws |
+| | Skyler Chan | one city made of two: `public/images/cities.jpg`, a generated image where the Golden Gate runs straight into the Brooklyn Bridge as a single span, and the Transamerica Pyramid, Salesforce Tower, the Empire State, the Chrysler crown and One World Trade stand in the same skyline. Clear sky, bright water, planted terraces. It drifts in and out very slowly so the frame is never quite still |
+| Multiplier | the app: chat bubbles arrive, the chart draws |
 | Work | BTC funding carry | 3.3 years of real funding as bars; the equity line compounds across them |
 | Work | Solar geoengineering, modeled | aerosol injected at the equator drifts poleward |
 | Projects | Exahuman | the leader arm reaches; the follower copies it 0.3 s later |
@@ -29,7 +29,7 @@ pnpm build    # production build
 | Contact | Open to interesting problems | his portrait again, and the links |
 
 - `src/components/visuals/roster/ScrollWorld.ts`: the stage, the coloured glow and fill, the scroll-scrubbed hand-off (each model faces front on its own screen), theme sync.
-- `src/components/visuals/roster/backdrop.ts`: the first and last screens. A full-frame plane parented to the camera, holding the generated city, graded, with the drawn skyline burning faintly in its shadows. The city image is optional: without it the drawn skyline carries the frame on its own.
+- `src/components/visuals/roster/backdrop.ts`: the first and last screens. A full-frame plane parented to the camera holding the generated city, covered to the frame and drifting on a slow cycle, with its corners softened into the page.
 - `src/components/visuals/roster/skyline.ts`: draws that skyline once to a canvas and packs two masks into one texture, the solid silhouette in red (where windows may light) and an edge-detected outline in green (the neon wireframe).
 - `src/components/visuals/roster/models.ts`: the models and their loops. `Arm.ts`: the five-axis arm.
 - `src/components/visuals/Stage.tsx`: the fixed canvas; feeds `scrollY / innerHeight` to the world; lazy-loads three.js after first paint.
@@ -37,7 +37,7 @@ pnpm build    # production build
 On a wide screen the whole stage slides into the right half so it never runs into the copy column, clamped so the widest model still fits the frame; on a phone it stays centred, above the copy.
 - `src/sections/page/index.tsx`: the fork, the routes, the screens and their copy.
 
-One theme, dark, set on `<html>` in the root layout; there is no toggle. The copy sits over one fixed veil across the bottom of the viewport rather than a scrim per screen: a scrim per screen reaches solid background at its own bottom edge, and where two screens meet that shows as a hard horizontal line.
+One theme, light; there is no toggle. The copy sits over two fixed veils, one across the bottom of the viewport and one across the top for the header, rather than a scrim per screen: a scrim per screen reaches solid background at its own bottom edge, and where two screens meet that shows as a hard horizontal line.
 
 Copy rules: his own sentences, no em dashes, "Multiplier" never "WithAI", no valuation or AUM on a public page. Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 via the registry below.
 

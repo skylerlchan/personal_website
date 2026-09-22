@@ -155,6 +155,8 @@ const ELSEWHERE = [
 ];
 
 const MONO = "font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-muted";
+/** The two screens with the city behind them need more ink than grey. */
+const MONO_ON_IMAGE = "font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-foreground/75";
 
 type Screen = { id: string; model: PropKind; color: string; group?: Group; entry?: Entry; kind: "intro" | "entry" | "end" };
 
@@ -263,7 +265,7 @@ export default function Page() {
             fork on the first screen and the dots on the edge carry it. */}
         <nav aria-label="Sections" className="pointer-events-auto hidden items-center gap-5 sm:flex">
           {GROUPS.map((g) => (
-            <a key={g.id} href={`#${firstOf(g.id)}`} className={`${MONO} transition-colors hover:text-foreground`} style={{ color: here === g.id ? g.color : undefined }}>
+            <a key={g.id} href={`#${firstOf(g.id)}`} className={`${MONO} text-foreground/70 transition-colors hover:text-foreground`} style={{ color: here === g.id ? g.color : undefined }}>
               {g.label}
             </a>
           ))}
@@ -298,7 +300,7 @@ export default function Page() {
               <div className="max-w-md">
                 {s.kind === "intro" && (
                   <>
-                    <p className={MONO}>New York · San Francisco · Princeton ORFE, class of 2028</p>
+                    <p className={MONO_ON_IMAGE}>New York · San Francisco · Princeton ORFE, class of 2028</p>
                     <h1 className="mt-3 text-[clamp(2.5rem,9vw,4.25rem)] font-medium leading-[0.95] tracking-[-0.045em] text-foreground">Skyler Chan</h1>
                     <p className="mt-4 max-w-md text-pretty text-base leading-snug text-muted sm:text-lg">
                       Founding engineer at a YC startup, $0 to $208K ARR. Two robotics ventures. Two SSRN papers.
@@ -325,9 +327,7 @@ export default function Page() {
                 )}
                 {s.kind === "end" && (
                   <>
-                    <p className={MONO}>
-                      <span style={{ color: "#ffd2a0" }}>Contact</span>
-                    </p>
+                    <p className={MONO_ON_IMAGE}>Contact</p>
                     <h2 className="mt-3 text-[1.75rem] font-medium leading-tight tracking-[-0.03em] text-foreground sm:text-4xl">Open to interesting problems.</h2>
                     <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
                       {ELSEWHERE.map((l) => (
@@ -338,7 +338,7 @@ export default function Page() {
                         </li>
                       ))}
                     </ul>
-                    <p className={`${MONO} mt-8 text-subtle`}>
+                    <p className={`${MONO_ON_IMAGE} mt-8`}>
                       Plain text for machines: <a href="/llms.txt" className="underline-offset-[6px] hover:underline">/llms.txt</a>
                     </p>
                   </>
