@@ -12,11 +12,11 @@ pnpm build    # production build
 
 ## v3, one screen per thing, four ways down (current)
 
-`src/app/page.tsx` renders `src/sections/page`. The first screen is him (a real photo, `public/images/skyler.jpg`) and a fork: **Work, Projects, Hobbies, Contact**, each a run of screens; the header keeps the four routes one tap away and lights the current one. The copy is plain HTML, one screen per thing, with facts and sentences lifted from his September 2026 resume; `public/llms.txt` carries the full resume as Markdown and the page carries JSON-LD. Behind the copy, a fixed stage holds one three.js model floating in the centre (no base), **doing what the thing did**, and the scroll is the animation: each screen of text scrolls past while the model turns to face you, the last one shrinks away, and the light behind them crosses to that screen's colour. Scrubbed, not played. Nothing reacts to the pointer. Dots on the right edge show where you are.
+`src/app/page.tsx` renders `src/sections/page`. The first screen is him and a fork: **Work, Projects, Hobbies, Contact**, each a run of screens; the header keeps the four routes one tap away and lights the current one. The copy is plain HTML, one screen per thing, with facts and sentences lifted from his September 2026 resume; `public/llms.txt` carries the full resume as Markdown and the page carries JSON-LD. Behind the copy, a fixed stage holds one three.js model floating in the centre (no base), **doing what the thing did**, and the scroll is the animation: each screen of text scrolls past while the model turns to face you, the last one shrinks away, and the light behind them crosses to that screen's colour. Scrubbed, not played. Nothing reacts to the pointer. Dots on the right edge show where you are.
 
 | Route | Screen | What the model does |
 |---|---|---|
-| | Skyler Chan | his portrait, in a ring |
+| | Skyler Chan | his portrait, double-exposed with a skyline: the Golden Gate and San Francisco in warm light on the left, Manhattan and the Brooklyn Bridge in cool light on the right, windows coming on one by one |
 | Work | Multiplier | the app: chat bubbles arrive, the chart draws |
 | Work | BTC funding carry | 3.3 years of real funding as bars; the equity line compounds across them |
 | Work | Solar geoengineering, modeled | aerosol injected at the equator drifts poleward |
@@ -29,7 +29,7 @@ pnpm build    # production build
 | Contact | Open to interesting problems | his portrait again, and the links |
 
 - `src/components/visuals/roster/ScrollWorld.ts`: the stage, the coloured glow and fill, the scroll-scrubbed hand-off (each model faces front on its own screen), theme sync.
-- `src/components/visuals/roster/models.ts`: the models and their loops. `Arm.ts`: the five-axis arm.
+- `src/components/visuals/roster/models.ts`: the models and their loops. The portrait is a shader double exposure: the photo (`public/images/skyler.jpg`), a skyline mask, and window lights screen-blended into the shadows so his lit face stays his face. `skyline.ts` draws that skyline once to a canvas (SF landmarks left, NYC right, one shared horizon, bridges in front). `Arm.ts`: the five-axis arm.
 - `src/components/visuals/Stage.tsx`: the fixed canvas; feeds `scrollY / innerHeight` to the world; lazy-loads three.js after first paint.
 - `src/sections/page/index.tsx`: the fork, the routes, the screens and their copy.
 

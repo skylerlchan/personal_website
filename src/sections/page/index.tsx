@@ -296,7 +296,7 @@ export default function Page() {
               <div className="max-w-md">
                 {s.kind === "intro" && (
                   <>
-                    <p className={MONO}>{SITE_CONFIG.location} · Princeton ORFE, class of 2028</p>
+                    <p className={MONO}>New York · San Francisco · Princeton ORFE, class of 2028</p>
                     <h1 className="mt-3 text-[clamp(2.5rem,9vw,4.25rem)] font-medium leading-[0.95] tracking-[-0.045em] text-foreground">Skyler Chan</h1>
                     <p className="mt-4 max-w-md text-pretty text-base leading-snug text-muted sm:text-lg">
                       Founding engineer at a YC startup, $0 to $208K ARR. Two robotics ventures. Two SSRN papers.

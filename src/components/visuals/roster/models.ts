@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { Arm } from "./Arm";
+import { skylineTexture } from "./skyline";
 
 /**
  * One model per thing he built, each doing the thing it did, on a loop that
@@ -62,29 +63,107 @@ abstract class Base implements Prop {
   }
 }
 
-/* ── Him ─────────────────────────────────────────────────────────────── */
+/* ── Him, and the two cities ─────────────────────────────────────────── */
+
+const PORTRAIT_VS = /* glsl */ `
+varying vec2 vUv;
+void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
+
+/**
+ * A double exposure. His face is lit, so it stays his face; the cities live
+ * in the dark of the door, his hair and his jacket, and the windows come on
+ * one by one. San Francisco's light is warm, New York's is cool, so the two
+ * halves read apart without a word of explanation.
+ */
+const PORTRAIT_FS = /* glsl */ `
+precision highp float;
+uniform sampler2D uPhoto;
+uniform sampler2D uCity;
+uniform float uTime;
+uniform float uStrength;
+uniform vec3 uWarm;
+uniform vec3 uCool;
+varying vec2 vUv;
+
+float hash21(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+
+void main() {
+  // The photo, cropped to the face.
+  vec2 puv = vUv * 0.78 + vec2(0.13, 0.2);
+  vec3 photo = texture2D(uPhoto, puv).rgb;
+  float lum = dot(photo, vec3(0.299, 0.587, 0.114));
+
+  // The city stands on a horizon low in the disc and sways a hair.
+  float base = 0.05, top = 0.82;
+  float cy = (vUv.y - base) / (top - base);
+  vec3 city = vec3(0.0);
+  if (cy > 0.0 && cy < 1.0) {
+    vec2 cuv = vec2(vUv.x * 0.94 + 0.03 + 0.006 * sin(uTime * 0.09), cy);
+    float mask = texture2D(uCity, cuv).a;
+    // Windows: a grid of small lights, most of them on, each with its own slow flicker.
+    vec2 cell = vec2(cuv.x * 260.0, cy * 132.0);
+    vec2 id = floor(cell), f = fract(cell);
+    float lit = step(0.42, hash21(id));
+    float flicker = 0.55 + 0.45 * sin(uTime * 1.1 + hash21(id + 11.0) * 6.2831);
+    float dot_ = step(0.3, f.x) * step(f.x, 0.72) * step(0.35, f.y) * step(f.y, 0.75);
+    float windows = mask * lit * dot_ * flicker;
+    // San Francisco is the warm half, New York the cool one.
+    vec3 tint = mix(uWarm, uCool, smoothstep(0.25, 0.75, vUv.x));
+    // The skyline itself glows faintly; the windows carry the detail.
+    city = tint * (0.36 * mask + 1.4 * windows);
+    // Haze at street level, and nothing above the roofline.
+    city *= 1.0 - smoothstep(0.55, 1.0, cy) * 0.85;
+    city *= smoothstep(0.0, 0.16, cy);
+  }
+
+  // Screen blend, weighted into the shadows, so his lit face stays his face.
+  float w = uStrength * (1.0 - smoothstep(0.12, 0.42, lum));
+  vec3 col = 1.0 - (1.0 - photo) * (1.0 - city * w);
+
+  // A soft edge, so the disc is not a cut-out.
+  float d = distance(vUv, vec2(0.5));
+  float edge = 1.0 - smoothstep(0.47, 0.5, d);
+  if (edge <= 0.001) discard;
+  gl_FragColor = vec4(col, edge);
+}`;
 
 class PortraitProp extends Base {
   private disc: THREE.Mesh;
+  private mat: THREE.ShaderMaterial;
   constructor(accent: THREE.Color) {
     super(accent);
-    const mat = this.keep(new THREE.MeshBasicMaterial({ color: 0x000000 }));
-    this.disc = this.mesh(new THREE.CircleGeometry(1.35, 96), mat, 0, 1.55, 0);
+    // A dark stand-in until the photo lands, so nothing flashes.
+    const blank = this.keep(new THREE.DataTexture(new Uint8Array([10, 10, 10, 255]), 1, 1));
+    blank.needsUpdate = true;
+    this.mat = this.keep(
+      new THREE.ShaderMaterial({
+        vertexShader: PORTRAIT_VS,
+        fragmentShader: PORTRAIT_FS,
+        uniforms: {
+          uPhoto: { value: blank },
+          uCity: { value: this.keep(skylineTexture()) },
+          uTime: { value: 0 },
+          uStrength: { value: 1 },
+          uWarm: { value: new THREE.Color(0xffb36b) },
+          uCool: { value: new THREE.Color(0x9fd0ff) },
+        },
+        transparent: true,
+      }),
+    );
+    this.disc = this.mesh(new THREE.CircleGeometry(1.35, 96), this.mat, 0, 1.55, 0);
     this.disc.castShadow = false;
     // A thin ring in the screen's colour, like a frame.
     const ring = this.mesh(new THREE.RingGeometry(1.35, 1.375, 96), this.lit, 0, 1.55, 0.001);
     ring.castShadow = false;
     new THREE.TextureLoader().load("/images/skyler.jpg", (tx) => {
       tx.colorSpace = THREE.SRGBColorSpace;
-      // Zoom in on the face: the circle shows the middle 78% of the square.
-      tx.repeat.set(0.78, 0.78);
-      tx.offset.set(0.13, 0.2);
-      mat.map = tx;
-      mat.color.set(0xffffff);
-      mat.needsUpdate = true;
+      this.mat.uniforms.uPhoto.value = tx;
     });
   }
   update(_dt: number, t: number) {
+    this.mat.uniforms.uTime.value = t;
+    // The cities burn brighter at night than against paper.
+    this.mat.uniforms.uStrength.value = document.documentElement.classList.contains("dark") ? 1.0 : 0.6;
     this.disc.position.y = 1.55 + 0.02 * Math.sin(t * 0.7);
   }
 }
