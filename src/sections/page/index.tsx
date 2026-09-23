@@ -156,7 +156,7 @@ const ELSEWHERE = [
 
 const MONO = "font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-muted";
 /** The two screens with the city behind them need more ink than grey. */
-const MONO_ON_IMAGE = "font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-foreground/75";
+const MONO_ON_IMAGE = "font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-foreground";
 
 type Screen = { id: string; model: PropKind; color: string; group?: Group; entry?: Entry; kind: "intro" | "entry" | "end" };
 
@@ -297,7 +297,8 @@ export default function Page() {
         {SCREENS.map((s) => (
           <section key={s.id} id={s.id} className="relative flex h-svh flex-col justify-end">
             <div className="relative mx-auto w-full max-w-6xl px-6 pb-[max(2.5rem,env(safe-area-inset-bottom))] sm:px-10 lg:pb-16">
-              <div className="max-w-md">
+              {/* Never wider than the column the render leaves for it. */}
+              <div className="max-w-md lg:max-w-[min(28rem,40vw)]">
                 {s.kind === "intro" && (
                   <>
                     <p className={MONO_ON_IMAGE}>New York · San Francisco · Princeton ORFE, class of 2028</p>

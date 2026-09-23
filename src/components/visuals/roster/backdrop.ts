@@ -56,7 +56,7 @@ export class Backdrop {
   private frameAspect = 1.6;
   private imgAspect = 1600 / 893;
 
-  constructor(private distance = 25) {
+  constructor() {
     const blank = new THREE.DataTexture(new Uint8Array([245, 244, 240, 255]), 1, 1);
     blank.needsUpdate = true;
     this.mat = new THREE.ShaderMaterial({
@@ -76,8 +76,6 @@ export class Backdrop {
       depthWrite: false,
     });
     this.mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), this.mat);
-    this.mesh.position.z = -distance;
-    this.mesh.renderOrder = -10;
     this.mesh.frustumCulled = false;
 
     new THREE.TextureLoader().load(
@@ -96,11 +94,9 @@ export class Backdrop {
     );
   }
 
-  /** Size the plane to fill the camera's frustum. */
-  resize(camera: THREE.PerspectiveCamera) {
-    const h = 2 * this.distance * Math.tan((camera.fov * Math.PI) / 360);
-    this.mesh.scale.set(h * camera.aspect, h, 1);
-    this.frameAspect = camera.aspect;
+  /** The plane fills its own orthographic pass; only the framing changes. */
+  resize(aspect: number) {
+    this.frameAspect = aspect;
     this.frame();
   }
 

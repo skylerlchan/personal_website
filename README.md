@@ -16,7 +16,7 @@ pnpm build    # production build
 
 | Route | Screen | What the model does |
 |---|---|---|
-| | Skyler Chan | one city made of two: `public/images/cities.jpg`, a generated image where the Golden Gate runs straight into the Brooklyn Bridge as a single span, and the Transamerica Pyramid, Salesforce Tower, the Empire State, the Chrysler crown and One World Trade stand in the same skyline. Clear sky, bright water, planted terraces. It drifts in and out very slowly so the frame is never quite still |
+| | Skyler Chan | three places in one: `public/images/cities.jpg`, a generated poster-flat illustration with the Golden Gate on one side and the Brooklyn Bridge on the other, the Transamerica Pyramid, Salesforce Tower, the Empire State, the Chrysler crown and One World Trade between them, and Princeton's collegiate gothic in the foreground: Blair Hall's arch and tower, Nassau Hall's cupola, the Cleveland Tower, ivy and quads. It drifts very slowly so the frame is never quite still |
 | Multiplier | the app: chat bubbles arrive, the chart draws |
 | Work | BTC funding carry | 3.3 years of real funding as bars; the equity line compounds across them |
 | Work | Solar geoengineering, modeled | aerosol injected at the equator drifts poleward |
@@ -34,7 +34,7 @@ pnpm build    # production build
 - `src/components/visuals/roster/models.ts`: the models and their loops. `Arm.ts`: the five-axis arm.
 - `src/components/visuals/Stage.tsx`: the fixed canvas; feeds `scrollY / innerHeight` to the world; lazy-loads three.js after first paint.
 
-On a wide screen the whole stage slides into the right half so it never runs into the copy column, clamped so the widest model still fits the frame; on a phone it stays centred, above the copy.
+**The words come first.** The models are scissored into their own rectangle of the canvas, so they cannot wander under the copy at any window size: beside the text when the window is genuinely wide (>= 1024px and >= 1.3 aspect, matching the copy's own `lg` column), above it otherwise. The camera is framed to that rectangle, not to the canvas. The picture on the first and last screens is the exception and fills the whole canvas from its own orthographic pass behind everything.
 - `src/sections/page/index.tsx`: the fork, the routes, the screens and their copy.
 
 One theme, light; there is no toggle. The copy sits over two fixed veils, one across the bottom of the viewport and one across the top for the header, rather than a scrim per screen: a scrim per screen reaches solid background at its own bottom edge, and where two screens meet that shows as a hard horizontal line.

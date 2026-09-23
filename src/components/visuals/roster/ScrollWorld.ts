@@ -4,14 +4,17 @@ import { makeProp, type Prop, type PropKind } from "./models";
 import { Backdrop } from "./backdrop";
 
 /**
- * The product stage. The first and last screens are a full-bleed backdrop
- * (him, and the two cities); every screen between them is one model floating
- * in the centre of a fixed canvas; the
- * page scrolls past it one screen of text at a time, and the scroll position
- * is the animation. Between screen i and screen i+1 the model turns a little,
- * shrinks away, and the next one grows in its place, with the light behind
- * them crossing from one build's colour to the next. Scrubbed, not played:
- * scroll back and it runs in reverse.
+ * The product stage. The page scrolls past it one screen of text at a time,
+ * and the scroll position is the animation: between screen i and screen i+1
+ * the model turns a little, shrinks away, and the next one grows in its
+ * place, with the light behind them crossing from one build's colour to the
+ * next. Scrubbed, not played: scroll back and it runs in reverse.
+ *
+ * The words come first. The models are given their own rectangle of the
+ * canvas and are scissored into it, so they can never wander under the copy
+ * at any window size: beside the text on a wide screen, above it otherwise.
+ * The picture on the first and last screens is the exception, and fills the
+ * whole frame from its own pass behind everything.
  *
  * Nothing reacts to the pointer.
  */
@@ -32,6 +35,9 @@ export class ScrollWorld {
   private glow: THREE.Mesh;
   private glowMat: THREE.MeshBasicMaterial;
   private backdrop = new Backdrop();
+  private backdropScene = new THREE.Scene();
+  private backdropCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  private region = { x: 0, y: 0, w: 1, h: 1 };
   private portraitAt: number[] = [];
   private key: THREE.DirectionalLight;
   private hemi: THREE.HemisphereLight;
@@ -92,9 +98,10 @@ export class ScrollWorld {
     this.glow.position.set(0, 1.3, -3);
     this.scene.add(this.glow);
 
-    // The backdrop rides with the camera, so it always fills the frame.
-    this.camera.add(this.backdrop.mesh);
-    this.scene.add(this.camera);
+    // The picture gets its own pass, behind everything and across the whole
+    // canvas, so confining the models to a rectangle never crops it.
+    this.backdrop.mesh.scale.set(2, 2, 1);
+    this.backdropScene.add(this.backdrop.mesh);
 
     this.scene.add(this.stage);
     // Every model is built up front; the scroll decides which one is grown.
@@ -157,27 +164,35 @@ export class ScrollWorld {
     const h = this.canvas.clientHeight || 1;
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.matchMedia("(pointer: coarse)").matches ? 1.5 : 2));
     this.renderer.setSize(w, h, false);
-    this.camera.aspect = w / h;
-    // The model floats in the upper half on a phone (the copy is below it)
-    // and in the right half on a wide screen (the copy is down the left).
-    const portrait = w / h < 1;
-    this.camera.fov = portrait ? 40 : 32;
-    this.camera.position.set(0, portrait ? 2.4 : 2.2, portrait ? 10.2 : 7.6);
-    this.camera.lookAt(0, portrait ? -0.35 : 1.05, 0);
-    this.camera.updateProjectionMatrix();
-    this.backdrop.resize(this.camera);
+    this.backdrop.resize(w / h);
 
-    // How much world fits across the frame where the models stand.
+    // Where the models are allowed to be. Beside the copy only when the
+    // window is genuinely wide; otherwise above it, never over it. This has
+    // to agree with the copy's own column in the page (the lg breakpoint).
+    const beside = w >= 1024 && w / h >= 1.3;
+    if (beside) {
+      const x = Math.round(w * 0.46);
+      this.region = { x, y: 0, w: w - x, h };
+    } else {
+      const top = Math.round(h * 0.56);
+      this.region = { x: 0, y: h - top, w, h: top };
+    }
+
+    const aspect = this.region.w / this.region.h;
+    this.camera.aspect = aspect;
+    this.camera.fov = aspect < 1 ? 42 : 34;
+    this.camera.position.set(0, 2.3, aspect < 1 ? 9.6 : 8.2);
+    this.camera.lookAt(0, 1.0, 0);
+    this.camera.updateProjectionMatrix();
+
+    // Inside its own rectangle the model is simply centred, and sized so the
+    // widest of them still clears the edges.
     const visH = 2 * this.camera.position.z * Math.tan(THREE.MathUtils.degToRad(this.camera.fov) / 2);
-    const visW = visH * this.camera.aspect;
-    // Landscape: shrink a touch, then slide right until the copy is clear,
-    // but never so far that the widest model runs off the frame.
-    const scale = portrait ? 1 : 0.92;
-    const halfModel = 1.8 * scale;
-    const shift = portrait ? 0 : Math.min(visW * 0.22, Math.max(0, visW / 2 - halfModel - 0.2));
+    const visW = visH * aspect;
+    const scale = Math.min(1, (visW * 0.46) / 1.8, (visH * 0.46) / 1.6);
     this.stage.scale.setScalar(scale);
-    this.stage.position.x = shift;
-    this.glow.position.x = shift;
+    this.stage.position.x = 0;
+    this.glow.position.x = 0;
   }
 
   private frame = () => {
@@ -224,6 +239,19 @@ export class ScrollWorld {
       m.prop.update(this.reduced ? 0 : dt, t);
     }
 
-    this.renderer.render(this.scene, this.camera);
+    // The picture first, across the whole canvas, then the models inside
+    // their own rectangle and nowhere else.
+    const r = this.renderer;
+    r.setScissorTest(false);
+    r.setViewport(0, 0, this.canvas.clientWidth || 1, this.canvas.clientHeight || 1);
+    r.clear();
+    r.render(this.backdropScene, this.backdropCam);
+    r.autoClear = false;
+    r.setViewport(this.region.x, this.region.y, this.region.w, this.region.h);
+    r.setScissor(this.region.x, this.region.y, this.region.w, this.region.h);
+    r.setScissorTest(true);
+    r.render(this.scene, this.camera);
+    r.setScissorTest(false);
+    r.autoClear = true;
   };
 }
