@@ -96,7 +96,7 @@ export const ENTRIES: Entry[] = [
     org: "VS Code Marketplace",
     title: "Beta Flow Browser",
     line: "Published an open-source (MIT) VS Code extension that puts a full web browser in the editor sidebar: spaces, vertical tabs, favorites and drag-to-bookmark, multi-engine search, per-profile cookie isolation, and one-click Auto Tidy.",
-    stat: { value: "229", unit: "downloads", note: "on the VS Code Marketplace, 60 installs" },
+    stat: { value: "233", unit: "downloads", note: "on the VS Code Marketplace, 61 installs; checked 28 Sep 2026" },
     links: [{ label: "Marketplace", href: "https://marketplace.visualstudio.com/items?itemName=SkylerChan.beta-flow-browser" }],
   },
   {
