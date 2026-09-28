@@ -24,9 +24,7 @@ import CardArt from "@/components/CardArt";
  */
 export default function Card({ e, hues, lift = 0 }: { e: Entry; hues: [number, number, number]; lift?: number }) {
   const [open, setOpen] = useState(false);
-  const eyebrow = [e.title, e.tag, e.stat && `${e.stat.value}${e.stat.unit ? ` ${e.stat.unit}` : ""}`]
-    .filter(Boolean)
-    .join(" · ");
+  const stat = e.stat && `${e.stat.value}${e.stat.unit ? ` ${e.stat.unit}` : ""}`;
 
   return (
     <article
@@ -57,7 +55,30 @@ export default function Card({ e, hues, lift = 0 }: { e: Entry; hues: [number, n
           </div>
 
           <div className="flex flex-1 flex-col px-4 pb-4 pt-3.5">
-            <p className="truncate text-[0.75rem] leading-tight text-[var(--faint)]">{eyebrow}</p>
+            {/* The eyebrow: name, credential, number. The Y Combinator mark is
+                drawn inline, the orange square with the Y, because he wants
+                the logo on the card and not just the words. */}
+            <p className="flex min-w-0 items-center gap-1.5 truncate text-[0.75rem] leading-tight text-[var(--faint)]">
+              <span className="truncate">{e.title}</span>
+              {e.tag && (
+                <>
+                  <span aria-hidden>·</span>
+                  {e.tag === "Y Combinator" && (
+                    <svg aria-hidden viewBox="0 0 16 16" className="h-[0.9rem] w-[0.9rem] shrink-0 rounded-[3px]">
+                      <rect width="16" height="16" fill="#f26625" />
+                      <path d="M4.6 3.6 8 8.4l3.4-4.8M8 8.4v4.3" fill="none" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                  <span className="shrink-0">{e.tag}</span>
+                </>
+              )}
+              {stat && (
+                <>
+                  <span aria-hidden>·</span>
+                  <span className="shrink-0">{stat}</span>
+                </>
+              )}
+            </p>
 
             {/* Two lines reserved, bottom-aligned, so a one-line claim leaves
                 its slack under the eyebrow where it reads as spacing. */}

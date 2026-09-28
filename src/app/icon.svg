@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- The site's own wash, the Exahuman hues, under the nine-dot mark the chat
+       uses while it thinks. One object, no letters, reads at 16px. -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6a06a"/>
+      <stop offset="0.5" stop-color="#e86a8a"/>
+      <stop offset="1" stop-color="#8f7fd6"/>
+    </linearGradient>
+    <radialGradient id="c" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#c94a7a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#c94a7a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#g)"/>
+  <rect width="64" height="64" rx="15" fill="url(#c)"/>
+  <g fill="#ffffff">
+    <circle cx="20" cy="20" r="4.6" opacity="0.55"/>
+    <circle cx="32" cy="20" r="4.6" opacity="0.8"/>
+    <circle cx="44" cy="20" r="4.6"/>
+    <circle cx="20" cy="32" r="4.6" opacity="0.8"/>
+    <circle cx="32" cy="32" r="4.6"/>
+    <circle cx="44" cy="32" r="4.6" opacity="0.8"/>
+    <circle cx="20" cy="44" r="4.6"/>
+    <circle cx="32" cy="44" r="4.6" opacity="0.8"/>
+    <circle cx="44" cy="44" r="4.6" opacity="0.55"/>
+  </g>
+</svg>

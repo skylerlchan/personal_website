@@ -103,9 +103,18 @@ export function localAnswer(question: string): string | null {
     return "Hey. Ask me about anything Skyler has built. Exahuman and Multiplier are the two he would lead with, and the BTC funding carry is the one with a paper behind it.";
   }
 
+  // Strengths, in his words and the resume's, separate from the hiring pitch.
+  if (hit(q, "strength", "strengths", "good at", "best at", "skills", "superpower", "what is he like")) {
+    return para(
+      "In his own two words: Compulsive Optimizer.",
+      "He ships end to end. At Multiplier he owned the product for six enterprise clients and wrote about 30% of the codebase, the largest share on the team. He builds hardware as well as software: Hoverloon and Exahuman are his, funded and staffed by him. And he does the numbers himself: the BTC funding carry is a sole-author SSRN paper with the code public.",
+      "What he says drives it: getting immersed in a sticky problem and letting his mind explore novel solutions, which he calls addictive.",
+    );
+  }
+
   // What he is for. This has to run before the contact intent, which used to
   // catch "hire" and hand back an email address, which is not an answer.
-  if (hit(q, "hire", "hiring", "recruit", "good at", "strengths", "skills", "what does he do", "what can he do", "role", "fit", "why him", "what should i")) {
+  if (hit(q, "hire", "hiring", "recruit", "what does he do", "what can he do", "role", "fit", "why him", "what should i")) {
     const top = HEADLINE.map((id) => ENTRIES.find((e) => e.id === id)).filter(Boolean) as Entry[];
     return para(
       "Hire him to build the thing nobody has built yet, then measure whether it worked. That is the pattern in everything here.",

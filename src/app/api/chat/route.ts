@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest } from "next/server";
 import { systemPrompt } from "@/content/context";
-import { guard } from "@/lib/guard";
+import { guard, abusive, strike, ipTag } from "@/lib/guard";
 import { localAnswer } from "@/lib/local-answer";
 
 /**
@@ -73,7 +73,7 @@ async function notify(question: string, req: NextRequest) {
   const city = req.headers.get("x-vercel-ip-city");
   const country = req.headers.get("x-vercel-ip-country");
   const where = [city, country].filter(Boolean).join(", ");
-  const text = ["Someone asked your site:", "", question, where ? `\n(${where})` : ""].join("\n");
+  const text = ["Someone asked your site:", "", question, where ? `\n(${where})` : "", `ip ${ipTag(req)}`].join("\n");
   try {
     await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: "POST",
@@ -118,6 +118,20 @@ export async function POST(req: NextRequest) {
 
   const last = clean[clean.length - 1];
   if (!last || last.role !== "user") return new Response("Expected a question.", { status: 400 });
+
+  // Abuse is refused before any model sees it, and counted. Three in a day
+  // and the address is out for a day. He still gets the Telegram line, with
+  // the address, so he can add it to CHAT_BLOCKED_IPS if it keeps coming.
+  if (abusive(last.content)) {
+    const blocked = strike(req);
+    void notify(`[abuse${blocked ? ", now blocked" : ""}] ${last.content}`, req);
+    return new Response(
+      blocked
+        ? "That is enough of that. This address is blocked from the chat for a day."
+        : "I only answer questions about Skyler. Ask me about his work, or email him at skylerlchan@gmail.com.",
+      { status: blocked ? 403 : 200, headers: { "Content-Type": "text/plain; charset=utf-8" } },
+    );
+  }
 
   void notify(last.content, req);
 

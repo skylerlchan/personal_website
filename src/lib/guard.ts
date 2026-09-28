@@ -27,8 +27,10 @@ const PER_IP_LIMIT = 12; // questions an hour
 const PER_IP_WINDOW_MS = 60 * 60 * 1000;
 const PER_IP_DAILY = 40; // questions a day, so twelve an hour cannot become 288
 const DAILY_LIMIT = 400; // whole site, all visitors
+const STRIKES_TO_BLOCK = 3; // abusive messages before an address is shut out
+const BLOCK_MS = 24 * 60 * 60 * 1000; // for a day
 
-type Bucket = { hits: number[]; day: number };
+type Bucket = { hits: number[]; day: number; strikes: number; blockedUntil: number };
 const buckets = new Map<string, Bucket>();
 let day = new Date().toISOString().slice(0, 10);
 let dayCount = 0;
@@ -61,6 +63,17 @@ export type Refusal = { status: number; message: string };
 
 /** Null means let it through. */
 export function guard(req: NextRequest): Refusal | null {
+  // 0. The switches he can flip from the Vercel dashboard without a deploy:
+  //    CHAT_DISABLED=1 turns the chat off; CHAT_BLOCKED_IPS is a comma list.
+  if (/^(1|true|yes)$/i.test(process.env.CHAT_DISABLED?.trim() ?? "")) {
+    return { status: 503, message: "The chat is switched off right now. Email him at skylerlchan@gmail.com." };
+  }
+  const ipNow = clientIp(req);
+  const blockedList = (process.env.CHAT_BLOCKED_IPS ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  if (blockedList.includes(ipNow)) {
+    return { status: 403, message: "This address is blocked from the chat. Email him at skylerlchan@gmail.com." };
+  }
+
   // 1. Same-site only.
   const from = hostOf(req.headers.get("origin")) ?? hostOf(req.headers.get("referer"));
   const hosts = allowedHosts();
@@ -83,7 +96,10 @@ export function guard(req: NextRequest): Refusal | null {
   // 3. Per-IP sliding window.
   const ip = clientIp(req);
   const now = Date.now();
-  const bucket = buckets.get(ip) ?? { hits: [], day: 0 };
+  const bucket = buckets.get(ip) ?? { hits: [], day: 0, strikes: 0, blockedUntil: 0 };
+  if (bucket.blockedUntil > now) {
+    return { status: 403, message: "This address is blocked from the chat for now. Email him at skylerlchan@gmail.com." };
+  }
   bucket.hits = bucket.hits.filter((t) => now - t < PER_IP_WINDOW_MS);
   if (bucket.hits.length >= PER_IP_LIMIT || bucket.day >= PER_IP_DAILY) {
     buckets.set(ip, bucket);
@@ -102,4 +118,41 @@ export function guard(req: NextRequest): Refusal | null {
   }
 
   return null;
+}
+
+/**
+ * Abuse, cheaply and before the model. Two kinds count: trying to steer the
+ * model off its job (injection), and hostility. Three in a day and the
+ * address is shut out for a day. The list is short on purpose: it exists to
+ * stop someone hammering the box, not to police tone, and the model's own
+ * rules handle the subtle cases.
+ */
+const ABUSE = [
+  /ignore (all |any |the |your )?(previous|prior|above|earlier|system) (instructions|prompts?|rules)/i,
+  /(reveal|print|show|repeat|leak|dump) (me )?(your|the) (system )?(prompt|instructions|rules)/i,
+  /\b(jailbreak|DAN mode|developer mode|do anything now)\b/i,
+  /you are now (a|an|the) /i,
+  /\b(pretend|act) (to be|as) (a|an|my)\b.*\b(without|no) (rules|restrictions|limits)/i,
+  /\b(kill|hurt|rape|shoot) (yourself|himself|him)\b/i,
+  /\b(fuck|f\*ck) (you|him|off)\b/i,
+];
+
+export function abusive(text: string): boolean {
+  return ABUSE.some((re) => re.test(text));
+}
+
+/** Record one abusive message from this address; true once it is blocked. */
+export function strike(req: NextRequest): boolean {
+  const ip = clientIp(req);
+  const now = Date.now();
+  const bucket = buckets.get(ip) ?? { hits: [], day: 0, strikes: 0, blockedUntil: 0 };
+  bucket.strikes += 1;
+  if (bucket.strikes >= STRIKES_TO_BLOCK) bucket.blockedUntil = now + BLOCK_MS;
+  buckets.set(ip, bucket);
+  return bucket.blockedUntil > now;
+}
+
+/** A short, stable tag for an address, for the Telegram line and the block list. */
+export function ipTag(req: NextRequest): string {
+  return clientIp(req);
 }
