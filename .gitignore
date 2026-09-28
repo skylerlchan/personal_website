@@ -34,3 +34,6 @@ pnpm-debug.log*
 
 # temp files
 temp_images/
+
+# His own words, served to the chat from Vercel Blob, never committed.
+corpus/

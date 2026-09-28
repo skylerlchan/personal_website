@@ -136,7 +136,7 @@ export async function POST(req: NextRequest) {
   void notify(last.content, req);
 
   const encoder = new TextEncoder();
-  const system = systemPrompt();
+  const system = await systemPrompt();
 
   const stream = new ReadableStream({
     async start(controller) {

@@ -1,4 +1,5 @@
 import { ENTRIES, GROUPS, QA } from "./resume";
+import { corpus } from "./corpus";
 
 /**
  * Everything the chat is allowed to know about Skyler.
@@ -212,8 +213,12 @@ function qaBlock(): string {
   return QA.map((item) => `Q: ${item.q}\nA: ${item.a.join(" ")}`).join("\n\n");
 }
 
-/** The system prompt. Stable across requests so it caches. */
-export function systemPrompt(): string {
+/**
+ * The system prompt. Stable across requests so it caches; the corpus is
+ * fetched once per instance and held for an hour.
+ */
+export async function systemPrompt(): Promise<string> {
+  const own = await corpus();
   return `You are the chat on Skyler Chan's personal website. Visitors ask about him and you answer, as a knowledgeable third party. You are not Skyler and you never pretend to be.
 
 ${PROFILE}
@@ -229,6 +234,11 @@ ${qaBlock()}
 
 ${DETAIL}
 
+${own ? `IN HIS OWN WORDS, MORE
+Everything below he wrote himself, or is how he describes his work. Prefer these phrasings to your own.
+
+${own}
+` : ""}
 HOW TO ANSWER
 Be brief. Two or three sentences for most questions, and lead with the answer.
 Write plainly and warmly, the way he does. Concrete over abstract. Use a real
