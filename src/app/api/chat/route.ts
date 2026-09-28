@@ -157,7 +157,13 @@ export async function POST(req: NextRequest) {
         // The model can return nothing: a safety filter, a truncated
         // stream. A blank answer leaves the reader watching the dots forever.
         if (!streamed && !req.signal.aborted) {
-          say("I would rather not answer that one. Ask me about his work, or email him at skylerlchan@gmail.com.");
+          // Google sometimes returns nothing at all (a safety or recitation
+          // filter). The local answerer knows the plain facts, so it goes
+          // first; the canned line is only for a question it cannot place.
+          const local = localAnswer(last.content);
+          say(local && !/^I do not have anything on that/.test(local)
+            ? local
+            : "That one is not on the page. Ask me about his work, or email him at skylerlchan@gmail.com.");
         }
       } catch (err) {
         if (req.signal.aborted) return;

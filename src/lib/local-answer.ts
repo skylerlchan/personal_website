@@ -123,7 +123,7 @@ export function localAnswer(question: string): string | null {
   }
 
   // Reaching him.
-  if (hit(q, "contact", "email", "reach", "get in touch", "talk to him", "message him", "resume", "cv", "linkedin", "github", "twitter")) {
+  if (hit(q, "contact", "email", "reach", "get in touch", "talk to him", "message him", "resume", "cv", "linkedin", "github", "twitter", "social", "socials", "handle", "handles", "links", "x com", "instagram")) {
     return [
       `Email is best: ${EMAIL}.`,
       "",
