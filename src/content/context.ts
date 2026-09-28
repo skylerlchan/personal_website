@@ -1,4 +1,5 @@
 import { ENTRIES, GROUPS, QA } from "./resume";
+import "server-only";
 import { corpus } from "./corpus";
 
 /**
@@ -270,10 +271,3 @@ when you mention it, because the window turns titles into links to the
 page. Two or three short paragraphs is a full answer; one is often enough.`;
 }
 
-/** The starters shown under an empty chat. */
-export const SAMPLE_QUESTIONS = [
-  "What is he building now?",
-  "What is the best thing he has built?",
-  "Is he actually good at robotics?",
-  "What should I hire him for?",
-];

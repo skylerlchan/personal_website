@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import Link from "next/link";
-import { SAMPLE_QUESTIONS } from "@/content/context";
+import { SAMPLE_QUESTIONS } from "@/content/starters";
 import { cited, linkify, paragraphs } from "@/lib/cite";
 import Thinking from "@/components/Thinking";
 
