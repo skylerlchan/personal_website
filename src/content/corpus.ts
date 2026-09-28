@@ -9,7 +9,8 @@ import { get, list } from "@vercel/blob";
  * The repo is public and llms.txt is crawled, and he wants neither to carry
  * the full collection of what he has written about himself. So the corpus
  * lives in a private Vercel Blob store connected to the project, which puts
- * BLOB_READ_WRITE_TOKEN in the environment. It is read once per instance and
+ * BLOB_STORE_ID in the environment (and a read-write token, if that box was
+ * ticked). It is read once per instance and
  * held in memory for an hour. Locally it is read from `corpus/corpus.md`,
  * which is gitignored.
  *
@@ -21,7 +22,11 @@ const NAME = process.env.CORPUS_BLOB?.trim() || "corpus.md";
 let cached: { text: string; at: number } | null = null;
 
 async function fromBlob(): Promise<string> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return "";
+  // Connecting the store to the project set BLOB_STORE_ID (the read-write
+  // token is a separate, off-by-default checkbox). On Vercel the SDK can
+  // authenticate from the store id plus the function's own identity, so
+  // either variable is reason enough to try; a failure is caught above.
+  if (!process.env.BLOB_READ_WRITE_TOKEN && !process.env.BLOB_STORE_ID) return "";
   const { blobs } = await list({ prefix: NAME, limit: 5 });
   const hit = blobs.find((b) => b.pathname === NAME) ?? blobs[0];
   if (!hit) {
