@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Fraunces } from "next/font/google";
+import Shell from "@/components/layout/Shell";
 import { Analytics } from "@vercel/analytics/react";
 import { SITE_CONFIG } from "@/lib/constants";
 import "./globals.css";
@@ -87,7 +88,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
-        {children}
+        <Shell>{children}</Shell>
         <Analytics />
       </body>
     </html>

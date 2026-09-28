@@ -1,6 +1,6 @@
 # Skyler Chan
 
-> New York and San Francisco; Princeton, NJ in term. Princeton ORFE (B.S.E. Operations Research and Financial Engineering), minor in Computer Science, GPA 3.85, expected May 2028. Founding engineer at a YC startup, $0 to $208K ARR. Two robotics ventures. Two SSRN papers.
+> New York and San Francisco; Princeton, NJ in term. Princeton ORFE (B.S.E. Operations Research and Financial Engineering), minor in Computer Science, GPA 3.85, expected May 2028. Founding engineer at Multiplier, a Y Combinator startup. Two robotics ventures. Two SSRN papers.
 
 Site: https://skyler-chan.com · Email: skylerlchan@gmail.com · GitHub: https://github.com/skylerlchan · LinkedIn: https://www.linkedin.com/in/skylerchan · X: https://x.com/SkylerChan17
 
@@ -16,6 +16,8 @@ Site: https://skyler-chan.com · Email: skylerlchan@gmail.com · GitHub: https:/
 - **Exahuman, robot teleoperation lab (Founder and Tech Lead, Princeton Robotics Club, Aug 2026 to now).** Secured $4,500 and recruited a 5-person research team; built SO-ARM101 leader / follower arms at 50 Hz and collected datasets for ACT and SmolVLA imitation-learning policies. C++, ROS, Python, LeRobot, MuJoCo. https://exahuman.io
 - **Hoverloon, aerial logistics blimp-drone hybrid (Founder and Project Lead, Jul 2025 to Jan 2026).** Won $5,000 in funding and led an 8-person team; buoyant lift reached 19x the drone's own payload capacity at roughly the same power draw; indoor test flight Dec 2025. ROS, CAD, computer vision, embedded systems.
 - **Beta Flow Browser (VS Code Marketplace, Apr to Jun 2026).** Open-source MIT extension putting a full web browser in the editor sidebar: spaces with their own tabs and favorites, vertical tabs, per-profile cookie isolation, and one-click tab tidying. TypeScript. https://marketplace.visualstudio.com/items?itemName=SkylerChan.beta-flow-browser
+- **Retrieval architecture benchmark (Jul 2026).** Benchmarked 7 retrieval architectures against a synthetic corpus and a 21-document hand-labeled corpus on Recall@k, MRR and nDCG, and wrote it up to drive a production retrieval decision. Python, knowledge graphs, vector search.
+- **Kalshi trading bot (2026 to now).** A small systematic bot on Kalshi's 15-minute BTC up/down event contracts, taking the favored side in size near resolution.
 - **LastCurb, real-time NYC parking finder (Jun to Aug 2025).** On-device computer vision over public NYC traffic cameras to spot open curb space in real time, with free public cameras as the only sensor layer. Python. https://github.com/skylerlchan/LastCurb
 
 ## Publications and honors

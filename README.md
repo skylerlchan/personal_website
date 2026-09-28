@@ -10,36 +10,55 @@ pnpm dev      # http://localhost:3000
 pnpm build    # production build
 ```
 
-## v3, one screen per thing, four ways down (current)
+## v7: a normal website, model on the side (current)
 
-`src/app/page.tsx` renders `src/sections/page`. The first screen is him and a fork: **Work, Projects, Hobbies, Contact**, each a run of screens; the header keeps the four routes one tap away and lights the current one. The copy is plain HTML, one screen per thing, with facts and sentences lifted from his September 2026 resume; `public/llms.txt` carries the full resume as Markdown and the page carries JSON-LD. Behind the copy, a fixed stage holds one three.js model floating in the centre (no base), **doing what the thing did**, and the scroll is the animation: each screen of text scrolls past while the model turns to face you, the last one shrinks away, and the light behind them crosses to that screen's colour. Scrubbed, not played. Nothing reacts to the pointer. Dots on the right edge show where you are.
+Modelled on [rachelchen.tech](https://www.rachelchen.tech/), which he sent as the reference, with the display type pushed harder after a pass through Figma's popular portfolio templates.
 
-| Route | Screen | What the model does |
-|---|---|---|
-| | Skyler Chan | three places in one: `public/images/cities.jpg`, a generated poster-flat illustration with the Golden Gate on one side and the Brooklyn Bridge on the other, the Transamerica Pyramid, Salesforce Tower, the Empire State, the Chrysler crown and One World Trade between them, and Princeton's collegiate gothic in the foreground: Blair Hall's arch and tower, Nassau Hall's cupola, the Cleveland Tower, ivy and quads. It drifts very slowly so the frame is never quite still |
-| Multiplier | the app: chat bubbles arrive, the chart draws |
-| Work | BTC funding carry | 3.3 years of real funding as bars; the equity line compounds across them |
-| Work | Solar geoengineering, modeled | aerosol injected at the equator drifts poleward |
-| Projects | Exahuman | the leader arm reaches; the follower copies it 0.3 s later |
-| Projects | Hoverloon | the envelope fills, the craft lifts its payload, rotors idle |
-| Projects | Beta Flow Browser | a page loads in the editor's sidebar; tabs switch |
-| Projects | LastCurb | a pass down the real camera frame, then the four open bays light |
-| Hobbies | Classical piano | two octaves playing a phrase |
-| Hobbies | Squash | a rally off the front wall |
-| Contact | Open to interesting problems | his portrait again, and the links |
+**One page.** A thin sticky header, then a display claim in Fraunces with a mixed roman and italic line and a record table beside it that a hiring manager reads in four seconds. Below that, **three horizontal rails**: Work, Independent projects, Outside work. Then hobbies and contact. `src/sections/home`.
 
-- `src/components/visuals/roster/ScrollWorld.ts`: the stage, the coloured glow and fill, the scroll-scrubbed hand-off (each model faces front on its own screen), theme sync.
-- `src/components/visuals/roster/backdrop.ts`: the first and last screens. A full-frame plane parented to the camera holding the generated city, covered to the frame and drifting on a slow cycle, with its corners softened into the page.
-- `src/components/visuals/roster/skyline.ts`: draws that skyline once to a canvas and packs two masks into one texture, the solid silhouette in red (where windows may light) and an edge-detected outline in green (the neon wireframe).
-- `src/components/visuals/roster/models.ts`: the models and their loops. `Arm.ts`: the five-axis arm.
-- `src/components/visuals/Stage.tsx`: the fixed canvas; feeds `scrollY / innerHeight` to the world; lazy-loads three.js after first paint.
+**Why rails and not a grid.** Nine cards stacked vertically made the page a long scroll for something a reader wants to skim. A rail puts the strongest first, keeps the whole page under three screens, and lets someone who cares keep going right. `src/components/Rail.tsx`: native `overflow-x` with `scroll-snap-type: x mandatory`, so a flick lands on a card rather than between two and it works on a phone with no JavaScript. The arrows are a desktop affordance only, because without them a mouse user has no sign the row continues; the row also bleeds past the right gutter so the cut-off card does the same job.
 
-**The words come first.** The models are scissored into their own rectangle of the canvas, so they cannot wander under the copy at any window size: beside the text when the window is genuinely wide (>= 1024px and >= 1.3 aspect, matching the copy's own `lg` column), above it otherwise. The camera is framed to that rectangle, not to the canvas. The picture on the first and last screens is the exception and fills the whole canvas from its own orthographic pass behind everything.
-- `src/sections/page/index.tsx`: the fork, the routes, the screens and their copy.
+**Project order is deliberate, not chronological** (`ORDER` in `src/sections/home`): the current funded lab leads, the dormant repo trails. Each card carries its own claim, sentence, dates, number and links, so there is no detail page to keep in sync.
 
-One theme, light; there is no toggle. The copy sits over two fixed veils, one across the bottom of the viewport and one across the top for the header, rather than a scrim per screen: a scrim per screen reaches solid background at its own bottom edge, and where two screens meet that shows as a hard horizontal line.
+**Which rail a card sits in is separate from what it was.** An entry's `rail` overrides its `group`: the BTC funding carry was a real job at Paragon, so it keeps its row in the record table, but the work reads as his own and the card sits with the projects.
 
-Copy rules: his own sentences, no em dashes, "Multiplier" never "WithAI", no valuation or AUM on a public page. Earlier versions are intact: v2 (words alone) at `src/sections/words`, v1 via the registry below.
+**Cards expand on click.** `src/components/Card.tsx`. Closed, the sentence is clamped to three lines and the links are hidden, so the ellipsis is a promise there is more. Open, the sentence unclamps and the links appear through a `0fr` to `1fr` grid row. Links are deliberately not on the closed card: a row of them under every card is noise, and reserving space for a row half the entries do not have is what made the cards ragged. The wrapper carries `inert` while closed, because a zero-height grid row hides content from the eye and the mouse but leaves it in the tab order. The rail is `align-items: start`, so opening one card grows that card and not the row.
+
+**Every card is exactly the same height**, across all three rails. Three things are needed and none of them is enough alone: the rail stretches so a row matches its tallest card, `clamp-2` / `clamp-3` stop one long sentence setting that height, and `.meta-2` gives the meta line a *fixed* two-line height. `min-height` was not enough there: a rail whose longest meta wrapped came out a line taller than a rail whose did not, so cards matched within a row but not across rows.
+
+`/projects` redirects to `/`; the old two-page split is gone.
+
+**The model is a drawer, not a page.** `src/components/AskDrawer.tsx`, opened by the sparkle button in the header from anywhere, closed by Escape or the scrim. That is the right relationship: the site is the work and the model is a way to interrogate it. v6 made the chat the entire home page and buried the work.
+
+Everything the chat research produced survived the move: sources under every answer with that entry's own number linking to `/projects#id`, a Stop that aborts server side, failures that hand the question back, a stream batched to one render per frame.
+
+### How it is put together
+
+- `src/components/layout/Shell.tsx` wraps every page from the root layout and owns the drawer state.
+- `src/content/resume.ts` is still the only source of facts. The record table reads `place` and `role`; the cards read `claim`, `org`, `when` and `stat`.
+- **Project cards have no images.** Each is a deterministic CSS gradient keyed by entry id, so the grid has colour with nothing to ship, optimise or let go stale.
+- Type: Fraunces for display (`.display`), Geist Mono for every label (`.label`), Geist for running text. One accent, `#e8542b`, used only to mark the current thing.
+- The record table is a real `<table>` on desktop and collapses to stacked blocks under 768px, where a three-column layout puts one word per line.
+
+### Keeping the chat from becoming someone else's free API
+
+`src/lib/guard.ts`, four layers, in the order they actually stop abuse:
+
+1. **Origin.** A browser always sends `Origin` or `Referer` on a same-site POST; a script usually does not. This alone removes the casual case, and it is the one that matters. Allowlist via `CHAT_ALLOWED_HOSTS`.
+2. **Per-IP window**, 12 questions an hour.
+3. **Daily ceiling** of 400 for the whole site, so the worst case is a known number.
+4. **Shape**: 2,000 characters a question, 24 turns, `max_tokens: 1024`.
+
+State is in memory, so on serverless it is per instance and resets on a cold start. That is weaker than Redis and still worth having, because layer 1 stops the common case. If it needs to be real, move the counters to Upstash and keep the same shape.
+
+### The chat endpoint
+
+`src/app/api/chat/route.ts` picks a provider by which key is present:
+
+- `GEMINI_API_KEY` or `OPENAI_API_KEY` uses the OpenAI-compatible path. Gemini's free tier is the default; the same path serves Groq, Cerebras, OpenRouter and Together via `OPENAI_BASE_URL`.
+- `ANTHROPIC_API_KEY` uses Claude through the SDK.
+
+The free provider wins when configured, because a well-formed Anthropic key with no credit is indistinguishable from a working one until the call fails. `CHAT_PROVIDER=anthropic` forces Claude. Note `output_config.effort` is rejected by Haiku with a 400, so it is only sent to models that take it.
 
 ## Architecture (v1)
 

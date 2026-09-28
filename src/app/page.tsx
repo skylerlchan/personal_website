@@ -1,13 +1,12 @@
-import Page from "@/sections/page";
+import Home from "@/sections/home";
 
 /**
- * v3: the page. Plain HTML with one quiet animation beside it.
- * See src/sections/page.
+ * v7: a normal website, with the model in a drawer on the right.
  *
- * Earlier versions are one import away:
- *   v2, words alone:        import Words from "@/sections/words"
- *   v1, attractor + deck:   the registry in src/sections/index.ts
+ * v6 made the chat the entire home page, which buried the work. The site is
+ * the work again; the model is a way to interrogate it, one click away in
+ * the header from every page.
  */
-export default function Home() {
-  return <Page />;
+export default function Page() {
+  return <Home />;
 }

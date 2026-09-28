@@ -16,28 +16,33 @@
   --font-serif: var(--font-fraunces), ui-serif, "Iowan Old Style", Georgia, serif;
 }
 
-/* Near-monochrome. Emphasis is carried by weight, scale and contrast; the one
-   hue is the safety orange on the arm's jaw tips, and the UI borrows it only
-   for pinpoints — the live dot, the focus ring. Paper is a warm off-white so
-   the arm's white shells still read as white against it. */
+/* Black ground, white type, two accents: safety orange and an electric blue.
+   That is the whole palette, and the discipline is the point. Everything else
+   is weight, scale and the space between things. Lifted from the showreel
+   reference: the punch comes from how little colour there is. */
+/* One palette, cool paper and deep slate, with a single warm accent that is
+   only ever used to mark the current thing. Everything else is weight,
+   scale and the space between. */
 :root {
-  --bg: #f5f4f0;
-  --fg: #0a0a0a;
-  --muted: #6e6e6e;
-  --subtle: #8c8c8c;
-  --accent: #ff5a1f;
-  --surface: #ecebe6;
-  --border: #dddcd6;
-}
+  color-scheme: light;
+  --paper: #fafbfc;
+  --ink: #1c2430;
+  --dim: #5a6675;
+  --faint: #97a1ae;
+  --line: #e4e8ec;
+  --hair: #eef1f4;
+  --said: #eef1f4;
+  --field: #ffffff;
+  --accent: #e8542b;
 
-.dark {
-  --bg: #0a0a0a;
-  --fg: #f2f2f2;
-  --muted: #909090;
-  --subtle: #757575;
-  --accent: #ff6a30;
-  --surface: #141414;
-  --border: #1e1e1e;
+  /* Legacy aliases so the older sections still compile. */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --muted: var(--dim);
+  --subtle: var(--faint);
+  --border: var(--line);
+  --surface: var(--hair);
+  --blue: #3355ff;
 }
 
 * {
@@ -120,7 +125,7 @@ html[data-js] .in-view.is-visible {
 
 /* Focus ring */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--fg);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -298,49 +303,517 @@ html[data-js] .in-view.is-visible {
 html {
   scroll-padding-top: 0;
 }
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
+/* No smooth scrolling. The page is eleven viewport-heights tall, so a nav
+   click from the top to Contact animates 8,440px and takes 1.65 seconds
+   measured, during which the page ignores you. Anchor jumps land instantly. */
 
 /* Taps should fire at once (no double-tap zoom wait); pans stay native. */
 body {
   touch-action: manipulation;
 }
 
-/* ── Screens (v3) ─────────────────────────────────────────────────────
-   The copy needs the render to quieten under it. One fixed veil across the
-   bottom of the viewport does that, rather than one per screen: a scrim per
-   screen reaches solid background at its own bottom edge, and where two
-   screens meet that shows up as a hard horizontal line. */
-.veil {
-  position: fixed;
-  inset: auto 0 0 0;
-  height: 58svh;
-  z-index: 5;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    var(--bg) 0%,
-    var(--bg) 20%,
-    color-mix(in srgb, var(--bg) 84%, transparent) 46%,
-    color-mix(in srgb, var(--bg) 42%, transparent) 74%,
-    transparent 100%
-  );
+/* Everything between here and the v5 block used to be v4: the copy column,
+   the seam, the screen rail, the "for machines" terminal, the HUD frame and
+   its readouts, the kinetic type, the spec strip and the fork. All of it went
+   with the scrolling page. */
+
+/* ══ v5, the minimal prototype (/simple) ═══════════════════════════════
+   Its own palette, scoped to the page, so it can be paper while the
+   scrolling version stays black. Ink on paper, one rule weight, no accent
+   at all: on a page that is only a list, colour has nothing to mark. */
+.simple {
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.simple button:focus-visible,
+.simple a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .simple .grid {
+    transition: none !important;
+  }
 }
 
-/* The header needs the same courtesy over a bright sky. */
-.veil-top {
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: 16svh;
-  z-index: 5;
+/* The question box is a ruled line, not a field. A focus ring around it looks
+   like a form control bolted onto the page, so the rule itself darkens. */
+.simple input:focus-visible {
+  outline: none;
+}
+.ask-line {
+  transition: border-color 0.2s;
+}
+.ask-line:focus-within {
+  border-bottom-color: var(--ink);
+}
+
+/* The composer. A card, the way every chat people already know is a card. */
+.composer {
+  border: 1px solid var(--line);
+  background: var(--field);
+  border-radius: 1.375rem;
+  box-shadow: 0 1px 2px rgba(22, 22, 26, 0.04), 0 8px 24px -16px rgba(22, 22, 26, 0.18);
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.composer:focus-within {
+  border-color: #c9c5bc;
+  box-shadow: 0 1px 2px rgba(22, 22, 26, 0.05), 0 10px 30px -16px rgba(22, 22, 26, 0.26);
+}
+.composer textarea {
+  field-sizing: content;
+  max-height: 40svh;
+}
+.composer textarea:focus-visible {
+  outline: none;
+}
+
+/* The round send button, filled, the one solid shape on the page. */
+.send {
+  display: grid;
+  place-items: center;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--field);
+  transition: opacity 0.15s, transform 0.15s;
+}
+.send:disabled {
+  opacity: 0.25;
+}
+.send:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+/* ══ v7 ═══════════════════════════════════════════════════════════════
+   A normal website with the model on the side. Editorial display serif,
+   monospace for every label, and one accent. */
+.display {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.022em;
+  line-height: 0.98;
+}
+.label {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ── Cards ────────────────────────────────────────────────────────────────
+   The photographs are gone. Eleven screenshots at eleven crops and exposures
+   read as clutter in a row, and the title had to sit on top of them in white,
+   which meant every wash had to be dark enough to carry text. Generated
+   colour has neither problem: the row looks like one set, and the title moved
+   down into the card as dark type, so the art is free to be pale.
+
+   The card itself is white on the paper ground, with a hairline and a shadow
+   soft enough that you read it as a lift rather than as a box. */
+.card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 1.125rem;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(28, 36, 48, 0.04), 0 12px 28px -22px rgba(28, 36, 48, 0.28);
+  transition: box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card:hover {
+  border-color: #d8dee5;
+  box-shadow: 0 1px 2px rgba(28, 36, 48, 0.05), 0 22px 44px -26px rgba(28, 36, 48, 0.34);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* The wash. Four soft radial blobs over a tinted ground, driven by three hue
+   angles set per entry, so the whole set is one recipe rather than eleven
+   hand-picked gradients that drift apart.
+
+   The fourth blob is centred and deliberately the most saturated: the badge
+   sits there, its glyph is white, and a wash this pale cannot be trusted to
+   carry white type on its own. Darkening the middle is what makes the mark
+   legible without giving the badge a hard plate behind it. */
+.card-art {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  /* --lift darkens one card without moving its hue. Yellow-green and pale
+     blue come out perceptually much lighter than the same numbers in orange
+     or violet, and on those two the white drawing was disappearing. This is
+     the correction, per entry, in percentage points of lightness. */
+  background-color: hsl(var(--h2, 220) 58% calc(90% - var(--lift, 0%)));
+  background-image:
+    /* First is on top. The centre blob has to paint over the other three, or
+       the wash swallows it. It is wide rather than tight, because the drawing
+       now spans most of the box and white line art needs a mid-tone under all
+       of it, not just under the middle. */
+    radial-gradient(66% 78% at 50% 46%, hsl(var(--h2, 220) 58% calc(52% - var(--lift, 0%)) / 0.42), transparent 74%),
+    radial-gradient(88% 88% at 12% 6%, hsl(var(--h1, 220) 80% calc(73% - var(--lift, 0%)) / 0.95), transparent 64%),
+    radial-gradient(84% 82% at 90% 14%, hsl(var(--h2, 220) 84% calc(75% - var(--lift, 0%)) / 0.92), transparent 62%),
+    radial-gradient(96% 96% at 76% 96%, hsl(var(--h3, 220) 74% calc(77% - var(--lift, 0%)) / 0.85), transparent 68%);
+}
+
+/* Grain. Pastel gradients this wide band visibly on an 8-bit panel, and the
+   banding is what makes a CSS gradient look like a CSS gradient. A little
+   turbulence at 3% dithers the steps away. It is one inline data URI, no file
+   and no request. */
+.card-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
   pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--bg) 85%, transparent) 0%,
-    color-mix(in srgb, var(--bg) 40%, transparent) 45%,
-    transparent 100%
-  );
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* The bottom melts into the card instead of ending on a line. Above the
+   drawing, not below it, so the drawing dissolves with the wash. */
+.card-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent 62%, rgba(255, 255, 255, 0.4) 85%, #ffffff 100%);
+}
+
+/* The drawing. Sits on the wash, sized as a share of the art rather than in
+   pixels, so it holds its proportion from a 302px phone card to a 416px
+   desktop one. The shadow is what stops white line art dissolving into the
+   pale parts of the wash. */
+/* Fills the art exactly, so a drawing that runs to the edge of its box (the
+   curve of the Earth, the street) really does bleed. The shadow is what stops
+   white line art dissolving into the pale parts of the wash. */
+.card-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(28, 36, 48, 0.2)) drop-shadow(0 3px 11px rgba(28, 36, 48, 0.18));
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card:hover .card-scene {
+    transform: scale(1.035);
+  }
+}
+
+/* The badge. Glass, not a grey square: a translucent white fill, a lighter
+   top edge, and a blur that picks up whatever the wash is doing behind it.
+   Where backdrop-filter is unsupported the fill goes opaque enough to stand
+   on its own, which is the same look with less depth. */
+.card-badge {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  height: 3.25rem;
+  width: 3.25rem;
+  border-radius: 1.125rem;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.26);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px) saturate(1.5);
+  -webkit-backdrop-filter: blur(12px) saturate(1.5);
+  box-shadow: 0 10px 24px -12px rgba(28, 36, 48, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .card-badge {
+    background: rgba(255, 255, 255, 0.42);
+  }
+}
+.card-badge svg {
+  height: 1.625rem;
+  width: 1.625rem;
+  filter: drop-shadow(0 1px 3px rgba(28, 36, 48, 0.45));
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card:hover .card-badge {
+    transform: scale(1.06);
+  }
+}
+
+/* ── Opening a card ───────────────────────────────────────────────────────
+   Read more grows the card and tells you the rest. That is the whole
+   interaction, so the only thing left to get right is how it moves.
+
+   The sentence is clipped by max-height rather than by -webkit-line-clamp,
+   because a line clamp cannot be animated: it snaps. A measured max-height
+   can, and the card grows with it in one motion instead of jumping. */
+.body-clip {
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The bottom of a clipped sentence dissolves instead of ending in an
+   ellipsis. It is an opacity fade on its own layer, so it can cross-fade out
+   as the box grows rather than popping off at the first frame. */
+.body-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1.75rem;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff 92%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.body-fade[data-on="true"] {
+  opacity: 1;
+}
+
+/* The links come in a beat behind the text, lifting as they arrive, so the
+   card resolves in two steps rather than everything landing at once. */
+.reveal > div {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease 0.1s, transform 0.44s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+.reveal[data-open="true"] > div {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .body-clip,
+  .body-fade,
+  .reveal > div,
+  .pill svg {
+    transition: none;
+  }
+}
+
+/* The pill. The reference puts the affordance in a bordered chip rather than
+   a bare line of text, which is the thing that makes a card read as clickable
+   from across the room. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3125rem 0.6875rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  color: var(--dim);
+  background: #ffffff;
+  transition: border-color 0.18s, color 0.18s, background-color 0.18s;
+}
+.card:hover .pill {
+  border-color: #cfd7df;
+  color: var(--ink);
+}
+/* A chevron that turns over, not two different arrows swapped at the
+   midpoint. The reference uses ↗ because its button navigates; this one
+   opens in place, so it points at what it does. */
+.pill svg {
+  height: 0.6875rem;
+  width: 0.6875rem;
+  transition: transform 0.44s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pill[data-open="true"] svg {
+  transform: rotate(-180deg);
+}
+
+/* The drawer the model lives in. */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(30rem, 100vw);
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border-left: 1px solid var(--line);
+  box-shadow: -24px 0 60px -40px rgba(28, 36, 48, 0.35);
+  z-index: 60;
+  transform: translateX(100%);
+  transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.drawer[data-open="true"] {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .drawer { transition: none; }
+}
+.drawer-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(28, 36, 48, 0.18);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.drawer-scrim[data-open="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.field {
+  border: 1px solid var(--line);
+  background: var(--field);
+  border-radius: 1rem;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.field:focus-within {
+  border-color: #c7cfd8;
+  box-shadow: 0 8px 26px -18px rgba(28, 36, 48, 0.4);
+}
+.field textarea {
+  field-sizing: content;
+  max-height: 30svh;
+}
+.field textarea:focus-visible { outline: none; }
+
+.send {
+  display: grid;
+  place-items: center;
+  height: 1.875rem;
+  width: 1.875rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--field);
+  transition: opacity 0.15s;
+}
+.send:disabled { opacity: 0.25; }
+
+/* The record table. A three-column grid reads well once there is room; on a
+   phone the third column collapses to one word per line, so each row becomes
+   a block instead. */
+@media (max-width: 767px) {
+  .record,
+  .record tbody,
+  .record tr,
+  .record td {
+    display: block;
+    width: auto;
+  }
+  .record tr {
+    padding: 0.5rem 0;
+  }
+  .record td[data-col="year"] {
+    display: inline;
+    padding-right: 0.6rem;
+  }
+  .record td[data-col="place"] {
+    display: inline;
+    padding-right: 0;
+    white-space: normal;
+  }
+  .record td[data-col="role"] {
+    padding-top: 0.15rem;
+  }
+}
+
+/* The rails. Snapping makes a flick land on a card instead of halfway
+   between two, and the scrollbar is hidden because the arrows and the cut-off
+   card already say the row continues. */
+.rail {
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 0;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+.rail > [data-card] {
+  flex: 0 0 clamp(16.5rem, 78vw, 23rem);
+  scroll-snap-align: start;
+}
+@media (min-width: 640px) {
+  .rail > [data-card] {
+    flex-basis: clamp(20rem, 32vw, 26rem);
+  }
+}
+
+/* Uniform cards. Stretching the row makes every card as tall as the tallest,
+   the clamps stop one long sentence setting that height, and the meta line is
+   pushed to the bottom so the baselines agree across a row. */
+/* Start, not stretch. Every closed card is already the same height because
+   the art, the title and the sentence all have reserved space, and starting
+   them means opening one card grows that card alone rather than the row. */
+.rail {
+  align-items: start;
+}
+.clamp-2,
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.clamp-2 {
+  -webkit-line-clamp: 2;
+}
+.clamp-3 {
+  -webkit-line-clamp: 3;
+}
+
+/* The meta line always occupies exactly two lines, whether it needs them or
+   not. min-height was not enough: a rail whose longest meta wrapped came out
+   a line taller than a rail whose did not, so the cards matched within a row
+   but not across rows. */
+.meta-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  line-height: 1.5;
+  height: calc(0.75rem + 2 * 0.6875rem * 1.5);
+}
+
+/* ── Thinking ────────────────────────────────────────────────────────────
+   Nine dots, a diagonal wave, and a typed line. The delay per dot is set
+   inline as row + column, so brightness crosses the grid corner to corner. */
+.think {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--dim);
+  min-height: 1.5rem;
+}
+.think-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 3px);
+  gap: 3px;
+  flex: none;
+}
+.think-grid i {
+  display: block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.22;
+  animation: think-wave 1.32s ease-in-out infinite;
+}
+@keyframes think-wave {
+  0%, 60%, 100% { opacity: 0.22; transform: scale(1); }
+  25% { opacity: 1; transform: scale(1.25); }
+}
+.think-label {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+@media (prefers-reduced-motion: reduce) {
+  .think-grid i { animation: none; opacity: 0.6; }
 }
