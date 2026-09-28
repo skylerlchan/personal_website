@@ -135,6 +135,11 @@ const ABUSE = [
   /\b(pretend|act) (to be|as) (a|an|my)\b.*\b(without|no) (rules|restrictions|limits)/i,
   /\b(kill|hurt|rape|shoot) (yourself|himself|him)\b/i,
   /\b(fuck|f\*ck) (you|him|off)\b/i,
+  // Slurs and insults aimed at him. The model would decline these anyway,
+  // but Google's filter sometimes answers with nothing at all, and nothing
+  // is worse than a refusal.
+  /\b(retard(ed)?|autis(t|tic)|spastic|cretin|moron(ic)?)\b/i,
+  /\bis he (stupid|dumb|an idiot|a loser|a fraud|a scam(mer)?|ugly|fat|gay)\b/i,
 ];
 
 export function abusive(text: string): boolean {

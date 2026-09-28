@@ -145,7 +145,9 @@ export default function AskDrawer({ open, onClose }: { open: boolean; onClose: (
       }
       cancelAnimationFrame(raf.current);
       raf.current = 0;
-      setTurns([...next, { role: "assistant", content: buffer.current }]);
+      // A stream that closed with nothing in it must still say something.
+      const finalText = buffer.current.trim() ? buffer.current : "I would rather not answer that one. Ask me about his work?";
+      setTurns([...next, { role: "assistant", content: finalText }]);
       fails.current = 0;
     } catch (err) {
       cancelAnimationFrame(raf.current);

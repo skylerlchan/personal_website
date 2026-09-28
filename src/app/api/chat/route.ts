@@ -154,6 +154,11 @@ export async function POST(req: NextRequest) {
         } else {
           await runCompatible({ compat: compat!, system, clean, req, say });
         }
+        // The model can return nothing: a safety filter, a truncated
+        // stream. A blank answer leaves the reader watching the dots forever.
+        if (!streamed && !req.signal.aborted) {
+          say("I would rather not answer that one. Ask me about his work, or email him at skylerlchan@gmail.com.");
+        }
       } catch (err) {
         if (req.signal.aborted) return;
         console.error("chat:", err);
