@@ -130,5 +130,4 @@ export const SAMPLE_QUESTIONS = [
   "What is the best thing he has built?",
   "Is he actually good at robotics?",
   "What should I hire him for?",
-  "Tell me something surprising.",
 ];
