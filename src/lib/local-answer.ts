@@ -130,7 +130,7 @@ export function localAnswer(question: string): string | null {
       "",
       ELSEWHERE.filter((l) => !l.href.startsWith("mailto:")).map((l) => `${l.label}: ${l.href}`).join("\n"),
       "",
-      "He is at Princeton until May 2028, and splits time between New York and San Francisco.",
+      "He is open to interesting problems.",
     ].join("\n");
   }
 

@@ -3,11 +3,11 @@ import Card from "@/components/Card";
 import { ENTRIES, ELSEWHERE, type Entry } from "@/content/resume";
 
 /**
- * The front page: a claim, the record, and the work.
+ * The front page: a claim and the work.
  *
- * Three blocks and nothing else. A display line that says what he is, a
- * table of where he has been that a hiring manager can read in four seconds,
- * and a grid of what he built. The model lives in the drawer, one click away
+ * Two blocks and nothing else. A display line that says what he is, and
+ * three rails of what he built. He had the experience table cut; the cards
+ * carry the employers. The model lives in the drawer, one click away
  * in the header, so the page itself stays a normal website.
  */
 
@@ -22,15 +22,6 @@ const HOBBIES = ENTRIES.filter((e) => e.group === "hobbies");
  */
 const ORDER = ["exahuman", "carry", "hoverloon", "betaflow", "kalshi", "retrieval", "lastcurb"];
 const PROJECTS = ORDER.map((id) => ENTRIES.find((e) => e.id === id)).filter(Boolean) as Entry[];
-
-/** The record: the real jobs, newest first. */
-const RECORD: { year: string; place: string; role: string }[] = [
-  ...ENTRIES.filter((e) => e.role).map((e) => ({
-    year: (e.when.match(/20\d{2}/g) ?? [e.when]).slice(-1)[0],
-    place: e.place ?? e.title,
-    role: e.role ?? e.claim,
-  })),
-];
 
 /**
  * The wash, as three hue angles per entry rather than eleven hand-written
@@ -75,26 +66,10 @@ export default function Home() {
   return (
     <main className="mx-auto w-full max-w-[84rem] px-5 pb-24 sm:px-8">
       {/* ── The claim, and the record beside it ───────────────────────── */}
-      <section className="grid gap-10 pt-16 sm:pt-24 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-        <h1 className="display text-[clamp(2.5rem,7vw,4.5rem)] text-[var(--ink)]">
+      <section className="pt-16 sm:pt-24">
+        <h1 className="display max-w-[22ch] text-[clamp(2.5rem,7vw,4.5rem)] text-[var(--ink)]">
           I&rsquo;m Skyler, and I love building <em>wacky ideas</em>.
         </h1>
-
-        <div className="lg:pt-3">
-          <table className="record w-full border-collapse text-[0.9375rem]">
-            <caption className="label sr-only">Experience</caption>
-            <tbody>
-              {RECORD.map((r) => (
-                <tr key={`${r.year}-${r.place}`} className="align-baseline">
-                  <td data-col="year" className="w-14 py-1.5 pr-5 tabular-nums text-[var(--faint)]">{r.year}</td>
-                  <td data-col="place" className="whitespace-nowrap py-1.5 pr-6 text-[var(--ink)]">{r.place}</td>
-                  <td data-col="role" className="py-1.5 text-[var(--dim)]">{r.role}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-        </div>
       </section>
 
       {/* ── Two rails, strongest first ────────────────────────────────── */}
@@ -131,7 +106,6 @@ export default function Home() {
           ))}
         </p>
         <p className="label mt-8 text-[var(--faint)]">
-          Princeton until May 2028 · New York · San Francisco ·{" "}
           <a href="/llms.txt" className="underline underline-offset-4">
             /llms.txt
           </a>
