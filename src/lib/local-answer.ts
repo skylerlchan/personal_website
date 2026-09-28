@@ -106,7 +106,6 @@ export function localAnswer(question: string): string | null {
   // Strengths, in his words and the resume's, separate from the hiring pitch.
   if (hit(q, "strength", "strengths", "good at", "best at", "skills", "superpower", "what is he like")) {
     return para(
-      "In his own two words: Compulsive Optimizer.",
       "He ships end to end. At Multiplier he owned the product for six enterprise clients and wrote about 30% of the codebase, the largest share on the team. He builds hardware as well as software: Hoverloon and Exahuman are his, funded and staffed by him. And he does the numbers himself: the BTC funding carry is a sole-author SSRN paper with the code public.",
       "What he says drives it: getting immersed in a sticky problem and letting his mind explore novel solutions, which he calls addictive.",
     );
@@ -175,7 +174,6 @@ export function localAnswer(question: string): string | null {
     if (hit(q, "why do you build", "why build", "why does he build", "motivation", "what drives")) return k.includes("why do you build");
     if (hit(q, "ten years", "10 years", "future", "long term", "vision", "next decade")) return k.includes("ten years");
     if (hit(q, "fun fact", "something fun", "interesting fact", "birthday")) return k.includes("fun fact");
-    if (hit(q, "two words", "describe yourself", "describe him")) return k.includes("two words");
     if (hit(q, "a day", "best day", "favourite day", "favorite day", "enjoyed")) return k.includes("day you enjoyed");
     return false;
   });

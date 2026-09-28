@@ -27,8 +27,10 @@ async function fromBlob(): Promise<string> {
   // authenticate from the store id plus the function's own identity, so
   // either variable is reason enough to try; a failure is caught above.
   if (!process.env.BLOB_READ_WRITE_TOKEN && !process.env.BLOB_STORE_ID) return "";
-  const { blobs } = await list({ prefix: NAME, limit: 5 });
-  const hit = blobs.find((b) => b.pathname === NAME) ?? blobs[0];
+  // Newest first: the dashboard gives a re-upload a suffixed name rather
+  // than overwriting, and the newest one is the one he meant.
+  const { blobs } = await list({ prefix: NAME.replace(/\.md$/, ""), limit: 20 });
+  const hit = [...blobs].sort((a, b) => +new Date(b.uploadedAt) - +new Date(a.uploadedAt))[0];
   if (!hit) {
     console.warn(`corpus: no blob named ${NAME}`);
     return "";

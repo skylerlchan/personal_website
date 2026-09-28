@@ -20,7 +20,7 @@ const PROFILE = `
 WHO HE IS
 Skyler Chan. Princeton University, B.S.E. Operations Research and Financial
 Engineering, minor in Computer Science, expected May 2028.
-Born on April Fools' Day. Describes himself as a "Compulsive Optimizer".
+Born on April Fools' Day.
 
 HOW HE WORKS
 He loves building, and gravitates to wacky ideas: a blimp that lifts nineteen

@@ -249,10 +249,6 @@ export const QA: { q: string; a: string[] }[] = [
     ],
   },
   {
-    q: "Describe yourself in two words.",
-    a: ["Compulsive Optimizer."],
-  },
-  {
     q: "A fun fact?",
     a: [
       "I was born on April Fools' Day. I am a literal joke.",
