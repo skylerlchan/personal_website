@@ -94,9 +94,6 @@ export default function Home() {
             </tbody>
           </table>
 
-          <p className="mt-6 max-w-md text-[0.9375rem] leading-relaxed text-[var(--dim)]">
-            I get immersed in a sticky problem and let my mind explore novel solutions.
-          </p>
         </div>
       </section>
 
