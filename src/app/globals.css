@@ -594,10 +594,9 @@ body {
 /* The description gets the room the box has, then stops. On a phone the
    longest one fits with space to spare; this is only the seatbelt. */
 .back-body {
+  flex: 1 1 auto;
+  min-height: 0;
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 12;
 }
 .flip-hint {
   display: grid;
