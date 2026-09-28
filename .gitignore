@@ -37,3 +37,7 @@ temp_images/
 
 # His own words, served to the chat from Vercel Blob, never committed.
 corpus/
+
+# The ask log, written here only when there is no Blob store (local dev).
+# Anchored: a bare `asks/` also hid src/app/asks from Tailwind's class scan.
+/asks/

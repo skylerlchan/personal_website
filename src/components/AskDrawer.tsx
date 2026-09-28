@@ -82,6 +82,9 @@ export default function AskDrawer({ open, onClose }: { open: boolean; onClose: (
   const buffer = useRef("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
+  // Handed out by the server on the first turn and sent back after, so the
+  // log keeps one conversation together. Reset starts a new one.
+  const session = useRef<string | null>(null);
 
   useEffect(() => {
     if (open) setTimeout(() => inputRef.current?.focus(), 420);
@@ -121,9 +124,10 @@ export default function AskDrawer({ open, onClose }: { open: boolean; onClose: (
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: next, session: session.current }),
         signal: ctrl.signal,
       });
+      session.current = res.headers.get("x-ask-session") ?? session.current;
       if (!res.ok || !res.body) {
         const why = (await res.text().catch(() => "")) || FAILURES[fails.current++ % FAILURES.length];
         setTurns([...next, { role: "assistant", content: why }]);
@@ -173,7 +177,14 @@ export default function AskDrawer({ open, onClose }: { open: boolean; onClose: (
         <span className="label text-[var(--ink)]">Ask Skyler</span>
         <span className="label ml-auto flex items-center gap-3 text-[var(--faint)]">
           {started && (
-            <button type="button" onClick={() => setTurns([])} className="transition-colors hover:text-[var(--ink)]">
+            <button
+              type="button"
+              onClick={() => {
+                setTurns([]);
+                session.current = null;
+              }}
+              className="transition-colors hover:text-[var(--ink)]"
+            >
               Reset
             </button>
           )}

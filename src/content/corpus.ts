@@ -1,7 +1,7 @@
 import "server-only";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { get, list } from "@vercel/blob";
+import { get } from "@vercel/blob";
 
 /**
  * His own words, kept off the repo.
@@ -27,17 +27,13 @@ async function fromBlob(): Promise<string> {
   // authenticate from the store id plus the function's own identity, so
   // either variable is reason enough to try; a failure is caught above.
   if (!process.env.BLOB_READ_WRITE_TOKEN && !process.env.BLOB_STORE_ID) return "";
-  // Newest first: the dashboard gives a re-upload a suffixed name rather
-  // than overwriting, and the newest one is the one he meant.
-  const { blobs } = await list({ prefix: NAME.replace(/\.md$/, ""), limit: 20 });
-  const hit = [...blobs].sort((a, b) => +new Date(b.uploadedAt) - +new Date(a.uploadedAt))[0];
-  if (!hit) {
-    console.warn(`corpus: no blob named ${NAME}`);
-    return "";
-  }
-  const res = await get(hit.url, { access: "private" });
+  // Fetched by name, not found by list(): a list() is an "advanced
+  // operation" and Hobby has two thousand of those a month, shared with the
+  // ask log. A get() is a simple one, and a cache hit is free. Re-uploading
+  // from the dashboard overwrites the name, which is what he wants.
+  const res = await get(NAME, { access: "private" });
   if (!res || res.statusCode !== 200 || !res.stream) {
-    console.warn(`corpus: get returned ${res?.statusCode}`);
+    console.warn(`corpus: get returned ${res?.statusCode ?? "nothing"} for ${NAME}`);
     return "";
   }
   return await new Response(res.stream).text();

@@ -3,6 +3,7 @@
 
 User-agent: *
 Allow: /
+Disallow: /asks
 
 # Sitemap location
 Sitemap: https://skyler-chan.com/sitemap.xml

@@ -157,7 +157,7 @@ export function strike(req: NextRequest): boolean {
   return bucket.blockedUntil > now;
 }
 
-/** A short, stable tag for an address, for the Telegram line and the block list. */
+/** The address as seen, for the ask log's flagged turns and the block list. */
 export function ipTag(req: NextRequest): string {
   return clientIp(req);
 }

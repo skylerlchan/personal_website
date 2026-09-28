@@ -1,8 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { NextRequest } from "next/server";
+import { createHash } from "node:crypto";
+import { after, NextRequest } from "next/server";
 import { systemPrompt } from "@/content/context";
 import { guard, abusive, strike, ipTag } from "@/lib/guard";
 import { localAnswer } from "@/lib/local-answer";
+import { record, sessionFor, whereOf, type Ask, type Flag } from "@/lib/asks";
 
 /**
  * The chat behind the website.
@@ -18,18 +20,16 @@ import { localAnswer } from "@/lib/local-answer";
  * `resume.ts` instead of apologising. See `lib/local-answer`. That path cannot
  * invent a fact, so the chat is never wrong, only sometimes less fluent.
  *
- * Streams either way, so the first words arrive immediately. Every question is
- * forwarded to Telegram, which is how Skyler sees what people are asking, and
- * that send never blocks the answer.
+ * Streams either way, so the first words arrive immediately. Every turn is
+ * written to the ask log once the answer is out (see `lib/asks`), which is
+ * how Skyler sees what people ask; the write happens after the response and
+ * never slows it. Nothing is sent to Telegram from here any more.
  */
 
 const MAX_TURNS = 12; // bounds the prompt an abuser can make the model read
 const MAX_CHARS = 2000;
 
 export const dynamic = "force-dynamic";
-
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 /**
  * A well-formed Anthropic key. Note that well-formed is not the same as
@@ -68,22 +68,7 @@ function openaiCompatible(): { base: string; key: string; model: string } | null
 
 type Turn = { role: "user" | "assistant"; content: string };
 
-async function notify(question: string, req: NextRequest) {
-  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
-  const city = req.headers.get("x-vercel-ip-city");
-  const country = req.headers.get("x-vercel-ip-country");
-  const where = [city, country].filter(Boolean).join(", ");
-  const text = ["Someone asked your site:", "", question, where ? `\n(${where})` : "", `ip ${ipTag(req)}`].join("\n");
-  try {
-    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text, disable_notification: true }),
-    });
-  } catch {
-    // Never let the notification break the answer.
-  }
-}
+const ipHash = (req: NextRequest) => createHash("sha256").update(ipTag(req)).digest("hex").slice(0, 8);
 
 export async function POST(req: NextRequest) {
   // Before anything that costs money: is this a reader, or someone else's app?
@@ -104,9 +89,13 @@ export async function POST(req: NextRequest) {
   const compat = useAnthropic ? null : compatAvailable;
 
   let turns: Turn[];
+  let session: string;
   try {
     const body = await req.json();
     turns = Array.isArray(body?.messages) ? body.messages : [];
+    // The drawer sends back the id it was given on its first turn, so the
+    // log can keep a conversation together. Anything malformed gets a new one.
+    session = sessionFor(body?.session);
   } catch {
     return new Response("Bad request.", { status: 400 });
   }
@@ -119,30 +108,51 @@ export async function POST(req: NextRequest) {
   const last = clean[clean.length - 1];
   if (!last || last.role !== "user") return new Response("Expected a question.", { status: 400 });
 
+  const started = Date.now();
+  const base: Omit<Ask, "a" | "model" | "ms"> = {
+    at: new Date(started).toISOString(),
+    session,
+    turn: clean.filter((t) => t.role === "user").length,
+    q: last.content,
+    where: whereOf(req),
+    ua: req.headers.get("user-agent")?.slice(0, 200) || undefined,
+    ipHash: ipHash(req),
+  };
+  const headers = {
+    "Content-Type": "text/plain; charset=utf-8",
+    "Cache-Control": "no-store",
+    "X-Accel-Buffering": "no",
+    "X-Ask-Session": session,
+  };
+
   // Abuse is refused before any model sees it, and counted. Three in a day
-  // and the address is out for a day. He still gets the Telegram line, with
-  // the address, so he can add it to CHAT_BLOCKED_IPS if it keeps coming.
+  // and the address is out for a day. The log keeps the real address on
+  // these turns, so he can add it to CHAT_BLOCKED_IPS if it keeps coming.
   if (abusive(last.content)) {
     const blocked = strike(req);
-    void notify(`[abuse${blocked ? ", now blocked" : ""}] ${last.content}`, req);
-    return new Response(
-      blocked
-        ? "That is enough of that. This address is blocked from the chat for a day."
-        : "I only answer questions about Skyler. Ask me about his work, or email him at skylerlchan@gmail.com.",
-      { status: blocked ? 403 : 200, headers: { "Content-Type": "text/plain; charset=utf-8" } },
-    );
+    const a = blocked
+      ? "That is enough of that. This address is blocked from the chat for a day."
+      : "I only answer questions about Skyler. Ask me about his work, or email him at skylerlchan@gmail.com.";
+    after(() => record({ ...base, a, model: "none", ms: 0, ip: ipTag(req), flag: blocked ? "blocked" : "abuse" }));
+    return new Response(a, { status: blocked ? 403 : 200, headers });
   }
-
-  void notify(last.content, req);
 
   const encoder = new TextEncoder();
   const system = await systemPrompt();
+
+  // Filled in as the answer streams; written to the log once it has ended.
+  let answer = "";
+  let model = "local";
+  let flag: Flag | undefined;
+  let settle!: () => void;
+  const ended = new Promise<void>((r) => (settle = r));
 
   const stream = new ReadableStream({
     async start(controller) {
       let streamed = false;
       const say = (s: string) => {
         if (s) streamed = true;
+        answer += s;
         controller.enqueue(encoder.encode(s));
       };
       try {
@@ -150,9 +160,9 @@ export async function POST(req: NextRequest) {
           // No key at all. Answer from the facts rather than apologising.
           await sayLocally(last.content, req, say);
         } else if (anth) {
-          await runClaude({ key: anth, system, clean, req, say });
+          model = await runClaude({ key: anth, system, clean, req, say });
         } else {
-          await runCompatible({ compat: compat!, system, clean, req, say });
+          model = await runCompatible({ compat: compat!, system, clean, req, say });
         }
         // The model can return nothing: a safety filter, a truncated
         // stream. A blank answer leaves the reader watching the dots forever.
@@ -161,6 +171,8 @@ export async function POST(req: NextRequest) {
           // filter). The local answerer knows the plain facts, so it goes
           // first; the canned line is only for a question it cannot place.
           const local = localAnswer(last.content);
+          flag = "empty";
+          model = "local";
           say(local && !/^I do not have anything on that/.test(local)
             ? local
             : "That one is not on the page. Ask me about his work, or email him at skylerlchan@gmail.com.");
@@ -172,20 +184,26 @@ export async function POST(req: NextRequest) {
         // answer is usually the one they wanted. Only say so if nothing has
         // been streamed yet, so a half-finished answer is never glued to a
         // second one.
-        if (!streamed) await sayLocally(last.content, req, say, true);
+        flag = "failed";
+        if (!streamed) {
+          model = "local";
+          await sayLocally(last.content, req, say, true);
+        }
       } finally {
+        if (req.signal.aborted) flag = "stopped";
         controller.close();
+        settle();
       }
     },
   });
 
-  return new Response(stream, {
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "no-store",
-      "X-Accel-Buffering": "no",
-    },
+  // After the response, not during it: the write costs nothing to the reader.
+  after(async () => {
+    await ended;
+    await record({ ...base, a: answer.slice(0, 6000), model, ms: Date.now() - started, flag });
   });
+
+  return new Response(stream, { headers });
 }
 
 /**
@@ -209,7 +227,8 @@ async function sayLocally(question: string, req: NextRequest, say: (s: string) =
   }
 }
 
-async function runClaude(o: { key: string; system: string; clean: Turn[]; req: NextRequest; say: (s: string) => void }) {
+/** Returns the model that answered, for the log. */
+async function runClaude(o: { key: string; system: string; clean: Turn[]; req: NextRequest; say: (s: string) => void }): Promise<string> {
   const client = new Anthropic({ apiKey: o.key });
   const model = process.env.ANTHROPIC_MODEL || "claude-opus-5";
   const run = client.messages.stream({
@@ -225,12 +244,13 @@ async function runClaude(o: { key: string; system: string; clean: Turn[]; req: N
   run.on("text", (chunk: string) => o.say(chunk));
   const done = await run.finalMessage();
   if (done.stop_reason === "refusal") o.say("I would rather not answer that one. Ask me about his work?");
+  return model;
 }
 
 /**
  * Anything that speaks the OpenAI chat-completions protocol. Gemini's own
  * compatibility endpoint is the default because its free tier costs nothing
- * and needs no card.
+ * and needs no card. Returns the rung of the ladder that answered.
  */
 async function runCompatible(o: {
   compat: { base: string; key: string; model: string };
@@ -238,7 +258,7 @@ async function runCompatible(o: {
   clean: Turn[];
   req: NextRequest;
   say: (s: string) => void;
-}) {
+}): Promise<string> {
   const ask = (model: string) =>
     fetch(`${o.compat.base}/chat/completions`, {
       method: "POST",
@@ -272,7 +292,7 @@ async function runCompatible(o: {
   let res: Response | null = null;
   let used = "";
   for (const model of ladder) {
-    if (o.req.signal.aborted) return;
+    if (o.req.signal.aborted) return "none";
     const attempt = await ask(model);
     if (attempt.ok) {
       res = attempt;
@@ -317,4 +337,5 @@ async function runCompatible(o: {
       }
     }
   }
+  return used;
 }

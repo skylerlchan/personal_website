@@ -677,7 +677,8 @@ body {
   field-sizing: content;
   max-height: 30svh;
 }
-.field textarea:focus-visible { outline: none; }
+.field textarea:focus-visible,
+.field input:focus-visible { outline: none; }
 
 .send {
   display: grid;

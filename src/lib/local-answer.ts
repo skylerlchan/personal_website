@@ -114,7 +114,6 @@ export function localAnswer(question: string): string | null {
   // What he is for. This has to run before the contact intent, which used to
   // catch "hire" and hand back an email address, which is not an answer.
   if (hit(q, "hire", "hiring", "recruit", "what does he do", "what can he do", "role", "fit", "why him", "what should i")) {
-    const top = HEADLINE.map((id) => ENTRIES.find((e) => e.id === id)).filter(Boolean) as Entry[];
     return para(
       "Hire him to build the thing nobody has built yet, then measure whether it worked. That is the pattern in everything here.",
       "He was the founding engineer at Multiplier, a Y Combinator startup: an AI harness for hedge-fund analysts, a VS Code fork with agents inside it, which he owned end to end for six firms and took to $208K ARR. He founded Exahuman, a robot teleoperation lab, and funded and staffed it. And he wrote a quant paper on a delta-neutral BTC funding carry, Sharpe 6.1 over three years of tick data, with the code public so you can check it.",
